@@ -1,0 +1,84 @@
+buatkan web untuk braket lomba mobile legend yang profesional dengan ketentuan ini dengan next.js :
+
+Kualifikasi (Qualification)
+
+Terdapat 22 tim yang dibagi menjadi dua bagan, yaitu:
+
+Bagan A: 11 Tim
+
+Round 1:
+
+10 tim bertanding dalam 5 pertandingan.
+
+1 tim mendapatkan bye (langsung lolos).
+
+Total: 5 pemenang + 1 tim bye = 6 tim lolos ke round 2.
+
+Round 2:
+
+4 dari 6 tim bertanding (2 pertandingan).
+
+2 tim menang dan lolos.
+
+2 tim lainnya langsung lolos (bye).
+
+Total: 4 tim lolos ke babak selanjutnya.
+
+Bagan B: 11 Tim
+
+Round 1:
+
+10 tim bertanding dalam 5 pertandingan.
+
+1 tim mendapatkan bye (langsung lolos).
+
+Total: 5 pemenang + 1 tim bye = 6 tim lolos ke round 2.
+
+Round 2:
+
+4 dari 6 tim bertanding (2 pertandingan).
+
+2 tim menang dan lolos.
+0
+2 tim lainnya langsung lolos (bye).
+
+Total: 4 tim lolos ke babak selanjutnya.
+
+Quarter Final (8 Tim)
+
+8 tim yang lolos dari kedua bagan bertanding dalam 4 pertandingan.
+
+4 tim pemenang melaju ke babak final.
+
+Final (4 Tim)
+
+4 tim bertanding:
+
+2 tim pemenang dari semifinal saling bertanding memperebutkan juara 1 dan 2.
+
+2 tim yang kalah dari semifinal saling bertanding memperebutkan juara 3
+
+nama tim :
+
+1. THE PLERE
+2. MANTAP MAN
+3. KANG TABRAK
+4. WES ANGGER MAEN
+5. GOGLAK ESPORT
+6. ⁠REPUBLIK AMERIKA
+7. SISFO
+8. TIM 7
+9. Dark System
+10. ⁠uciha erik
+11. Shichibukai
+12. Mahjong team
+13. Kingdom
+14. BUB TEAM
+15. Anomali Hytam
+16. Bang Cer
+17. BINTANG MADURA
+18. ⁠DUWUR KALI
+19. Bpt pride
+20. Blok M
+21. A tobat dong
+22. KINK YANTO

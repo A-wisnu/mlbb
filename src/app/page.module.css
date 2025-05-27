@@ -1,0 +1,313 @@
+/* Hero Section */
+.heroSection {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: 2rem;
+}
+
+.videoContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.videoOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+}
+
+.backgroundVideo {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: -60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.backgroundVideo iframe {
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  transform: scale(1.5);
+}
+
+.heroContent {
+  max-width: 1000px;
+  width: 100%;
+  z-index: 2;
+  text-align: center;
+  padding: 1rem;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.heroLogo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.xSymbol {
+  font-size: 4rem;
+  font-weight: bold;
+  color: #FFB800;
+  text-shadow: 0 0 20px rgba(255, 184, 0, 0.8);
+}
+
+.centerLogo {
+  max-width: 100%;
+  height: auto;
+  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.5));
+}
+
+.heroTitle {
+  font-size: 4rem;
+  font-weight: 800;
+  background: linear-gradient(to right, #ffffff, #FFB800, #ffffff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  line-height: 1.1;
+}
+
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 2.5rem;
+  }
+
+  .xSymbol {
+    font-size: 3rem;
+  }
+}
+
+.heroSubtitle {
+  font-size: 1.5rem;
+  color: #9ca3af;
+  margin-bottom: 2rem;
+  font-weight: 500;
+}
+
+/* Countdown Timer */
+.countdownContainer {
+  margin: 2.5rem 0;
+  padding: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 1rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.countdownTitle {
+  color: #FFB800;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+.countdownTimers {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.countdownItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.countdownNumber {
+  background: linear-gradient(to bottom, #FFB800, #e69500);
+  color: black;
+  font-size: 2.5rem;
+  font-weight: 700;
+  width: 5rem;
+  height: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 10px rgba(255, 184, 0, 0.3);
+  margin-bottom: 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.countdownNumber::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border-bottom-right-radius: 50%;
+  border-bottom-left-radius: 50%;
+}
+
+.countdownLabel {
+  color: #9ca3af;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+@media (max-width: 640px) {
+  .countdownTimers {
+    gap: 0.75rem;
+  }
+  
+  .countdownNumber {
+    font-size: 1.5rem;
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+}
+
+/* CTA Buttons */
+.heroCta {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.primaryButton {
+  padding: 0.875rem 2rem;
+  background: linear-gradient(to right, #FFB800, #e69500);
+  color: black;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 184, 0, 0.4);
+}
+
+.primaryButton:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(255, 184, 0, 0.6);
+}
+
+.secondaryButton {
+  padding: 0.875rem 2rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 184, 0, 0.6);
+  color: #FFB800;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.secondaryButton:hover {
+  background-color: rgba(255, 184, 0, 0.1);
+  transform: translateY(-3px);
+}
+
+/* Info Section */
+.infoSection {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(20, 20, 30, 0.9)), url(/images/logo-mobile-legend-31251.png);
+  background-size: 300px;
+  background-position: center;
+  background-blend-mode: overlay;
+  position: relative;
+}
+
+.infoCard {
+  padding: 2.5rem;
+  background: linear-gradient(135deg, rgba(30, 30, 40, 0.7), rgba(15, 15, 25, 0.9));
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.infoCard:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 184, 0, 0.3);
+}
+
+.infoCardIcon {
+  width: 4rem;
+  height: 4rem;
+  background: linear-gradient(to bottom right, #FFB800, #e69500);
+  border-radius: 1rem;
+  margin: 0 auto 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
+  box-shadow: 0 10px 20px rgba(255, 184, 0, 0.3);
+}
+
+.infoCardTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.infoCardDesc {
+  color: #9ca3af;
+  line-height: 1.6;
+}
+
+/* Teams Section */
+.teamsSection {
+  background: linear-gradient(to bottom, rgb(20, 20, 30), rgba(10, 10, 20, 0.95));
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Rules Section */
+.rulesSection {
+  background: linear-gradient(to bottom, rgba(10, 10, 20, 0.95), rgb(0, 0, 0));
+}
+
+/* Animations */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+} 
