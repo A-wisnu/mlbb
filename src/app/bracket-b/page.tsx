@@ -352,7 +352,7 @@ const BracketB = () => {
                     <div style={{ width: '4rem', height: '0.125rem', backgroundColor: '#3b82f6', margin: '0.5rem auto 0' }}></div>
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-                    {matches.filter(match => (match.round || 1) === 1).map((match, i) => (
+                    {matches.filter(match => (match.round || 1) === 1).map((match, _i) => (
                       <div key={match.id} style={{ marginBottom: '2rem' }}>
                         <div style={{
                           background: 'linear-gradient(135deg, #1f2937, #111827)',
@@ -436,7 +436,7 @@ const BracketB = () => {
                     <div style={{ width: '4rem', height: '0.125rem', backgroundColor: '#3b82f6', margin: '0.5rem auto 0' }}></div>
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8rem' }}>
-                    {matches.filter(match => (match.round || 0) === 2).map((match, i) => (
+                    {matches.filter(match => (match.round || 0) === 2).map((match, _i) => (
                       <div key={match.id} style={{ marginBottom: '2rem' }}>
                         <div style={{
                           background: 'linear-gradient(135deg, #1f2937, #111827)',
@@ -498,7 +498,7 @@ const BracketB = () => {
                     <div style={{ width: '4rem', height: '0.125rem', backgroundColor: '#ea580c', margin: '0.5rem auto 0' }}></div>
                   </div>
                   <div>
-                    {matches.filter(match => (match.round || 0) === 3).map((match, i) => (
+                    {matches.filter(match => (match.round || 0) === 3).map((match, _i) => (
                       <div key={match.id} style={{ marginBottom: '2rem' }}>
                         <div style={{
                           background: 'linear-gradient(135deg, rgba(146, 64, 14, 0.3), rgba(234, 88, 12, 0.1))',

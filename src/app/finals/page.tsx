@@ -34,16 +34,24 @@ const FinalsPage = () => {
         teamsB = JSON.parse(specialB);
       }
       // Pastikan format tim sesuai interface Team
-      teamsA = teamsA.map((t: any, idx: number) => ({
-        id: t.id ?? idx + 1,
-        name: t.name ?? t,
+      teamsA = teamsA.map((t: unknown, idx: number) => ({
+        id: t && typeof t === 'object' && 'id' in t ? 
+            (typeof t.id === 'number' ? t.id : Number(t.id) || idx + 1) : 
+            idx + 1,
+        name: t && typeof t === 'object' && 'name' in t ? 
+            String(t.name) : 
+            String(t),
       }));
-      teamsB = teamsB.map((t: any, idx: number) => ({
-        id: t.id ?? idx + 5,
-        name: t.name ?? t,
+      teamsB = teamsB.map((t: unknown, idx: number) => ({
+        id: t && typeof t === 'object' && 'id' in t ? 
+            (typeof t.id === 'number' ? t.id : Number(t.id) || idx + 5) : 
+            idx + 5,
+        name: t && typeof t === 'object' && 'name' in t ? 
+            String(t.name) : 
+            String(t),
       }));
       setFinalTeams([...teamsA, ...teamsB]);
-    } catch (error) {
+    } catch (_error) {
       setFinalTeams([]);
     }
   }, [lastUpdate]);

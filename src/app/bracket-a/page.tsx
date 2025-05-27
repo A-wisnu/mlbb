@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { bracketA } from '../../data/teams';
+import { bracketA as _bracketA } from '../../data/teams';
 
 // Definisikan interface untuk Match
 interface Match {
@@ -436,7 +436,7 @@ const BracketA = () => {
                   flexDirection: 'column',
                   gap: '2rem'
                 }}>
-                  {matches.filter(match => (match.round || 1) === 1).map((match, i) => (
+                  {matches.filter(match => (match.round || 1) === 1).map((match, _i) => (
                     <div key={match.id} style={{
                       marginBottom: '2rem'
                     }}>
@@ -603,7 +603,7 @@ const BracketA = () => {
                   flexDirection: 'column',
                   gap: '8rem'
                 }}>
-                  {matches.filter(match => (match.round || 0) === 2).map((match, i) => (
+                  {matches.filter(match => (match.round || 0) === 2).map((match, _i) => (
                     <div key={match.id} style={{
                       marginBottom: '2rem'
                     }}>
@@ -798,7 +798,7 @@ const BracketA = () => {
                     </div>
                   )}
                   
-                  {matches.filter(match => (match.round || 0) === 3).map((match, i) => (
+                  {matches.filter(match => (match.round || 0) === 3).map((match, _i) => (
                     <div key={match.id} style={{
                       marginBottom: '2rem'
                     }}>

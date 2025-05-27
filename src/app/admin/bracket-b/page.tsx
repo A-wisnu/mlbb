@@ -235,18 +235,18 @@ const BracketBPage = () => {
       .map(match => match.result === 'team1' ? match.team1 : match.team2);
       
     // Semua tim di ronde 2
-    const round2Teams = matches
+    const _round2Teams = matches
       .filter(m => (m.round || 0) === 2)
       .flatMap(match => [match.team1, match.team2])
       .filter(team => !team.includes("TBD"));
       
-    return { round1Winners, round2Winners, round2Teams };
+    return { round1Winners, round2Winners, _round2Teams };
   };
 
   // Fungsi untuk membuat atau memperbarui match di Ronde 2 dan Final
   const createOrUpdateBracket = () => {
     // Dapatkan semua pemenang
-    const { round1Winners, round2Winners, round2Teams } = getWinners();
+    const { round1Winners, round2Winners, _round2Teams } = getWinners();
     
     // Hapus semua match Ronde 2 dan Final yang ada
     const round1Matches = matches.filter(m => (m.round || 1) === 1);
@@ -385,7 +385,7 @@ const BracketBPage = () => {
   };
 
   // Function to generate automatic placeholder matches for Round 2 and Finals
-  const generatePlaceholderMatches = () => {
+  const _generatePlaceholderMatches = () => {
     // Gunakan fungsi baru untuk membuat bracket
     createOrUpdateBracket();
   };
@@ -457,7 +457,7 @@ const BracketBPage = () => {
   };
 
   // Function to simulate matches and advance winners to the next round
-  const handleSimulateRound = () => {
+  const _handleSimulateRound = () => {
     setIsRandomizing(true);
     
     // Get all matches from the current round
