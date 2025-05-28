@@ -5,9 +5,15 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { onBracketAMatchesChange, onBracketAByeTeamChange, onBracketASpecialSlotsChange } from '../../firebase/firestore';
 import { UIMatch, convertToUIMatches } from '../../types/adapter';
+import { getRefereeForMatch } from '../../types/referees';
 
 // Definisikan tipe untuk Match
 type Match = UIMatch;
+
+// Link WA helper
+const getWhatsAppLink = (phone: string) => {
+  return `https://wa.me/${phone.replace(/[^0-9]/g, '')}`;
+};
 
 const BracketA = () => {
   const [matches, setMatches] = useState<Match[]>([]);
@@ -444,6 +450,67 @@ const BracketA = () => {
                             {match.status === 'completed' ? 'Selesai' : 
                              match.status === 'playing' ? 'Berlangsung' : 
                              'Terjadwal'}
+                          </div>
+                        </div>
+                        
+                        {/* Referee information */}
+                        <div style={{
+                          padding: '0.5rem 1rem',
+                          backgroundColor: 'rgba(17, 24, 39, 0.5)',
+                          borderBottom: '1px solid rgba(75, 85, 99, 0.3)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.5rem'
+                        }}>
+                          <div style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                            fontSize: '0.875rem',
+                            color: '#e5e7eb',
+                            backgroundColor: 'rgba(79, 70, 229, 0.2)',
+                            borderRadius: '0.5rem',
+                            padding: '0.375rem 0.75rem',
+                            border: '1px solid rgba(79, 70, 229, 0.3)',
+                            width: '100%',
+                            justifyContent: 'space-between'
+                          }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#93c5fd" style={{width: '1rem', height: '1rem'}}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                              </svg>
+                              <span>Wasit: {getRefereeForMatch(match.id).name}</span>
+                            </div>
+                            <a 
+                              href={getWhatsAppLink(getRefereeForMatch(match.id).phone)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.25rem',
+                                color: '#93c5fd',
+                                fontSize: '0.75rem',
+                                backgroundColor: 'rgba(30, 64, 175, 0.3)',
+                                padding: '0.25rem 0.75rem',
+                                borderRadius: '9999px',
+                                border: '1px solid rgba(59, 130, 246, 0.3)',
+                                transition: 'all 0.2s ease'
+                              }}
+                              onMouseOver={(e) => {
+                                e.currentTarget.style.backgroundColor = 'rgba(30, 64, 175, 0.5)';
+                                e.currentTarget.style.transform = 'scale(1.05)';
+                              }}
+                              onMouseOut={(e) => {
+                                e.currentTarget.style.backgroundColor = 'rgba(30, 64, 175, 0.3)';
+                                e.currentTarget.style.transform = 'scale(1)';
+                              }}
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="#93c5fd" viewBox="0 0 24 24" style={{width: '0.875rem', height: '0.875rem'}}>
+                                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                              </svg>
+                              <span>{getRefereeForMatch(match.id).phone}</span>
+                            </a>
                           </div>
                         </div>
                         
