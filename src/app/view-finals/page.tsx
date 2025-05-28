@@ -1,12 +1,9 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
-import { 
-  getFinalsData,
-  onFinalsDataChange
-} from '../../firebase/firestore';
-import { Team } from "../../types";
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { getFinalsData, onFinalsDataChange } from '../../firebase/firestore';
+import { Team } from '../../types';
 
 interface FinalsData {
   champion: string;
@@ -18,7 +15,7 @@ interface FinalsData {
   thirdPlaceMatch: { team1: Team; team2: Team; winner?: string } | null;
 }
 
-const FinalsPage = () => {
+const ViewFinals = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [finalsData, setFinalsData] = useState<FinalsData | null>(null);
@@ -29,8 +26,10 @@ const FinalsPage = () => {
       setIsMobile(window.innerWidth < 768);
     };
     checkIfMobile();
-    window.addEventListener("resize", checkIfMobile);
-    return () => window.removeEventListener("resize", checkIfMobile);
+    window.addEventListener('resize', checkIfMobile);
+    return () => {
+      window.removeEventListener('resize', checkIfMobile);
+    };
   }, []);
 
   useEffect(() => {
@@ -152,32 +151,6 @@ const FinalsPage = () => {
         <div>
           <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Belum Ada Data Final</h2>
           <p>Data pertandingan final belum tersedia. Silakan kembali nanti.</p>
-          
-          {/* Debug Button */}
-          <button 
-            onClick={async () => {
-              try {
-                const data = await getFinalsData();
-                console.log('DEBUG - Finals Data Public:', data);
-                alert(data ? 'Data ditemukan! Lihat console.' : 'Data tidak ditemukan.');
-              } catch (error) {
-                console.error('Error checking finals data:', error);
-              }
-            }} 
-            style={{
-              backgroundColor: '#3b82f6',
-              color: 'white',
-              padding: '0.5rem 1rem',
-              borderRadius: '8px',
-              border: 'none',
-              cursor: 'pointer',
-              marginTop: '1rem',
-              marginRight: '1rem'
-            }}
-          >
-            Debug Data Final
-          </button>
-          
           <Link href="/" style={{
             display: 'inline-block',
             marginTop: '1rem',
@@ -507,13 +480,13 @@ const FinalsPage = () => {
                   </h2>
                   {renderMatchCard(finalsData.thirdPlaceMatch, '')}
                 </div>
-                    </div>
+              </div>
             )}
-                  </div>
+          </div>
         )}
       </main>
-                  
-      <footer style={{ 
+      
+      <footer style={{
         textAlign: 'center',
         padding: '1.5rem',
         marginTop: '2rem',
@@ -527,4 +500,4 @@ const FinalsPage = () => {
   );
 };
 
-export default FinalsPage; 
+export default ViewFinals; 

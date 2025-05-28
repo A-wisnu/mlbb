@@ -1,6 +1,12 @@
 // Import Firebase
 import { initializeApp, getApps } from 'firebase/app';
-import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
+import { 
+  getFirestore, 
+  connectFirestoreEmulator, 
+  enableIndexedDbPersistence, 
+  enableMultiTabIndexedDbPersistence,
+  CACHE_SIZE_UNLIMITED 
+} from 'firebase/firestore';
 import { getAuth, connectAuthEmulator } from "firebase/auth";
 import { getAnalytics } from "firebase/analytics";
 
@@ -26,6 +32,33 @@ if (!getApps().length) {
 
 const db = getFirestore(app);
 const auth = getAuth(app);
+
+// Aktifkan persistensi data (offline support) hanya di client-side
+if (typeof window !== 'undefined') {
+  // Mengaktifkan persistensi untuk mendukung offline
+  try {
+    // Coba aktifkan persistensi multi-tab untuk pengalaman yang lebih baik
+    enableMultiTabIndexedDbPersistence(db).catch((err) => {
+      if (err.code === 'failed-precondition') {
+        // Multiple tabs open, only enable in one tab
+        console.log('Persistensi gagal - multi tab terdeteksi, mencoba persistensi standar');
+        enableIndexedDbPersistence(db).catch((error) => {
+          console.error('Tidak dapat mengaktifkan persistensi:', error);
+        });
+      } else if (err.code === 'unimplemented') {
+        // The current browser does not support all of the
+        // features required to enable persistence
+        console.warn('Browser Anda tidak mendukung fitur persistensi Firestore.');
+      } else {
+        console.error('Kesalahan mengaktifkan persistensi:', err);
+      }
+    });
+    
+    console.log('Firebase offline persistence enabled');
+  } catch (error) {
+    console.error('Error setting up Firestore persistence:', error);
+  }
+}
 
 // Aktifkan emulator hanya jika ada flag FIREBASE_USE_EMULATOR yang diset
 // dan hanya jika aplikasi berjalan di browser (client-side)
