@@ -109,6 +109,46 @@ const Layout = ({ children }: LayoutProps) => {
           background-position: 300px 0;
         }
       }
+
+      @keyframes fadeIn {
+        0% { 
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        100% { 
+          opacity: 1; 
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideIn {
+        0% { 
+          transform: translateY(20px);
+          opacity: 0;
+        }
+        100% { 
+          transform: translateY(0);
+          opacity: 1; 
+        }
+      }
+
+      .mobile-menu-item {
+        animation: slideIn 0.4s ease forwards;
+        opacity: 0;
+      }
+
+      .mobile-menu-item:nth-child(1) {
+        animation-delay: 0.1s;
+      }
+      .mobile-menu-item:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .mobile-menu-item:nth-child(3) {
+        animation-delay: 0.3s;
+      }
+      .mobile-menu-item:nth-child(4) {
+        animation-delay: 0.4s;
+      }
     `;
     document.head.appendChild(style);
 
@@ -132,8 +172,10 @@ const Layout = ({ children }: LayoutProps) => {
         right: 0,
         zIndex: 50,
         transition: 'all 0.3s ease',
-        padding: scrolled ? '0.5rem 0' : '1rem 0',
-        backgroundColor: scrolled ? 'rgba(0, 0, 0, 0.9)' : 'rgba(0, 0, 0, 0.6)',
+        padding: scrolled ? (isMobile ? '0.4rem 0' : '0.5rem 0') : (isMobile ? '0.75rem 0' : '1rem 0'),
+        backgroundColor: scrolled 
+          ? 'rgba(0, 0, 0, 0.9)' 
+          : 'rgba(0, 0, 0, 0.6)',
         boxShadow: scrolled 
           ? '0 4px 20px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 184, 0, 0.5)' 
           : '0 0 10px rgba(255, 184, 0, 0.3)',
@@ -148,7 +190,7 @@ const Layout = ({ children }: LayoutProps) => {
         <div style={{
           maxWidth: '1200px',
           margin: '0 auto',
-          padding: '0 1rem',
+          padding: isMobile ? '0 0.75rem' : '0 1rem',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -170,20 +212,25 @@ const Layout = ({ children }: LayoutProps) => {
           <Link href="/" style={{
             display: 'flex',
             alignItems: 'center',
-            gap: isMobile ? '0.3rem' : '0.75rem',
+            gap: isMobile ? '0.4rem' : '0.75rem',
             textDecoration: 'none',
             position: 'relative'
           }}>
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '0.3rem'
+              gap: '0.4rem',
+              background: isMobile ? 'linear-gradient(to right, rgba(0,0,0,0.3), rgba(0,0,0,0))' : 'none',
+              padding: isMobile ? '0.4rem 0.6rem 0.4rem 0.5rem' : '0',
+              borderRadius: isMobile ? '0.6rem' : '0',
+              border: isMobile ? '1px solid rgba(255, 184, 0, 0.3)' : 'none',
+              boxShadow: isMobile ? '0 0 8px rgba(255, 184, 0, 0.3)' : 'none'
             }}>
               <Image 
                 src="/images/logo-mobile-legend-31251.png" 
                 alt="Mobile Legends Logo" 
-                width={28} 
-                height={28}
+                width={isMobile ? 24 : 28} 
+                height={isMobile ? 24 : 28}
                 style={{ 
                   width: 'auto',
                   objectFit: 'contain',
@@ -194,8 +241,8 @@ const Layout = ({ children }: LayoutProps) => {
               <Image 
                 src="/images/infoikamtif 11.png" 
                 alt="IKMATIF Logo" 
-                width={28} 
-                height={28}
+                width={isMobile ? 24 : 28} 
+                height={isMobile ? 24 : 28}
                 style={{ 
                   width: 'auto',
                   objectFit: 'contain',
@@ -219,18 +266,18 @@ const Layout = ({ children }: LayoutProps) => {
             <button 
               onClick={() => setMenuOpen(!menuOpen)}
               style={{
-                background: 'linear-gradient(to right, rgba(255, 184, 0, 0.2), rgba(255, 184, 0, 0.1))',
-                border: '1px solid rgba(255, 184, 0, 0.3)',
-                borderRadius: '0.3rem',
+                background: 'linear-gradient(to right, rgba(255, 184, 0, 0.3), rgba(255, 184, 0, 0.2))',
+                border: '1px solid rgba(255, 184, 0, 0.5)',
+                borderRadius: '0.5rem',
                 cursor: 'pointer',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
-                height: '24px',
-                width: '30px',
-                padding: '5px',
+                height: '28px',
+                width: '34px',
+                padding: '6px',
                 zIndex: 60,
-                boxShadow: '0 0 8px rgba(255, 184, 0, 0.4)'
+                boxShadow: '0 0 10px rgba(255, 184, 0, 0.5)'
               }}
               aria-label="Toggle menu"
             >
@@ -241,7 +288,7 @@ const Layout = ({ children }: LayoutProps) => {
                 backgroundColor: '#FFB800',
                 transition: 'all 0.3s ease',
                 boxShadow: '0 0 5px rgba(255, 184, 0, 0.7), 0 0 10px rgba(255, 184, 0, 0.5)',
-                transform: menuOpen ? 'rotate(45deg) translate(4px, 4px)' : 'none'
+                transform: menuOpen ? 'rotate(45deg) translate(5px, 5px)' : 'none'
               }}></span>
               <span style={{
                 display: 'block',
@@ -259,7 +306,7 @@ const Layout = ({ children }: LayoutProps) => {
                 backgroundColor: '#FFB800',
                 transition: 'all 0.3s ease',
                 boxShadow: '0 0 5px rgba(255, 184, 0, 0.7), 0 0 10px rgba(255, 184, 0, 0.5)',
-                transform: menuOpen ? 'rotate(-45deg) translate(4px, -4px)' : 'none'
+                transform: menuOpen ? 'rotate(-45deg) translate(5px, -5px)' : 'none'
               }}></span>
             </button>
           )}
@@ -416,17 +463,18 @@ const Layout = ({ children }: LayoutProps) => {
               right: 0,
               bottom: 0,
               backgroundColor: 'rgba(0, 0, 0, 0.95)',
-              backdropFilter: 'blur(8px)',
+              backdropFilter: 'blur(10px)',
               display: 'flex',
               flexDirection: 'column',
-              justifyContent: 'center',
+              justifyContent: 'flex-start',
               alignItems: 'center',
               zIndex: 50,
               transition: 'all 0.3s ease',
-              animation: 'fadeIn 0.3s ease forwards'
+              animation: 'fadeIn 0.3s ease forwards',
+              paddingTop: '80px'
             }}>
               <div style={{
-                marginBottom: '2rem',
+                marginBottom: '2.5rem',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center'
@@ -435,14 +483,14 @@ const Layout = ({ children }: LayoutProps) => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '0.5rem',
-                  marginBottom: '0.5rem'
+                  gap: '0.75rem',
+                  marginBottom: '1rem'
                 }}>
                   <Image 
                     src="/images/logo-mobile-legend-31251.png" 
                     alt="Mobile Legends Logo" 
-                    width={60} 
-                    height={60}
+                    width={64} 
+                    height={64}
                     style={{ 
                       width: 'auto', 
                       objectFit: 'contain',
@@ -452,8 +500,8 @@ const Layout = ({ children }: LayoutProps) => {
                   <Image 
                     src="/images/infoikamtif 11.png" 
                     alt="IKMATIF Logo" 
-                    width={60} 
-                    height={60}
+                    width={64} 
+                    height={64}
                     style={{ 
                       width: 'auto', 
                       objectFit: 'contain',
@@ -463,7 +511,7 @@ const Layout = ({ children }: LayoutProps) => {
                 </div>
                 <span style={{
                   fontWeight: 'bold',
-                  fontSize: '1.5rem',
+                  fontSize: '1.75rem',
                   color: '#FFB800',
                   textShadow: '0 0 10px rgba(255, 184, 0, 0.7), 0 0 20px rgba(255, 184, 0, 0.5)'
                 }}>ML Tournament</span>
@@ -471,23 +519,24 @@ const Layout = ({ children }: LayoutProps) => {
               <div style={{
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '1rem',
-                width: '80%',
-                maxWidth: '300px'
+                gap: '1.25rem',
+                width: '85%',
+                maxWidth: '320px'
               }}>
                 <Link href="/" style={{
                   color: 'white',
                   textDecoration: 'none',
                   fontWeight: 'bold',
-                  fontSize: '1.25rem',
-                  padding: '0.75rem 0',
+                  fontSize: '1.375rem',
+                  padding: '1rem 0',
                   textAlign: 'center',
                   background: 'linear-gradient(to right, rgba(255, 184, 0, 0.2), rgba(255, 184, 0, 0.1), rgba(255, 184, 0, 0.2))',
-                  borderRadius: '0.5rem',
+                  borderRadius: '0.75rem',
                   border: '1px solid rgba(255, 184, 0, 0.3)',
                   boxShadow: '0 0 10px rgba(255, 184, 0, 0.3)',
                   transition: 'all 0.3s ease'
                 }} onClick={() => setMenuOpen(false)}
+                className="mobile-menu-item"
                 onTouchStart={(e) => {
                   e.currentTarget.style.transform = 'scale(0.98)';
                   e.currentTarget.style.boxShadow = '0 0 15px rgba(255, 184, 0, 0.5)';
@@ -502,15 +551,16 @@ const Layout = ({ children }: LayoutProps) => {
                   color: 'white',
                   textDecoration: 'none',
                   fontWeight: 'bold',
-                  fontSize: '1.25rem',
-                  padding: '0.75rem 0',
+                  fontSize: '1.375rem',
+                  padding: '1rem 0',
                   textAlign: 'center',
                   background: 'linear-gradient(to right, rgba(255, 184, 0, 0.2), rgba(255, 184, 0, 0.1), rgba(255, 184, 0, 0.2))',
-                  borderRadius: '0.5rem',
+                  borderRadius: '0.75rem',
                   border: '1px solid rgba(255, 184, 0, 0.3)',
                   boxShadow: '0 0 10px rgba(255, 184, 0, 0.3)',
                   transition: 'all 0.3s ease'
                 }} onClick={() => setMenuOpen(false)}
+                className="mobile-menu-item"
                 onTouchStart={(e) => {
                   e.currentTarget.style.transform = 'scale(0.98)';
                   e.currentTarget.style.boxShadow = '0 0 15px rgba(255, 184, 0, 0.5)';
@@ -525,15 +575,16 @@ const Layout = ({ children }: LayoutProps) => {
                   color: 'white',
                   textDecoration: 'none',
                   fontWeight: 'bold',
-                  fontSize: '1.25rem',
-                  padding: '0.75rem 0',
+                  fontSize: '1.375rem',
+                  padding: '1rem 0',
                   textAlign: 'center',
                   background: 'linear-gradient(to right, rgba(255, 184, 0, 0.2), rgba(255, 184, 0, 0.1), rgba(255, 184, 0, 0.2))',
-                  borderRadius: '0.5rem',
+                  borderRadius: '0.75rem',
                   border: '1px solid rgba(255, 184, 0, 0.3)',
                   boxShadow: '0 0 10px rgba(255, 184, 0, 0.3)',
                   transition: 'all 0.3s ease'
                 }} onClick={() => setMenuOpen(false)}
+                className="mobile-menu-item"
                 onTouchStart={(e) => {
                   e.currentTarget.style.transform = 'scale(0.98)';
                   e.currentTarget.style.boxShadow = '0 0 15px rgba(255, 184, 0, 0.5)';
@@ -548,15 +599,16 @@ const Layout = ({ children }: LayoutProps) => {
                   color: 'white',
                   textDecoration: 'none',
                   fontWeight: 'bold',
-                  fontSize: '1.25rem',
-                  padding: '0.75rem 0',
+                  fontSize: '1.375rem',
+                  padding: '1rem 0',
                   textAlign: 'center',
                   background: 'linear-gradient(to right, rgba(255, 184, 0, 0.2), rgba(255, 184, 0, 0.1), rgba(255, 184, 0, 0.2))',
-                  borderRadius: '0.5rem',
+                  borderRadius: '0.75rem',
                   border: '1px solid rgba(255, 184, 0, 0.3)',
                   boxShadow: '0 0 10px rgba(255, 184, 0, 0.3)',
                   transition: 'all 0.3s ease'
                 }} onClick={() => setMenuOpen(false)}
+                className="mobile-menu-item"
                 onTouchStart={(e) => {
                   e.currentTarget.style.transform = 'scale(0.98)';
                   e.currentTarget.style.boxShadow = '0 0 15px rgba(255, 184, 0, 0.5)';
