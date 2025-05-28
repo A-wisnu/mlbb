@@ -224,10 +224,26 @@ const AdminFinals = () => {
         champion: champion || '',
         runnerUp: runnerUp || '',
         thirdPlace: thirdPlace || '',
-        quarterFinals: quarterFinalMatches,
-        semiFinals: semiFinalMatches,
-        finalMatch,
-        thirdPlaceMatch,
+        quarterFinals: quarterFinalMatches.map(match => ({
+          team1: match.team1,
+          team2: match.team2,
+          winner: match.winner || ''
+        })),
+        semiFinals: semiFinalMatches.map(match => ({
+          team1: match.team1,
+          team2: match.team2,
+          winner: match.winner || ''
+        })),
+        finalMatch: finalMatch ? {
+          team1: finalMatch.team1,
+          team2: finalMatch.team2,
+          winner: finalMatch.winner || ''
+        } : null,
+        thirdPlaceMatch: thirdPlaceMatch ? {
+          team1: thirdPlaceMatch.team1,
+          team2: thirdPlaceMatch.team2,
+          winner: thirdPlaceMatch.winner || ''
+        } : null,
       });
       
       showSuccessMessage('Data final berhasil disimpan! Data sudah dapat dilihat di halaman publik.');
@@ -485,10 +501,26 @@ const AdminFinals = () => {
                   champion: champion || '',
                   runnerUp: runnerUp || '',
                   thirdPlace: thirdPlace || '',
-                  quarterFinals: quarterFinalMatches,
-                  semiFinals: semiFinalMatches,
-                  finalMatch,
-                  thirdPlaceMatch,
+                  quarterFinals: quarterFinalMatches.map(match => ({
+                    team1: match.team1,
+                    team2: match.team2,
+                    winner: match.winner || ''
+                  })),
+                  semiFinals: semiFinalMatches.map(match => ({
+                    team1: match.team1,
+                    team2: match.team2,
+                    winner: match.winner || ''
+                  })),
+                  finalMatch: finalMatch ? {
+                    team1: finalMatch.team1,
+                    team2: finalMatch.team2,
+                    winner: finalMatch.winner || ''
+                  } : null,
+                  thirdPlaceMatch: thirdPlaceMatch ? {
+                    team1: thirdPlaceMatch.team1,
+                    team2: thirdPlaceMatch.team2,
+                    winner: thirdPlaceMatch.winner || ''
+                  } : null,
                 };
                 
                 console.log('Mencoba menyimpan ulang data:', currentData);
@@ -573,19 +605,19 @@ const AdminFinals = () => {
         </div>
         
         {/* Info Panel */}
-        <div style={{ 
+          <div style={{
           backgroundColor: 'rgba(37, 99, 235, 0.1)', 
           border: '1px solid rgba(37, 99, 235, 0.3)', 
           borderRadius: '8px', 
-          padding: '1rem', 
+            padding: '1rem',
           marginBottom: '1.5rem',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.75rem'
-        }}>
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem'
+          }}>
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" style={{color: '#3b82f6'}}>
             <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
-          </svg>
+            </svg>
           <div>
             <p style={{color: '#60a5fa', margin: 0, fontWeight: 'bold'}}>Petunjuk Penyimpanan Data</p>
             <p style={{color: '#93c5fd', margin: '0.25rem 0 0 0', fontSize: '0.9rem'}}>
@@ -593,7 +625,7 @@ const AdminFinals = () => {
             </p>
           </div>
         </div>
-        
+
         {isOffline && (
           <div style={{
             backgroundColor: '#f59e0b', 
