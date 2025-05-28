@@ -66,11 +66,11 @@ const BracketBPage = () => {
       } else {
         // Initialize with some sample data if none exists
         const initialMatches: Match[] = [
-            { id: 1, team1: bracketB[0], team2: bracketB[1], date: '2025-05-28', time: '14:00', result: null, status: 'scheduled', round: 1 },
-            { id: 2, team1: bracketB[2], team2: bracketB[3], date: '2025-05-28', time: '16:00', result: null, status: 'scheduled', round: 1 },
-            { id: 3, team1: bracketB[4], team2: bracketB[5], date: '2025-05-29', time: '14:00', result: null, status: 'scheduled', round: 1 },
-            { id: 4, team1: bracketB[6], team2: bracketB[7], date: '2025-05-29', time: '16:00', result: null, status: 'scheduled', round: 1 },
-            { id: 5, team1: bracketB[8], team2: bracketB[9], date: '2025-05-30', time: '14:00', result: null, status: 'scheduled', round: 1 },
+            { id: 1, team1: bracketB[0], team2: bracketB[1], date: '2025-05-29', time: '20:00', result: null, status: 'scheduled', round: 1 },
+            { id: 2, team1: bracketB[2], team2: bracketB[3], date: '2025-05-29', time: '20:00', result: null, status: 'scheduled', round: 1 },
+            { id: 3, team1: bracketB[4], team2: bracketB[5], date: '2025-05-29', time: '20:00', result: null, status: 'scheduled', round: 1 },
+            { id: 4, team1: bracketB[6], team2: bracketB[7], date: '2025-05-29', time: '20:00', result: null, status: 'scheduled', round: 1 },
+            { id: 5, team1: bracketB[8], team2: bracketB[9], date: '2025-05-29', time: '20:00', result: null, status: 'scheduled', round: 1 },
         ];
         setMatches(initialMatches);
           await saveBracketBMatches(convertToGlobalMatches(initialMatches));
@@ -91,8 +91,8 @@ const BracketBPage = () => {
         console.error('Error loading data from Firebase:', error);
       // Set default matches if there's an error
       const initialMatches: Match[] = [
-          { id: 1, team1: bracketB[0], team2: bracketB[1], date: '2025-05-28', time: '14:00', result: null, status: 'scheduled', round: 1 },
-          { id: 2, team1: bracketB[2], team2: bracketB[3], date: '2025-05-28', time: '16:00', result: null, status: 'scheduled', round: 1 },
+          { id: 1, team1: bracketB[0], team2: bracketB[1], date: '2025-05-29', time: '20:00', result: null, status: 'scheduled', round: 1 },
+          { id: 2, team1: bracketB[2], team2: bracketB[3], date: '2025-05-29', time: '20:00', result: null, status: 'scheduled', round: 1 },
       ];
       setMatches(initialMatches);
     }
@@ -302,35 +302,33 @@ const BracketBPage = () => {
     // Mulai dengan semua match Ronde 1
     const newMatches = [...round1Matches];
     
-    // Tetapkan GOGLAK ESPORT sebagai bye team
-    // const currentByeTeam = "GOGLAK ESPORT"; // Example, can be dynamic // Dikomentari untuk Bracket B
-    // setByeTeam(currentByeTeam);
-    // await saveBracketBByeTeam(currentByeTeam);
+    // Ambil tim special slot dari state
+    const newSpecialSlotTeams: string[] = [...specialSlots];
     
     // Tanggal untuk Ronde 2 dan Final
-    const round2Date = new Date();
-    round2Date.setDate(round2Date.getDate() + 3);
-    const round2DateStr = round2Date.toISOString().split('T')[0];
+    const round2Date = '2025-05-29'; // Ubah ke 29 Mei
+    const finalsDate = '2025-05-29'; // Ubah ke 29 Mei
     
-    const finalsDate = new Date();
-    finalsDate.setDate(finalsDate.getDate() + 6);
-    const finalsDateStr = finalsDate.toISOString().split('T')[0];
+    // Filter pemenang Ronde 1 yang tersedia untuk Ronde 2 (kecuali bye team dan special slots)
+    const availableWinners = round1Winners.filter(team => 
+      team !== byeTeam && !newSpecialSlotTeams.includes(team)
+    );
     
-    // Filter pemenang Ronde 1 yang tersedia untuk Ronde 2 (kecuali bye team)
-    const availableWinners = round1Winners.filter(team => team !== byeTeam); // Menggunakan state byeTeam
-    
-    // Pilih 2 tim terbaik untuk special slots (langsung ke Final)
-    let newSpecialSlotTeams: string[] = [...specialSlots];
-    
-    // Jika belum ada special slots dan kita punya cukup pemenang Ronde 1
-    if (newSpecialSlotTeams.length === 0 && availableWinners.length >= 2) {
-      const shuffledAvailableWinners = shuffleArray([...availableWinners]); // Acak pemenang yang tersedia
-      newSpecialSlotTeams = [shuffledAvailableWinners[0], shuffledAvailableWinners[1]]; // Ambil 2 tim pertama setelah diacak
+    // Jika belum ada special slots dan kita punya cukup pemenang Ronde 1, acak lagi untuk ronde 2
+    if (round1Winners.length >= 2) {
+      // Acak pemenang untuk mendapatkan 2 tim yang akan masuk special slot di ronde 2 jika belum ada
+      const shuffledAvailableWinners = shuffleArray([...availableWinners]);
+      
+      // Pilih 2 tim dari pemenang ronde 1 untuk special slot ronde 2 jika belum ada
+      // Jika sudah ada special slot sebelumnya, gunakan yang sudah ada
+      if (newSpecialSlotTeams.length === 0 && shuffledAvailableWinners.length >= 2) {
+        newSpecialSlotTeams.push(shuffledAvailableWinners[0], shuffledAvailableWinners[1]);
       setSpecialSlots(newSpecialSlotTeams);
       await saveBracketBSpecialSlots(newSpecialSlotTeams);
+      }
     }
     
-    // Tim yang tersedia untuk Ronde 2 (kecuali special slots)
+    // Tim yang tersedia untuk Ronde 2 (kecuali special slots dan bye team)
     const teamsForRound2 = availableWinners.filter(team => !newSpecialSlotTeams.includes(team));
     
     // Jika sudah ada match di Ronde 2, gunakan itu
@@ -343,58 +341,37 @@ const BracketBPage = () => {
       const maxRound2Id = Math.max(...existingRound2Matches.map(m => m.id));
       nextId = Math.max(nextId, maxRound2Id + 1);
     } else {
-      // Match 1 untuk Ronde 2
-      if (teamsForRound2.length >= 2) {
-        newMatches.push({
-          id: nextId++,
-          team1: teamsForRound2[0],
-          team2: teamsForRound2[1],
-          date: round2DateStr,
-          time: "14:00",
-          result: null,
-          status: 'scheduled',
-          round: 2
-        });
-      }
+      // Match untuk Ronde 2 (hanya tim yang tidak di special slots)
+      // Pasangkan tim-tim yang tersisa dari pemenang ronde 1 dan bye team
       
-      // Match 2 untuk Ronde 2 (dengan bye team)
-      // Pastikan byeTeam ada sebelum digunakan
-      if (byeTeam && typeof byeTeam === 'string') { // Check if byeTeam is a non-empty string
-        newMatches.push({
-          id: nextId++,
-          team1: byeTeam, // Menggunakan state byeTeam
-          team2: teamsForRound2.length > 2 ? teamsForRound2[2] : "",
-          date: round2DateStr,
-          time: "16:00",
-          result: null,
-          status: 'scheduled',
-          round: 2
-        });
-      }
+      // Buat array yang berisi bye team dan tim-tim yang tersedia
+      const allTeamsForRound2 = byeTeam ? [byeTeam, ...teamsForRound2] : [...teamsForRound2];
       
-      // Match 3 untuk Ronde 2 (jika masih ada tim yang tersedia)
-      if (teamsForRound2.length > 3) {
+      // Buat match untuk ronde 2 dengan tim-tim yang tersisa
+      for (let i = 0; i < allTeamsForRound2.length; i += 2) {
+        if (i + 1 < allTeamsForRound2.length) {
         newMatches.push({
           id: nextId++,
-          team1: teamsForRound2[3],
-          team2: teamsForRound2.length > 4 ? teamsForRound2[4] : "",
-          date: round2DateStr,
-          time: "18:00",
+            team1: allTeamsForRound2[i],
+            team2: allTeamsForRound2[i + 1],
+            date: round2Date,
+            time: "20:00",
           result: null,
           status: 'scheduled',
           round: 2
         });
+        }
       }
     }
     
-    // Match untuk Special Slots di Final (selalu dibuat karena sudah punya special slot)
-    if (newSpecialSlotTeams.length > 0) {
+    // Match untuk Special Slots di Final (langsung ke final tanpa bertanding)
+    if (newSpecialSlotTeams.length >= 2) {
       newMatches.push({
         id: nextId++,
         team1: newSpecialSlotTeams[0],
-        team2: newSpecialSlotTeams.length > 1 ? newSpecialSlotTeams[1] : "",
-        date: finalsDateStr,
-        time: "15:00",
+        team2: newSpecialSlotTeams[1],
+        date: finalsDate,
+        time: "20:00",
         result: null,
         status: 'scheduled',
         round: 3
@@ -404,17 +381,22 @@ const BracketBPage = () => {
     // Match untuk pemenang Ronde 2 di Final
     // Hanya buat match ini jika ada pemenang dari Ronde 2
     if (round2Winners.length > 0) {
+      // Filter pemenang yang tidak ada di special slots
+      const availableRound2Winners = round2Winners.filter(team => !newSpecialSlotTeams.includes(team));
+      
+      if (availableRound2Winners.length > 0) {
       // Jika sudah ada pemenang dari Ronde 2, buat match Final
       newMatches.push({
         id: nextId++,
-        team1: round2Winners[0],
-        team2: round2Winners.length > 1 ? round2Winners[1] : "",
-        date: finalsDateStr,
-        time: "17:00",
+          team1: availableRound2Winners[0],
+          team2: availableRound2Winners.length > 1 ? availableRound2Winners[1] : "",
+          date: finalsDate,
+          time: "20:00",
         result: null,
         status: 'scheduled',
         round: 3
       });
+      }
     } else {
       // Tampilkan toast bahwa Final menunggu hasil Ronde 2
       setToastMessage('Match Final akan dibuat setelah pertandingan Ronde 2 selesai!');
@@ -447,8 +429,13 @@ const BracketBPage = () => {
     // Simulate some processing time to show animation
     setTimeout(async () => {
       try {
-      // Shuffle all teams from Bracket A
+      // Shuffle all teams from Bracket B
       const shuffledTeams = shuffleArray([...bracketB]);
+      
+      // Special slot akan dipilih nanti dari pemenang ronde 1
+      // Reset special slots
+      setSpecialSlots([]);
+      await saveBracketBSpecialSlots([]);
       
       // The last team gets a bye in Round 1 (langsung ke ronde 2)
       const newByeTeam = shuffledTeams.pop();
@@ -461,26 +448,24 @@ const BracketBPage = () => {
           await saveBracketBByeTeam(null); // Clear bye team if none
       }
       
-      // Reset special slots
-      setSpecialSlots([]);
-        await saveBracketBSpecialSlots([]);
-      
-      // Remaining teams to be paired for matches (10 tim)
+      // Remaining teams to be paired for matches (sisanya)
       const teamsForMatches = shuffledTeams;
       
       // Create matches for Round 1
       const round1Matches: Match[] = [];
       for (let i = 0; i < teamsForMatches.length; i += 2) {
+        if (i + 1 < teamsForMatches.length) {
         round1Matches.push({
           id: (i / 2) + 1,
           team1: teamsForMatches[i],
           team2: teamsForMatches[i + 1],
-          date: new Date().toISOString().split('T')[0], // Today's date as default
-          time: '14:00', // Default time
+            date: '2025-05-29', // Ubah ke 29 Mei
+            time: '20:00', // Ubah ke jam 20:00
           result: null,
           status: 'scheduled' as const,
           round: 1
         });
+        }
       }
       
       // Reset all matches in round 2 and finals
@@ -493,7 +478,7 @@ const BracketBPage = () => {
       // Display results
       setRandomizeResults({
         byeTeam: newByeTeam,
-        round1Matches,
+        round1Matches
       });
       
       // Show toast message
@@ -636,22 +621,22 @@ const BracketBPage = () => {
             }}>
               <div style={{
                 background: 'linear-gradient(135deg, rgba(79, 70, 229, 0.8), rgba(67, 56, 202, 0.6))',
-                padding: '0.5rem',
-                borderRadius: '12px',
+                padding: '0.3rem',
+                borderRadius: '8px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                boxShadow: '0 0 15px rgba(79, 70, 229, 0.5)'
+                boxShadow: '0 0 10px rgba(79, 70, 229, 0.4)'
               }}>
                 <Image 
                   src="/images/logo-mobile-legend-31251.png" 
                   alt="Mobile Legends Logo" 
-                  width={32}
-                  height={32}
+                  width={20}
+                  height={20}
                   style={{
                     height: 'auto',
                     width: 'auto',
-                    filter: 'drop-shadow(0 0 4px rgba(255, 255, 255, 0.8))'
+                    filter: 'drop-shadow(0 0 2px rgba(255, 255, 255, 0.5))'
                   }}
                 />
               </div>

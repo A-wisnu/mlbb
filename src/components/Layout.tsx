@@ -185,8 +185,8 @@ const Layout = ({ children }: LayoutProps) => {
                 width={28} 
                 height={28}
                 style={{ 
-                  height: isMobile ? '1.8rem' : '2.5rem', 
-                  width: 'auto', 
+                  width: 'auto',
+                  objectFit: 'contain',
                   filter: 'drop-shadow(0 0 5px rgba(255, 255, 255, 0.7))'
                 }}
               />
@@ -197,8 +197,8 @@ const Layout = ({ children }: LayoutProps) => {
                 width={28} 
                 height={28}
                 style={{ 
-                  height: isMobile ? '1.8rem' : '2.5rem', 
-                  width: 'auto', 
+                  width: 'auto',
+                  objectFit: 'contain',
                   filter: 'drop-shadow(0 0 5px rgba(255, 255, 255, 0.7))'
                 }}
               />
@@ -444,8 +444,8 @@ const Layout = ({ children }: LayoutProps) => {
                     width={60} 
                     height={60}
                     style={{ 
-                      height: '2.5rem', 
                       width: 'auto', 
+                      objectFit: 'contain',
                       filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 0.7))'
                     }}
                   />
@@ -455,8 +455,8 @@ const Layout = ({ children }: LayoutProps) => {
                     width={60} 
                     height={60}
                     style={{ 
-                      height: '2.5rem', 
                       width: 'auto', 
+                      objectFit: 'contain',
                       filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 0.7))'
                     }}
                   />
@@ -611,14 +611,20 @@ const Layout = ({ children }: LayoutProps) => {
                   alt="Mobile Legends Logo" 
                   width={40} 
                   height={40}
-                  style={{ height: isMobile ? '2rem' : '2.5rem', width: 'auto' }}
+                  style={{ 
+                    width: 'auto',
+                    objectFit: 'contain'
+                  }}
                 />
                 <Image 
                   src="/images/infoikamtif 11.png" 
                   alt="IKMATIF Logo" 
                   width={40} 
                   height={40}
-                  style={{ height: isMobile ? '2rem' : '2.5rem', width: 'auto' }}
+                  style={{ 
+                    width: 'auto',
+                    objectFit: 'contain'
+                  }}
                 />
                 <h3 style={{
                   fontWeight: 'bold',

@@ -108,7 +108,7 @@ const TournamentBracket: React.FC<TournamentBracketProps> = ({ bracketType, team
         <h2 className="text-xl md:text-2xl font-bold text-white mb-6 text-center">
           Bracket {bracketType}
           <span className="block text-sm font-normal text-blue-300 mt-1">
-            28 Mei 2025 • {teams.length} Tim
+            29 Mei 2025 • {teams.length} Tim
           </span>
         </h2>
         <div className="flex gap-4 overflow-x-auto pb-4">

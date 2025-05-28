@@ -92,22 +92,22 @@ const AdminDashboard = () => {
           }}>
             <div style={{
               background: 'linear-gradient(135deg, rgba(79, 70, 229, 0.8), rgba(67, 56, 202, 0.6))',
-              padding: '0.5rem',
-              borderRadius: '12px',
+              padding: '0.3rem',
+              borderRadius: '8px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 0 15px rgba(79, 70, 229, 0.5)'
+              boxShadow: '0 0 10px rgba(79, 70, 229, 0.4)'
             }}>
               <Image 
                 src="/images/logo-mobile-legend-31251.png" 
                 alt="Mobile Legends Logo" 
-                width={32}
-                height={32}
+                width={20}
+                height={20}
                 style={{
                   height: 'auto',
                   width: 'auto',
-                  filter: 'drop-shadow(0 0 4px rgba(255, 255, 255, 0.8))'
+                  filter: 'drop-shadow(0 0 2px rgba(255, 255, 255, 0.5))'
                 }}
               />
             </div>

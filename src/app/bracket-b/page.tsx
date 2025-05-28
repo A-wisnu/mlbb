@@ -162,7 +162,7 @@ const BracketB = () => {
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" style={{ width: '1.25rem', height: '1.25rem' }}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
                       </svg>
-                      <span>28 Mei, 2025</span>
+                      <span>29 Mei, 2025</span>
                     </p>
                   </div>
                 </div>
@@ -692,7 +692,53 @@ const BracketB = () => {
                     <div style={{ width: '4rem', height: '0.125rem', backgroundColor: '#ea580c', margin: '0.5rem auto 0' }}></div>
                   </div>
                   <div>
-                    {matches.filter(match => (match.round || 0) === 3).map((match, index) => (
+                    {/* Special Slot Teams Section */}
+                    {specialSlotTeams && specialSlotTeams.length > 0 && (
+                      <div style={{
+                        textAlign: 'center',
+                        marginBottom: '1rem',
+                        color: '#94a3b8',
+                        fontSize: '0.875rem'
+                      }}>
+                        <span>Tim dengan slot langsung ke final:</span>
+                        <div style={{
+                          marginTop: '0.5rem',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          flexDirection: 'column',
+                          gap: '0.5rem'
+                        }}>
+                          {specialSlotTeams.map((team, idx) => (
+                            <div key={`special-final-${idx}`} style={{
+                              backgroundColor: 'rgba(234, 88, 12, 0.2)',
+                              padding: '0.5rem',
+                              borderRadius: '0.375rem',
+                              color: '#fdba74',
+                              fontWeight: '500',
+                              fontSize: '0.875rem',
+                              border: '1px solid rgba(234, 88, 12, 0.3)'
+                            }}>
+                              {team}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Filter matches untuk menghindari tim yang sudah ada di specialSlotTeams */}
+                    {matches.filter(match => {
+                      // Filter hanya match di round 3
+                      if ((match.round || 0) !== 3) return false;
+                      
+                      // Jangan tampilkan match yang timnya sudah ada di specialSlotTeams
+                      const teamsInMatch = [match.team1, match.team2].filter(Boolean);
+                      const hasSpecialTeam = teamsInMatch.some(team => 
+                        specialSlotTeams.includes(team)
+                      );
+                      
+                      // Kembalikan true jika tidak ada tim dari match ini di specialSlotTeams
+                      return !hasSpecialTeam;
+                    }).map((match, index) => (
                       <div key={`round3-${match.id}-${index}`} style={{ marginBottom: '2rem' }}>
                         <div style={{
                           background: 'linear-gradient(135deg, rgba(146, 64, 14, 0.3), rgba(234, 88, 12, 0.1))',
@@ -813,7 +859,7 @@ const BracketB = () => {
                 <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'white', marginBottom: '0.5rem' }}>
                   Top 2 dari Bracket B akan maju ke Quarter Final
                 </h3>
-                <p style={{ color: '#94a3b8', fontSize: '1rem' }}>Pertandingan dimulai tanggal 28 Mei 2025</p>
+                <p style={{ color: '#94a3b8', fontSize: '1rem' }}>Pertandingan dimulai tanggal 29 Mei 2025</p>
               </div>
             </div>
           </div>
@@ -828,8 +874,8 @@ const BracketB = () => {
       }}>
         <div style={{ maxWidth: '1280px', margin: '0 auto', textAlign: 'center', padding: '0 1.5rem' }}>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-            <Image src="/images/logo-mobile-legend-31251.png" alt="Mobile Legends Logo" width={40} height={40} style={{ height: 'auto', width: 'auto' }} />
-            <Image src="/images/infoikamtif 11.png" alt="IKMATIF Logo" width={40} height={40} style={{ height: 'auto', width: 'auto' }} />
+            <Image src="/images/logo-mobile-legend-31251.png" alt="Mobile Legends Logo" width={40} height={40} style={{ objectFit: 'contain' }} />
+            <Image src="/images/infoikamtif 11.png" alt="IKMATIF Logo" width={40} height={40} style={{ objectFit: 'contain' }} />
           </div>
           <p style={{ color: '#64748b', fontSize: '0.95rem' }}>
             &copy; {new Date().getFullYear()} MLBB Tournament Bracket. Powered by IKMATIF.

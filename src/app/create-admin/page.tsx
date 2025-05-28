@@ -14,11 +14,11 @@ export default function CreateAdminPage() {
     setMessage('Membuat akun admin...');
     
     try {
-      const email = 'apaya@gmail.com';
-      const password = 'mboh';
+      const email = 'agoy@gmail.com';
+      const password = 'Agoyberakye';
       
       await createUserWithEmailAndPassword(auth, email, password);
-      setMessage('Akun admin berhasil dibuat! Email: apaya@gmail.com, Password: mboh');
+      setMessage('Akun admin berhasil dibuat! Email: agoy@gmail.com, Password: Agoyberakye');
     } catch (error: FirebaseError | unknown) {
       console.error('Error creating admin:', error);
       
@@ -45,8 +45,8 @@ export default function CreateAdminPage() {
       <div style={{ marginBottom: '1.5rem' }}>
         <p>Klik tombol di bawah untuk membuat akun admin dengan:</p>
         <ul style={{ marginLeft: '1.5rem', marginTop: '0.5rem' }}>
-          <li>Email: apaya@gmail.com</li>
-          <li>Password: mboh</li>
+          <li>Email: agoy@gmail.com</li>
+          <li>Password: Agoyberakye</li>
         </ul>
       </div>
       

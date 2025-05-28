@@ -26,7 +26,7 @@ const Header: React.FC = () => {
             />
             <div className="ml-3">
               <h1 className="text-xl md:text-2xl font-bold text-white">Tournament Bracket</h1>
-              <p className="text-blue-400 text-sm">28 Mei 2025</p>
+              <p className="text-blue-400 text-sm">29 Mei 2025</p>
             </div>
           </div>
         </div>

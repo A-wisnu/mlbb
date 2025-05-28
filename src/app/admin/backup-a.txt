@@ -62,11 +62,11 @@ const BracketAPage = () => {
       } else {
         // Initialize with some sample data if none exists
         const initialMatches: Match[] = [
-          { id: 1, team1: bracketA[0], team2: bracketA[1], date: '2025-05-28', time: '14:00', result: null, status: 'scheduled' },
-          { id: 2, team1: bracketA[2], team2: bracketA[3], date: '2025-05-28', time: '16:00', result: null, status: 'scheduled' },
-          { id: 3, team1: bracketA[4], team2: bracketA[5], date: '2025-05-29', time: '14:00', result: null, status: 'scheduled' },
-          { id: 4, team1: bracketA[6], team2: bracketA[7], date: '2025-05-29', time: '16:00', result: null, status: 'scheduled' },
-          { id: 5, team1: bracketA[8], team2: bracketA[9], date: '2025-05-30', time: '14:00', result: null, status: 'scheduled' },
+          { id: 1, team1: bracketA[0], team2: bracketA[1], date: '2025-05-29', time: '20:00', result: null, status: 'scheduled' },
+          { id: 2, team1: bracketA[2], team2: bracketA[3], date: '2025-05-29', time: '20:00', result: null, status: 'scheduled' },
+          { id: 3, team1: bracketA[4], team2: bracketA[5], date: '2025-05-29', time: '20:00', result: null, status: 'scheduled' },
+          { id: 4, team1: bracketA[6], team2: bracketA[7], date: '2025-05-29', time: '20:00', result: null, status: 'scheduled' },
+          { id: 5, team1: bracketA[8], team2: bracketA[9], date: '2025-05-29', time: '20:00', result: null, status: 'scheduled' },
         ];
         setMatches(initialMatches);
         localStorage.setItem('bracketA_matches', JSON.stringify(initialMatches));
@@ -87,8 +87,8 @@ const BracketAPage = () => {
       console.error('Error loading data from localStorage:', error);
       // Set default matches if there's an error
       const initialMatches: Match[] = [
-        { id: 1, team1: bracketA[0], team2: bracketA[1], date: '2025-05-28', time: '14:00', result: null, status: 'scheduled' },
-        { id: 2, team1: bracketA[2], team2: bracketA[3], date: '2025-05-28', time: '16:00', result: null, status: 'scheduled' },
+        { id: 1, team1: bracketA[0], team2: bracketA[1], date: '2025-05-29', time: '20:00', result: null, status: 'scheduled' },
+        { id: 2, team1: bracketA[2], team2: bracketA[3], date: '2025-05-29', time: '20:00', result: null, status: 'scheduled' },
       ];
       setMatches(initialMatches);
     }
@@ -313,7 +313,7 @@ const BracketAPage = () => {
           team1: teamsForRound2[0],
           team2: teamsForRound2[1],
           date: round2DateStr,
-          time: "14:00",
+          time: "20:00",
           result: null,
           status: 'scheduled',
           round: 2
@@ -326,7 +326,7 @@ const BracketAPage = () => {
         team1: byeTeam,
         team2: teamsForRound2.length > 2 ? teamsForRound2[2] : "",
         date: round2DateStr,
-        time: "16:00",
+        time: "20:00",
         result: null,
         status: 'scheduled',
         round: 2
@@ -339,7 +339,7 @@ const BracketAPage = () => {
           team1: teamsForRound2[3],
           team2: teamsForRound2.length > 4 ? teamsForRound2[4] : "",
           date: round2DateStr,
-          time: "18:00",
+          time: "20:00",
           result: null,
           status: 'scheduled',
           round: 2
@@ -354,7 +354,7 @@ const BracketAPage = () => {
         team1: specialSlotTeams[0],
         team2: specialSlotTeams.length > 1 ? specialSlotTeams[1] : "",
         date: finalsDateStr,
-        time: "15:00",
+        time: "20:00",
         result: null,
         status: 'scheduled',
         round: 3
@@ -370,7 +370,7 @@ const BracketAPage = () => {
         team1: round2Winners[0],
         team2: round2Winners.length > 1 ? round2Winners[1] : "",
         date: finalsDateStr,
-        time: "17:00",
+        time: "20:00",
         result: null,
         status: 'scheduled',
         round: 3
@@ -431,7 +431,7 @@ const BracketAPage = () => {
           team1: teamsForMatches[i],
           team2: teamsForMatches[i + 1],
           date: new Date().toISOString().split('T')[0], // Today's date as default
-          time: '14:00', // Default time
+          time: '20:00', // Default time
           result: null,
           status: 'scheduled' as const,
           round: 1
@@ -559,7 +559,7 @@ const BracketAPage = () => {
             team1: remainingTeams[0] || "TBD",
             team2: remainingTeams.length > 1 ? remainingTeams[1] : "TBD",
             date: round2DateStr,
-            time: '14:00',
+            time: '20:00',
             result: null,
             status: 'scheduled' as const,
             round: 2
@@ -590,7 +590,7 @@ const BracketAPage = () => {
             team1: byeTeamFromRound1,
             team2: opponentForByeTeam,
             date: round2DateStr,
-            time: '16:00',
+            time: '20:00',
             result: null,
             status: 'scheduled' as const,
             round: 2
@@ -606,7 +606,7 @@ const BracketAPage = () => {
           team1: remainingTeams[2] || "TBD",
           team2: remainingTeams[3] || "TBD",
           date: round2DateStr,
-          time: '18:00',
+          time: '20:00',
           result: null,
           status: 'scheduled' as const,
           round: 2
@@ -635,7 +635,7 @@ const BracketAPage = () => {
           team1: specialSlotTeams[0],
           team2: specialSlotTeams[1],
           date: finalsDateStr,
-          time: '15:00',
+          time: '20:00',
           result: null,
           status: 'scheduled' as const,
           round: 3
@@ -679,7 +679,7 @@ const BracketAPage = () => {
           team1: shuffledWinners[0],
           team2: shuffledWinners.length > 1 ? shuffledWinners[1] : "TBD",
           date: finalsDateStr,
-          time: '17:00',
+          time: '20:00',
           result: null,
           status: 'scheduled' as const,
           round: 3

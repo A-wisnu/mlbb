@@ -377,7 +377,7 @@ export default function Home() {
                 position: 'relative',
                 display: 'inline-block'
               }}>
-                Participating Teams
+                Tim Peserta
                 <div style={{
                   position: 'absolute',
                   bottom: '-10px',
@@ -388,7 +388,7 @@ export default function Home() {
                   transform: 'translateX(-50%)',
                   borderRadius: '2px'
                 }}></div>
-          </h2>
+              </h2>
             </div>
             
             <div style={{
@@ -404,7 +404,7 @@ export default function Home() {
                 lineHeight: '1.6',
                 textShadow: '0 0 5px rgba(147, 197, 253, 0.3)'
               }}>
-                22 Teams competing for the championship title
+                22 Tim bersaing untuk gelar juara
               </p>
             </div>
           </div>
@@ -461,7 +461,7 @@ export default function Home() {
                       color: '#FFB800',
                       margin: 0,
                       textShadow: '0 0 10px rgba(255, 184, 0, 0.3)'
-                    }}>Bracket A Teams</h3>
+                    }}>Grup A</h3>
                   </div>
                   
                   <div style={{
@@ -559,7 +559,7 @@ export default function Home() {
                       color: '#a78bfa',
                       margin: 0,
                       textShadow: '0 0 10px rgba(167, 139, 250, 0.3)'
-                    }}>Bracket B Teams</h3>
+                    }}>Grup B</h3>
                   </div>
                   
                   <div style={{
@@ -643,7 +643,7 @@ export default function Home() {
               position: 'relative',
               display: 'inline-block'
             }}>
-              Tournament Structure
+              Struktur Turnamen
               <div style={{
                 position: 'absolute',
                 bottom: '-8px',
@@ -663,7 +663,7 @@ export default function Home() {
               margin: '0 auto 2rem',
               lineHeight: '1.7'
             }}>
-              From brackets to championship finals - the tournament journey
+              Dari grup hingga final kejuaraan - perjalanan turnamen
             </p>
           </div>
           
@@ -706,7 +706,7 @@ export default function Home() {
                   fontWeight: '700',
                   color: '#60a5fa',
                   margin: 0
-                }}>Bracket A</h3>
+                }}>Grup A</h3>
               </div>
               
               <ul style={{
@@ -724,7 +724,7 @@ export default function Home() {
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="#60a5fa" style={{width: '1rem', height: '1rem', marginRight: '0.5rem'}}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  11 teams compete (1 team gets bye to Round 2)
+                  11 tim bersaing (1 tim mendapat bye ke Babak 2)
                 </li>
                 <li style={{
                   display: 'flex',
@@ -735,7 +735,7 @@ export default function Home() {
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="#60a5fa" style={{width: '1rem', height: '1rem', marginRight: '0.5rem'}}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  2 random winners get direct final slots
+                  2 pemenang acak mendapat slot langsung ke final
                 </li>
                 <li style={{
                   display: 'flex',
@@ -745,7 +745,7 @@ export default function Home() {
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="#60a5fa" style={{width: '1rem', height: '1rem', marginRight: '0.5rem'}}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  <span style={{fontWeight: '600', color: 'white'}}>2 more slots decided by matches</span>
+                  <span style={{fontWeight: '600', color: 'white'}}>2 slot lainnya ditentukan lewat pertandingan</span>
                 </li>
               </ul>
               
@@ -761,7 +761,7 @@ export default function Home() {
                   border: '1px solid rgba(59, 130, 246, 0.3)',
                   transition: 'all 0.2s ease'
                 }}>
-                  View Bracket A
+                  Lihat Grup A
                 </Link>
               </div>
             </div>
@@ -799,7 +799,7 @@ export default function Home() {
                   fontWeight: '700',
                   color: '#a78bfa',
                   margin: 0
-                }}>Bracket B</h3>
+                }}>Grup B</h3>
               </div>
               
               <ul style={{
@@ -817,7 +817,7 @@ export default function Home() {
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="#a78bfa" style={{width: '1rem', height: '1rem', marginRight: '0.5rem'}}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  11 teams compete (1 team gets bye to Round 2)
+                  11 tim bersaing (1 tim mendapat bye ke Babak 2)
                 </li>
                 <li style={{
                   display: 'flex',
@@ -828,7 +828,7 @@ export default function Home() {
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="#a78bfa" style={{width: '1rem', height: '1rem', marginRight: '0.5rem'}}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  2 random winners get direct final slots
+                  2 pemenang acak mendapat slot langsung ke final
                 </li>
                 <li style={{
                   display: 'flex',
@@ -838,7 +838,7 @@ export default function Home() {
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="#a78bfa" style={{width: '1rem', height: '1rem', marginRight: '0.5rem'}}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  <span style={{fontWeight: '600', color: 'white'}}>2 more slots decided by matches</span>
+                  <span style={{fontWeight: '600', color: 'white'}}>2 slot lainnya ditentukan lewat pertandingan</span>
                 </li>
               </ul>
               
@@ -854,7 +854,7 @@ export default function Home() {
                   border: '1px solid rgba(124, 58, 237, 0.3)',
                   transition: 'all 0.2s ease'
                 }}>
-                  View Bracket B
+                  Lihat Grup B
                 </Link>
               </div>
             </div>
@@ -894,7 +894,7 @@ export default function Home() {
                   fontWeight: '700',
                   color: '#fb923c',
                   margin: 0
-                }}>Grand Finals</h3>
+                }}>Final Besar</h3>
               </div>
               
               <ul style={{
@@ -912,7 +912,7 @@ export default function Home() {
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="#fb923c" style={{width: '1rem', height: '1rem', marginRight: '0.5rem'}}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  <span style={{fontWeight: '600', color: 'white'}}>4 teams from Bracket A</span>
+                  <span style={{fontWeight: '600', color: 'white'}}>4 tim dari Grup A</span>
                 </li>
                 <li style={{
                   display: 'flex',
@@ -923,7 +923,7 @@ export default function Home() {
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="#fb923c" style={{width: '1rem', height: '1rem', marginRight: '0.5rem'}}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  <span style={{fontWeight: '600', color: 'white'}}>4 teams from Bracket B</span>
+                  <span style={{fontWeight: '600', color: 'white'}}>4 tim dari Grup B</span>
                 </li>
                 <li style={{
                   display: 'flex',
@@ -933,7 +933,7 @@ export default function Home() {
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="#fb923c" style={{width: '1rem', height: '1rem', marginRight: '0.5rem'}}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  Championship title & prizes
+                  Gelar juara tournament
                 </li>
               </ul>
               
@@ -949,7 +949,7 @@ export default function Home() {
                   border: '1px solid rgba(234, 88, 12, 0.3)',
                   transition: 'all 0.2s ease'
                 }}>
-                  View Finals
+                  Lihat Final
                 </Link>
               </div>
             </div>
@@ -968,7 +968,7 @@ export default function Home() {
               fontWeight: '700',
               color: '#f59e0b',
               marginBottom: '1rem'
-            }}>🔄 Tournament Flow</h3>
+            }}>🔄 Alur Turnamen</h3>
             
             <ol style={{
               color: '#d1d5db',
@@ -978,13 +978,13 @@ export default function Home() {
               gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
               gap: '1rem'
             }}>
-              <li>Each bracket has 11 teams, with 1 team getting a bye to Round 2</li>
-              <li>After Round 1, the winners advance to Round 2</li>
-              <li>From Round 2, 2 teams are randomly selected to advance directly to Finals</li>
-              <li>Teams with a bye in Round 1 must play in Round 2</li>
-              <li>Remaining teams compete in matches for the final 2 slots</li>
-              <li>Finals feature 4 teams from each bracket (8 total)</li>
-              <li>Teams play knockout matches until a champion is crowned</li>
+              <li>Setiap grup memiliki 11 tim, dengan 1 tim mendapatkan bye ke Babak 2</li>
+              <li>Setelah Babak 1, pemenang melaju ke Babak 2</li>
+              <li>Dari Babak 2, 2 tim dipilih secara acak untuk langsung ke Final</li>
+              <li>Tim dengan bye di Babak 1 harus bermain di Babak 2</li>
+              <li>Tim lainnya bertanding untuk 2 slot terakhir</li>
+              <li>Final menampilkan 4 tim dari setiap grup (total 8 tim)</li>
+              <li>Tim bermain dalam format gugur hingga juara ditentukan</li>
             </ol>
           </div>
         </div>
