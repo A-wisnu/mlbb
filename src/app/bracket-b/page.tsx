@@ -222,19 +222,29 @@ const BracketB = () => {
         </div>
 
         {/* Main Content */}
-        <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 1.5rem', width: '100%', position: 'relative', zIndex: 10 }}>
+        <div style={{
+          maxWidth: '1280px',
+          margin: '0 auto',
+          padding: '0 1rem',
+          width: '100%',
+          position: 'relative',
+          zIndex: 10
+        }}>
           {/* Bracket Structure */}
           <div style={{
-            overflowX: 'auto',
+            overflowX: isMobile ? 'visible' : 'auto',
             borderRadius: '1.25rem',
             background: 'rgba(15, 23, 42, 0.7)',
             boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 8px 30px rgba(0, 0, 0, 0.2)',
             backdropFilter: 'blur(8px)',
             border: '1px solid rgba(51, 65, 85, 0.5)',
-            padding: '0.5rem',
-            WebkitOverflowScrolling: 'touch',
+            padding: isMobile ? '0.75rem' : '1.5rem',
+            WebkitOverflowScrolling: 'touch'
           }}>
-            <div style={{ minWidth: '1000px', padding: '2rem' }}>
+            <div style={{
+              minWidth: isMobile ? 'auto' : '1000px',
+              padding: isMobile ? '0.5rem' : '2rem'
+            }}>
               {/* Bye Team Section */}
               {byeTeam && (
                 <div style={{
@@ -285,15 +295,27 @@ const BracketB = () => {
                 <div style={{
                   background: 'linear-gradient(135deg, rgba(234, 88, 12, 0.2), rgba(217, 119, 6, 0.05))',
                   borderRadius: '1rem',
-                  padding: '1.5rem',
+                  padding: isMobile ? '1rem' : '1.5rem',
                   border: '1px solid rgba(234, 88, 12, 0.3)',
                   boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-                  marginBottom: '2rem',
+                  marginBottom: isMobile ? '2rem' : '1.5rem'
                 }}>
-                  <h3 style={{ fontSize: '1.25rem', color: '#fdba74', fontWeight: 'bold', marginBottom: '1rem', textAlign: 'center' }}>
-                    Tim dengan Slot Khusus (Langsung Ke Quarter Final)
-                  </h3>
-                  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '2rem', flexWrap: 'wrap' }}>
+                  <h3 style={{
+                    fontSize: isMobile ? '1rem' : '1.25rem',
+                    color: '#fdba74',
+                    fontWeight: 'bold',
+                    marginBottom: '1rem',
+                    textAlign: 'center'
+                  }}>Tim dengan Slot Khusus (Langsung Ke Quarter Final)</h3>
+                  
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    gap: isMobile ? '0.75rem' : '2rem',
+                    flexWrap: 'wrap',
+                    flexDirection: isMobile ? 'column' : 'row'
+                  }}>
                     {specialSlotTeams.map((team, idx) => (
                       <div key={`specialSlot-${idx}`} style={{
                         background: 'linear-gradient(135deg, rgba(180, 83, 9, 0.5), rgba(146, 64, 14, 0.3))',
@@ -356,9 +378,16 @@ const BracketB = () => {
                 </div>
               )}
               {/* Bracket Columns */}
-              <div style={{ display: 'flex', marginBottom: '4rem' }}>
-                {/* Round 1 */}
-                <div style={{ width: '33.333%' }}>
+              <div style={{
+                display: 'flex',
+                marginBottom: '4rem',
+                flexDirection: isMobile ? 'column' : 'row'
+              }}>
+                {/* Round 1 - Initial Matches */}
+                <div style={{
+                  width: isMobile ? '100%' : '33.333%',
+                  marginBottom: isMobile ? '2rem' : 0
+                }}>
                   <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
                     <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', color: '#60a5fa' }}>Babak 1</h3>
                     <div style={{ width: '4rem', height: '0.125rem', backgroundColor: '#3b82f6', margin: '0.5rem auto 0' }}></div>
@@ -379,12 +408,13 @@ const BracketB = () => {
                         }}>
                           {/* Referee information */}
                           <div style={{
-                            padding: '0.5rem 1rem',
+                            padding: isMobile ? '0.5rem' : '0.5rem 1rem',
                             backgroundColor: 'rgba(17, 24, 39, 0.5)',
                             borderBottom: '1px solid rgba(75, 85, 99, 0.3)',
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '0.5rem'
+                            gap: '0.5rem',
+                            flexDirection: isMobile ? 'column' : 'row'
                           }}>
                             <div style={{
                               display: 'inline-flex',
@@ -397,7 +427,8 @@ const BracketB = () => {
                               padding: '0.375rem 0.75rem',
                               border: '1px solid rgba(79, 70, 229, 0.3)',
                               width: '100%',
-                              justifyContent: 'space-between'
+                              justifyContent: isMobile ? 'center' : 'space-between',
+                              flexDirection: isMobile ? 'column' : 'row'
                             }}>
                               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#93c5fd" style={{width: '1rem', height: '1rem'}}>
@@ -419,7 +450,8 @@ const BracketB = () => {
                                   padding: '0.25rem 0.75rem',
                                   borderRadius: '9999px',
                                   border: '1px solid rgba(59, 130, 246, 0.3)',
-                                  transition: 'all 0.2s ease'
+                                  transition: 'all 0.2s ease',
+                                  marginTop: isMobile ? '0.5rem' : 0
                                 }}
                                 onMouseOver={(e) => {
                                   e.currentTarget.style.backgroundColor = 'rgba(30, 64, 175, 0.5)';
@@ -481,8 +513,12 @@ const BracketB = () => {
                     )}
                   </div>
                 </div>
-                {/* Round 2 */}
-                <div style={{ width: '33.333%', paddingTop: '60px' }}>
+                {/* Round 2 - Second Stage */}
+                <div style={{
+                  width: isMobile ? '100%' : '33.333%',
+                  paddingLeft: isMobile ? 0 : '1.5rem',
+                  marginBottom: isMobile ? '2rem' : 0
+                }}>
                   <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
                     <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', color: '#60a5fa' }}>Babak 2</h3>
                     <div style={{ width: '4rem', height: '0.125rem', backgroundColor: '#3b82f6', margin: '0.5rem auto 0' }}></div>
@@ -503,12 +539,13 @@ const BracketB = () => {
                         }}>
                           {/* Referee information */}
                           <div style={{
-                            padding: '0.5rem 1rem',
+                            padding: isMobile ? '0.5rem' : '0.5rem 1rem',
                             backgroundColor: 'rgba(17, 24, 39, 0.5)',
                             borderBottom: '1px solid rgba(75, 85, 99, 0.3)',
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '0.5rem'
+                            gap: '0.5rem',
+                            flexDirection: isMobile ? 'column' : 'row'
                           }}>
                             <div style={{
                               display: 'inline-flex',
@@ -521,7 +558,8 @@ const BracketB = () => {
                               padding: '0.375rem 0.75rem',
                               border: '1px solid rgba(79, 70, 229, 0.3)',
                               width: '100%',
-                              justifyContent: 'space-between'
+                              justifyContent: isMobile ? 'center' : 'space-between',
+                              flexDirection: isMobile ? 'column' : 'row'
                             }}>
                               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#93c5fd" style={{width: '1rem', height: '1rem'}}>
@@ -543,7 +581,8 @@ const BracketB = () => {
                                   padding: '0.25rem 0.75rem',
                                   borderRadius: '9999px',
                                   border: '1px solid rgba(59, 130, 246, 0.3)',
-                                  transition: 'all 0.2s ease'
+                                  transition: 'all 0.2s ease',
+                                  marginTop: isMobile ? '0.5rem' : 0
                                 }}
                                 onMouseOver={(e) => {
                                   e.currentTarget.style.backgroundColor = 'rgba(30, 64, 175, 0.5)';
@@ -631,8 +670,11 @@ const BracketB = () => {
                     )}
                   </div>
                 </div>
-                {/* Final */}
-                <div style={{ width: '33.333%', paddingTop: '120px' }}>
+                {/* Finals - Third column */}
+                <div style={{
+                  width: isMobile ? '100%' : '33.333%',
+                  paddingLeft: isMobile ? 0 : '1.5rem'
+                }}>
                   <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
                     <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', color: '#fb923c' }}>Quarter Final</h3>
                     <div style={{ width: '4rem', height: '0.125rem', backgroundColor: '#ea580c', margin: '0.5rem auto 0' }}></div>
@@ -695,12 +737,13 @@ const BracketB = () => {
                         }}>
                           {/* Referee information */}
                           <div style={{
-                            padding: '0.5rem 1rem',
+                            padding: isMobile ? '0.5rem' : '0.5rem 1rem',
                             backgroundColor: 'rgba(17, 24, 39, 0.5)',
                             borderBottom: '1px solid rgba(75, 85, 99, 0.3)',
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '0.5rem'
+                            gap: '0.5rem',
+                            flexDirection: isMobile ? 'column' : 'row'
                           }}>
                             <div style={{
                               display: 'inline-flex',
@@ -713,7 +756,8 @@ const BracketB = () => {
                               padding: '0.375rem 0.75rem',
                               border: '1px solid rgba(79, 70, 229, 0.3)',
                               width: '100%',
-                              justifyContent: 'space-between'
+                              justifyContent: isMobile ? 'center' : 'space-between',
+                              flexDirection: isMobile ? 'column' : 'row'
                             }}>
                               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#93c5fd" style={{width: '1rem', height: '1rem'}}>
@@ -735,7 +779,8 @@ const BracketB = () => {
                                   padding: '0.25rem 0.75rem',
                                   borderRadius: '9999px',
                                   border: '1px solid rgba(59, 130, 246, 0.3)',
-                                  transition: 'all 0.2s ease'
+                                  transition: 'all 0.2s ease',
+                                  marginTop: isMobile ? '0.5rem' : 0
                                 }}
                                 onMouseOver={(e) => {
                                   e.currentTarget.style.backgroundColor = 'rgba(30, 64, 175, 0.5)';

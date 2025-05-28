@@ -234,18 +234,18 @@ const BracketA = () => {
       }}>
         {/* Bracket Structure */}
         <div style={{
-          overflowX: 'auto',
+          overflowX: isMobile ? 'visible' : 'auto',
           borderRadius: '1.25rem',
           background: 'rgba(15, 23, 42, 0.7)',
           boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 8px 30px rgba(0, 0, 0, 0.2)',
           backdropFilter: 'blur(8px)',
           border: '1px solid rgba(51, 65, 85, 0.5)',
-          padding: '0.5rem',
+          padding: isMobile ? '0.75rem' : '1.5rem',
           WebkitOverflowScrolling: 'touch'
         }}>
           <div style={{
-            minWidth: '1000px',
-            padding: '2rem'
+            minWidth: isMobile ? 'auto' : '1000px',
+            padding: isMobile ? '0.5rem' : '2rem'
           }}>
             {/* Tim dengan Slot Khusus */}
             <div style={{
@@ -316,12 +316,13 @@ const BracketA = () => {
               <div style={{
                 background: 'linear-gradient(135deg, rgba(234, 88, 12, 0.2), rgba(217, 119, 6, 0.05))',
                 borderRadius: '1rem',
-                padding: '1.5rem',
+                padding: isMobile ? '1rem' : '1.5rem',
                 border: '1px solid rgba(234, 88, 12, 0.3)',
-                boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
+                boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                marginBottom: isMobile ? '2rem' : '1.5rem'
               }}>
                 <h3 style={{
-                  fontSize: '1.25rem',
+                  fontSize: isMobile ? '1rem' : '1.25rem',
                   color: '#fdba74',
                   fontWeight: 'bold',
                   marginBottom: '1rem',
@@ -332,8 +333,9 @@ const BracketA = () => {
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  gap: '2rem',
-                  flexWrap: 'wrap'
+                  gap: isMobile ? '0.75rem' : '2rem',
+                  flexWrap: 'wrap',
+                  flexDirection: isMobile ? 'column' : 'row'
                 }}>
                   {specialSlotTeams.map((team, idx) => (
                     <div key={`special-${idx}`} style={{
@@ -382,7 +384,7 @@ const BracketA = () => {
               {/* Round 1 - Initial Matches */}
               <div style={{
                 width: isMobile ? '100%' : '33.333%',
-                marginBottom: isMobile ? '3rem' : '0'
+                marginBottom: isMobile ? '2rem' : 0
               }}>
                 <div style={{
                   marginBottom: '2rem',
@@ -419,12 +421,13 @@ const BracketA = () => {
                       }}>
                         {/* Referee information */}
                         <div style={{
-                          padding: '0.5rem 1rem',
+                          padding: isMobile ? '0.5rem' : '0.5rem 1rem',
                           backgroundColor: 'rgba(17, 24, 39, 0.5)',
                           borderBottom: '1px solid rgba(75, 85, 99, 0.3)',
                           display: 'flex',
                           alignItems: 'center',
-                          gap: '0.5rem'
+                          gap: '0.5rem',
+                          flexDirection: isMobile ? 'column' : 'row'
                         }}>
                           <div style={{
                             display: 'inline-flex',
@@ -437,7 +440,8 @@ const BracketA = () => {
                             padding: '0.375rem 0.75rem',
                             border: '1px solid rgba(79, 70, 229, 0.3)',
                             width: '100%',
-                            justifyContent: 'space-between'
+                            justifyContent: isMobile ? 'center' : 'space-between',
+                            flexDirection: isMobile ? 'column' : 'row'
                           }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#93c5fd" style={{width: '1rem', height: '1rem'}}>
@@ -459,7 +463,8 @@ const BracketA = () => {
                                 padding: '0.25rem 0.75rem',
                                 borderRadius: '9999px',
                                 border: '1px solid rgba(59, 130, 246, 0.3)',
-                                transition: 'all 0.2s ease'
+                                transition: 'all 0.2s ease',
+                                marginTop: isMobile ? '0.5rem' : 0
                               }}
                               onMouseOver={(e) => {
                                 e.currentTarget.style.backgroundColor = 'rgba(30, 64, 175, 0.5)';
@@ -569,11 +574,11 @@ const BracketA = () => {
                 </div>
               </div>
               
-              {/* Round 2 - Second column */}
+              {/* Round 2 - Second Stage */}
               <div style={{
                 width: isMobile ? '100%' : '33.333%',
-                paddingTop: isMobile ? '0' : '60px',
-                marginBottom: isMobile ? '3rem' : '0'
+                paddingLeft: isMobile ? 0 : '1.5rem',
+                marginBottom: isMobile ? '2rem' : 0
               }}>
                 <div style={{
                   marginBottom: '2rem',
@@ -610,12 +615,13 @@ const BracketA = () => {
                       }}>
                         {/* Referee information */}
                         <div style={{
-                          padding: '0.5rem 1rem',
+                          padding: isMobile ? '0.5rem' : '0.5rem 1rem',
                           backgroundColor: 'rgba(17, 24, 39, 0.5)',
                           borderBottom: '1px solid rgba(75, 85, 99, 0.3)',
                           display: 'flex',
                           alignItems: 'center',
-                          gap: '0.5rem'
+                          gap: '0.5rem',
+                          flexDirection: isMobile ? 'column' : 'row'
                         }}>
                           <div style={{
                             display: 'inline-flex',
@@ -628,7 +634,8 @@ const BracketA = () => {
                             padding: '0.375rem 0.75rem',
                             border: '1px solid rgba(79, 70, 229, 0.3)',
                             width: '100%',
-                            justifyContent: 'space-between'
+                            justifyContent: isMobile ? 'center' : 'space-between',
+                            flexDirection: isMobile ? 'column' : 'row'
                           }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#93c5fd" style={{width: '1rem', height: '1rem'}}>
@@ -650,7 +657,8 @@ const BracketA = () => {
                                 padding: '0.25rem 0.75rem',
                                 borderRadius: '9999px',
                                 border: '1px solid rgba(59, 130, 246, 0.3)',
-                                transition: 'all 0.2s ease'
+                                transition: 'all 0.2s ease',
+                                marginTop: isMobile ? '0.5rem' : 0
                               }}
                               onMouseOver={(e) => {
                                 e.currentTarget.style.backgroundColor = 'rgba(30, 64, 175, 0.5)';
@@ -745,59 +753,64 @@ const BracketA = () => {
                     </div>
                   ))}
                   
-                  {/* Special Slot for Round 2 - Tampilkan tim yang dapat bye di Round 2 */}
-                  {specialSlotTeams && specialSlotTeams.length > 0 && (
-                    <div style={{
-                      textAlign: 'center',
-                      marginTop: '2rem',
-                      marginBottom: '2rem',
-                      color: '#94a3b8',
-                      fontSize: '0.875rem'
-                    }}>
-                      <span>Tim dengan slot langsung ke ronde berikutnya:</span>
+                  {/* Special slots and Round 2 winners */}
+                  <div style={{
+                    width: isMobile ? '100%' : '33.333%',
+                    paddingLeft: isMobile ? 0 : '1.5rem'
+                  }}>
+                    {specialSlotTeams && specialSlotTeams.length > 0 && (
                       <div style={{
-                        marginTop: '0.5rem',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        flexDirection: 'column',
-                        gap: '0.5rem'
+                        textAlign: 'center',
+                        marginTop: '2rem',
+                        marginBottom: '2rem',
+                        color: '#94a3b8',
+                        fontSize: '0.875rem'
                       }}>
-                        {specialSlotTeams.map((team, idx) => (
-                          <div key={`round2-special-${idx}`} style={{
-                            backgroundColor: 'rgba(79, 70, 229, 0.2)',
-                            padding: '0.5rem',
-                            borderRadius: '0.375rem',
-                            color: '#a5b4fc',
-                            fontWeight: '500',
-                            fontSize: '0.875rem',
-                            border: '1px solid rgba(79, 70, 229, 0.3)'
-                          }}>
-                            {team}
-                          </div>
-                        ))}
+                        <span>Tim dengan slot langsung ke ronde berikutnya:</span>
+                        <div style={{
+                          marginTop: '0.5rem',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          flexDirection: 'column',
+                          gap: '0.5rem'
+                        }}>
+                          {specialSlotTeams.map((team, idx) => (
+                            <div key={`round2-special-${idx}`} style={{
+                              backgroundColor: 'rgba(79, 70, 229, 0.2)',
+                              padding: '0.5rem',
+                              borderRadius: '0.375rem',
+                              color: '#a5b4fc',
+                              fontWeight: '500',
+                              fontSize: '0.875rem',
+                              border: '1px solid rgba(79, 70, 229, 0.3)'
+                            }}>
+                              {team}
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  )}
-                  
-                  {matches.filter(match => (match.round || 0) === 2).length === 0 && !specialSlotTeams.length && (
-                    <div style={{
-                      backgroundColor: 'rgba(30, 41, 59, 0.5)',
-                      padding: '1rem',
-                      borderRadius: '0.5rem',
-                      color: '#94a3b8',
-                      textAlign: 'center',
-                      border: '1px dashed rgba(100, 116, 139, 0.5)'
-                    }}>
-                      Belum ada pertandingan yang dijadwalkan
-                    </div>
-                  )}
+                    )}
+                    
+                    {matches.filter(match => (match.round || 0) === 2).length === 0 && !specialSlotTeams.length && (
+                      <div style={{
+                        backgroundColor: 'rgba(30, 41, 59, 0.5)',
+                        padding: '1rem',
+                        borderRadius: '0.5rem',
+                        color: '#94a3b8',
+                        textAlign: 'center',
+                        border: '1px dashed rgba(100, 116, 139, 0.5)'
+                      }}>
+                        Belum ada pertandingan yang dijadwalkan
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
               
-              {/* Final Results - Third column */}
+              {/* Finals - Third column */}
               <div style={{
                 width: isMobile ? '100%' : '33.333%',
-                paddingTop: isMobile ? '0' : '100px'
+                paddingLeft: isMobile ? 0 : '1.5rem'
               }}>
                 <div style={{
                   marginBottom: '2rem',
@@ -1026,23 +1039,6 @@ const BracketA = () => {
               </div>
             </div>
           </div>
-        </div>
-        
-        <div style={{
-          textAlign: 'center',
-          marginTop: '3rem',
-          marginBottom: '1rem'
-        }}>
-          <h3 style={{
-            fontSize: '1.5rem',
-            fontWeight: 'bold',
-            color: 'white',
-            marginBottom: '0.5rem'
-          }}>Top 2 dari Bracket A akan maju ke Quarter Final</h3>
-          <p style={{
-            color: '#94a3b8',
-            fontSize: '1rem'
-          }}>Pertandingan dimulai tanggal 29 Mei 2025</p>
         </div>
       </div>
 
