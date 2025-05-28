@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+// import Image from 'next/image';
+// import { useRouter } from 'next/navigation'; // Komentari atau hapus jika router tidak digunakan
 import Link from 'next/link';
 import { 
   getBracketASpecialSlots, 
@@ -17,8 +17,6 @@ import { Team } from '../../../types';
 const AdminFinals = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [specialSlotsA, setSpecialSlotsA] = useState<string[]>([]);
-  const [specialSlotsB, setSpecialSlotsB] = useState<string[]>([]);
   const [finalTeams, setFinalTeams] = useState<Team[]>([]);
   const [semifinalWinners, setSemifinalWinners] = useState<string[]>([]);
   const [semifinalLosers, setSemifinalLosers] = useState<string[]>([]);
@@ -27,7 +25,7 @@ const AdminFinals = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   
-  const router = useRouter();
+  // const router = useRouter(); // Commented out as it's not used
   
   // Check if device is mobile
   useEffect(() => {
@@ -57,16 +55,13 @@ const AdminFinals = () => {
         const slotsA = await getBracketASpecialSlots();
         const slotsB = await getBracketBSpecialSlots();
         
-        setSpecialSlotsA(slotsA);
-        setSpecialSlotsB(slotsB);
-        
         // Konversi string[] ke Team[]
-        let teamsA: Team[] = slotsA.map((name: string, idx: number) => ({
+        const teamsA: Team[] = slotsA.map((name: string, idx: number) => ({
           id: idx + 1,
           name
         }));
         
-        let teamsB: Team[] = slotsB.map((name: string, idx: number) => ({
+        const teamsB: Team[] = slotsB.map((name: string, idx: number) => ({
           id: idx + 5,
           name
         }));

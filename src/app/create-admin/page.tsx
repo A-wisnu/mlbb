@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { auth } from '../../firebase/config';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { FirebaseError } from 'firebase/app';
 
 export default function CreateAdminPage() {
   const [message, setMessage] = useState('');
@@ -18,13 +19,14 @@ export default function CreateAdminPage() {
       
       await createUserWithEmailAndPassword(auth, email, password);
       setMessage('Akun admin berhasil dibuat! Email: apaya@gmail.com, Password: mboh');
-    } catch (error: any) {
+    } catch (error: FirebaseError | unknown) {
       console.error('Error creating admin:', error);
       
-      if (error.code === 'auth/email-already-in-use') {
+      if (error instanceof FirebaseError && error.code === 'auth/email-already-in-use') {
         setMessage('Akun dengan email ini sudah ada. Anda dapat login dengan password yang ditentukan.');
       } else {
-        setMessage(`Gagal membuat akun admin: ${error.message}`);
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        setMessage(`Gagal membuat akun admin: ${errorMessage}`);
       }
     } finally {
       setIsCreating(false);

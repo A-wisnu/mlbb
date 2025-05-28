@@ -17,8 +17,8 @@ import {
 } from '../../../firebase/firestore';
 import { UIMatch, convertToUIMatches, convertToGlobalMatches } from '../../../types/adapter';
 
-// Define Match interface
-interface Match extends UIMatch {} // Use UIMatch
+// Define Match type alias untuk UIMatch
+type Match = UIMatch; 
 
 // Define RandomizeResults interface
 interface RandomizeResults {
@@ -52,6 +52,7 @@ const BracketAPage = () => {
   const [toastType, setToastType] = useState<'success' | 'error' | 'info'>('success');
   
   // State variables for Firebase data
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [byeTeam, setByeTeam] = useState<string | null>(null);
   const [specialSlots, setSpecialSlots] = useState<string[]>([]);
 
@@ -226,11 +227,10 @@ const BracketAPage = () => {
       return;
     }
 
-    let finalFormData = { ...formData };
+    const finalFormData = { ...formData };
     if (!finalFormData.round) { // Default round to 1 if not set
         finalFormData.round = 1;
     }
-
 
     let updatedMatchesArray: Match[];
     
@@ -285,19 +285,13 @@ const BracketAPage = () => {
       .filter(m => (m.round || 0) === 2 && m.status === 'completed' && m.result)
       .map(match => match.result === 'team1' ? match.team1 : match.team2);
       
-    // Semua tim di ronde 2
-    const _round2Teams = matches
-      .filter(m => (m.round || 0) === 2)
-      .flatMap(match => [match.team1, match.team2])
-      .filter(team => !team.includes("TBD"));
-      
-    return { round1Winners, round2Winners, _round2Teams };
+    return { round1Winners, round2Winners };
   };
 
   // Fungsi untuk membuat atau memperbarui match di Ronde 2 dan Final
   const createOrUpdateBracket = async () => {
     // Dapatkan semua pemenang
-    const { round1Winners, round2Winners, _round2Teams } = getWinners();
+    const { round1Winners, round2Winners } = getWinners();
     
     // Hapus semua match Ronde 2 dan Final yang ada
     const round1Matches = matches.filter(m => (m.round || 1) === 1);
@@ -436,10 +430,12 @@ const BracketAPage = () => {
   };
 
   // Function to generate automatic placeholder matches for Round 2 and Finals
+  /* Tidak digunakan, gunakan createOrUpdateBracket sebagai gantinya
   const _generatePlaceholderMatches = () => {
     // Gunakan fungsi baru untuk membuat bracket
     createOrUpdateBracket();
   };
+  */
 
   // Function to randomize teams and create matches
   const handleRandomizeTeams = async () => {
@@ -518,6 +514,7 @@ const BracketAPage = () => {
   };
 
   // Function to simulate matches and advance winners to the next round
+  /* Tidak digunakan, tambahkan ke UI jika diperlukan
   const _handleSimulateRound = async () => {
     setIsRandomizing(true);
     
@@ -603,10 +600,10 @@ const BracketAPage = () => {
       const round2DateStr = round2Date.toISOString().split('T')[0];
       
       // Create match 1 for Round 2
-      const existingRound2 = otherMatches.filter(m => (m.round || 0) === 2);
-        let round2Id = simulatedMatches.length > 0 ? Math.max(0, ...simulatedMatches.map(m => m.id)) + 1 : (matches.length > 0 ? Math.max(0, ...matches.map(m => m.id)) + 1 : 1);
-        
-        nextRoundMatches = []; // Reset nextRoundMatches
+      // const existingRound2 = otherMatches.filter(m => (m.round || 0) === 2);
+      let round2Id = simulatedMatches.length > 0 ? Math.max(0, ...simulatedMatches.map(m => m.id)) + 1 : (matches.length > 0 ? Math.max(0, ...matches.map(m => m.id)) + 1 : 1);
+      
+      nextRoundMatches = []; // Reset nextRoundMatches
       
       // If we have remaining teams from round 1 winners (excluding special slots)
       if (remainingTeams.length > 0) {
@@ -796,6 +793,7 @@ const BracketAPage = () => {
     setIsRandomizing(false);
     }
   };
+  */
 
   // Status label component
   const StatusLabel = ({ status }: { status: 'scheduled' | 'playing' | 'completed' }) => {

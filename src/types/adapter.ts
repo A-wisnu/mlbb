@@ -1,5 +1,6 @@
 // Utilitas Adapter untuk menangani perbedaan tipe Match
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Match as GlobalMatch, Team } from './index';
 
 // Tipe Match yang digunakan di komponen UI

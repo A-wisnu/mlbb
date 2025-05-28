@@ -98,13 +98,13 @@ const FinalsPage = () => {
       const limitedTeamsB = uniqueTeamsB.slice(0, 4);
       
       // Konversi string[] ke Team[]
-      let teamsA: Team[] = limitedTeamsA.map((name: string, idx: number) => ({
+      const teamsA: Team[] = limitedTeamsA.map((name: string, idx: number) => ({
         id: idx + 1,
         name,
         bracket: 'A'  // Tandai tim dari bracket A
       }));
       
-      let teamsB: Team[] = limitedTeamsB.map((name: string, idx: number) => ({
+      const teamsB: Team[] = limitedTeamsB.map((name: string, idx: number) => ({
         id: idx + 5,
         name,
         bracket: 'B'  // Tandai tim dari bracket B

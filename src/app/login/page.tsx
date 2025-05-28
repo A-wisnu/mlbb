@@ -7,6 +7,7 @@ import Layout from '../../components/Layout';
 import { auth } from '../../firebase/config';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
+import { FirebaseError } from 'firebase/app';
 
 const Login = () => {
   const router = useRouter();
@@ -34,17 +35,21 @@ const Login = () => {
       await signInWithEmailAndPassword(auth, formData.email, formData.password);
       // Login successful, redirect to admin
       router.push('/admin');
-    } catch (error: any) {
+    } catch (error: FirebaseError | unknown) {
       console.error('Error signing in:', error);
       // Handle specific Firebase auth errors with user-friendly messages
-      if (error.code === 'auth/invalid-credential' || 
-          error.code === 'auth/user-not-found' || 
-          error.code === 'auth/wrong-password') {
-        setError('Email atau password tidak valid');
-      } else if (error.code === 'auth/too-many-requests') {
-        setError('Terlalu banyak percobaan gagal. Silakan coba lagi nanti');
+      if (error instanceof FirebaseError) {
+        if (error.code === 'auth/invalid-credential' || 
+            error.code === 'auth/user-not-found' || 
+            error.code === 'auth/wrong-password') {
+          setError('Email atau password tidak valid');
+        } else if (error.code === 'auth/too-many-requests') {
+          setError('Terlalu banyak percobaan gagal. Silakan coba lagi nanti');
+        } else {
+          setError('Gagal masuk: ' + error.message);
+        }
       } else {
-        setError('Gagal masuk: ' + error.message);
+        setError('Terjadi kesalahan saat login');
       }
     } finally {
       setLoading(false);
