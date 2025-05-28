@@ -829,7 +829,7 @@ const Layout = ({ children }: LayoutProps) => {
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
                     <span style={{ color: '#FFB800', marginRight: '0.25rem' }}>•</span> 
-                    <span>May 28, 2025</span>
+                    <span>29 May 2025</span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
                     <span style={{ color: '#FFB800', marginRight: '0.25rem' }}>•</span> 
@@ -860,7 +860,7 @@ const Layout = ({ children }: LayoutProps) => {
                 }}>
                   <li style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
                     <span style={{ color: '#FFB800', marginRight: '0.5rem' }}>•</span> 
-                    <span>Bracket Matches: May 28, 2025</span>
+                    <span>Bracket Matches: 29 May 2025</span>
                   </li>
                   <li style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
                     <span style={{ color: '#FFB800', marginRight: '0.5rem' }}>•</span> 
