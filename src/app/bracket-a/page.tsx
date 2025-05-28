@@ -376,11 +376,13 @@ const BracketA = () => {
 
             <div style={{
               display: 'flex',
-              marginBottom: '4rem'
+              marginBottom: '4rem',
+              flexDirection: isMobile ? 'column' : 'row'
             }}>
               {/* Round 1 - Initial Matches */}
               <div style={{
-                width: '33.333%'
+                width: isMobile ? '100%' : '33.333%',
+                marginBottom: isMobile ? '3rem' : '0'
               }}>
                 <div style={{
                   marginBottom: '2rem',
@@ -569,8 +571,9 @@ const BracketA = () => {
               
               {/* Round 2 - Second column */}
               <div style={{
-                width: '33.333%',
-                paddingTop: '60px'
+                width: isMobile ? '100%' : '33.333%',
+                paddingTop: isMobile ? '0' : '60px',
+                marginBottom: isMobile ? '3rem' : '0'
               }}>
                 <div style={{
                   marginBottom: '2rem',
@@ -791,10 +794,10 @@ const BracketA = () => {
                 </div>
               </div>
               
-              {/* Finals - Third column */}
+              {/* Final Results - Third column */}
               <div style={{
-                width: '33.333%',
-                paddingTop: '120px'
+                width: isMobile ? '100%' : '33.333%',
+                paddingTop: isMobile ? '0' : '100px'
               }}>
                 <div style={{
                   marginBottom: '2rem',
