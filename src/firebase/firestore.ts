@@ -483,9 +483,9 @@ export const resetFinalsData = async (): Promise<void> => {
     // Kita tidak benar-benar menghapus dokumen, tapi menggantinya dengan dokumen kosong
     // Ini untuk memastikan halaman publik menampilkan "Belum Ada Data Final"
     await setDoc(doc(db, FINALS, 'allFinalsData'), {
-      champion: null,
-      runnerUp: null,
-      thirdPlace: null,
+      champion: '',
+      runnerUp: '',
+      thirdPlace: '',
       quarterFinals: [],
       semiFinals: [],
       finalMatch: null,

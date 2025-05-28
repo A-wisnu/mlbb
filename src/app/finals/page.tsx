@@ -294,8 +294,8 @@ const FinalsPage = () => {
       </header>
 
       <main style={{ maxWidth: '1280px', margin: '0 auto' }}>
-        {/* Juara */}
-        {finalsData.champion && (
+        {/* Juara - Tampilkan juga jika ada data, tapi juara belum ditentukan */}
+        {finalsData.quarterFinals && finalsData.quarterFinals.length > 0 && (
           <div style={{
             backgroundColor: 'rgba(14, 116, 144, 0.3)',
             padding: '1.5rem',
@@ -335,7 +335,9 @@ const FinalsPage = () => {
                   fontSize: '1.25rem'
                 }}>1</div>
                 <h3 style={{ color: '#facc15', fontSize: '1.1rem' }}>Juara 1</h3>
-                <p style={{ fontWeight: 'bold', fontSize: '1rem' }}>{finalsData.champion}</p>
+                <p style={{ fontWeight: 'bold', fontSize: '1rem' }}>
+                  {finalsData.champion || (finalsData.finalMatch?.winner ? finalsData.finalMatch.winner : 'Belum ditentukan')}
+                </p>
               </div>
               
               <div style={{
@@ -362,7 +364,11 @@ const FinalsPage = () => {
                   fontSize: '1.25rem'
                 }}>2</div>
                 <h3 style={{ color: '#cbd5e1', fontSize: '1.1rem' }}>Juara 2</h3>
-                <p style={{ fontWeight: 'bold', fontSize: '1rem' }}>{finalsData.runnerUp}</p>
+                <p style={{ fontWeight: 'bold', fontSize: '1rem' }}>
+                  {finalsData.runnerUp || (finalsData.finalMatch?.winner && finalsData.finalMatch?.team1 && finalsData.finalMatch?.team2 ? 
+                    (finalsData.finalMatch.winner === finalsData.finalMatch.team1.name ? finalsData.finalMatch.team2.name : finalsData.finalMatch.team1.name) : 
+                    'Belum ditentukan')}
+                </p>
               </div>
               
               <div style={{
@@ -389,7 +395,9 @@ const FinalsPage = () => {
                   fontSize: '1.25rem'
                 }}>3</div>
                 <h3 style={{ color: '#fb923c', fontSize: '1.1rem' }}>Juara 3</h3>
-                <p style={{ fontWeight: 'bold', fontSize: '1rem' }}>{finalsData.thirdPlace}</p>
+                <p style={{ fontWeight: 'bold', fontSize: '1rem' }}>
+                  {finalsData.thirdPlace || (finalsData.thirdPlaceMatch?.winner ? finalsData.thirdPlaceMatch.winner : 'Belum ditentukan')}
+                </p>
               </div>
             </div>
           </div>

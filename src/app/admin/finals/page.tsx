@@ -215,22 +215,22 @@ const AdminFinals = () => {
   };
 
   const handleSaveFinals = async () => {
-    if (!champion || !runnerUp || !thirdPlace) {
-      showErrorMessage('Harap selesaikan semua pertandingan final dan perebutan juara 3.');
-      return;
-    }
     try {
       setIsLoading(true);
+      
+      // Simpan data yang tersedia, bahkan jika pemenang belum ditentukan
       await saveFinalsData({
-        champion,
-        runnerUp,
-        thirdPlace,
+        // Gunakan nilai default jika belum ada pemenang
+        champion: champion || '',
+        runnerUp: runnerUp || '',
+        thirdPlace: thirdPlace || '',
         quarterFinals: quarterFinalMatches,
         semiFinals: semiFinalMatches,
         finalMatch,
         thirdPlaceMatch,
       });
-      showSuccessMessage('Data final berhasil disimpan!');
+      
+      showSuccessMessage('Data final berhasil disimpan! Data sudah dapat dilihat di halaman publik.');
     } catch (error) {
       console.error('Error saving finals data:', error);
       showErrorMessage('Gagal menyimpan data final.');
@@ -480,15 +480,11 @@ const AdminFinals = () => {
           <button 
             onClick={async () => {
               try {
-                if (!champion || !runnerUp || !thirdPlace) {
-                  alert('Harap lengkapi seluruh pertandingan final dulu.');
-                  return;
-                }
-                
+                // Tidak perlu validasi yang mengharuskan adanya pemenang
                 const currentData = {
-                  champion,
-                  runnerUp,
-                  thirdPlace,
+                  champion: champion || '',
+                  runnerUp: runnerUp || '',
+                  thirdPlace: thirdPlace || '',
                   quarterFinals: quarterFinalMatches,
                   semiFinals: semiFinalMatches,
                   finalMatch,
@@ -498,7 +494,7 @@ const AdminFinals = () => {
                 console.log('Mencoba menyimpan ulang data:', currentData);
                 setIsLoading(true);
                 await saveFinalsData(currentData);
-                showSuccessMessage('Data final berhasil disimpan ulang!');
+                showSuccessMessage('Data final berhasil disimpan ulang! Data sudah dapat dilihat di halaman publik.');
               } catch (error) {
                 console.error('Error re-saving finals data:', error);
                 showErrorMessage('Gagal menyimpan ulang data final.');
@@ -574,6 +570,28 @@ const AdminFinals = () => {
           >
             Reset Total & Reload
           </button>
+        </div>
+        
+        {/* Info Panel */}
+        <div style={{ 
+          backgroundColor: 'rgba(37, 99, 235, 0.1)', 
+          border: '1px solid rgba(37, 99, 235, 0.3)', 
+          borderRadius: '8px', 
+          padding: '1rem', 
+          marginBottom: '1.5rem',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.75rem'
+        }}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" style={{color: '#3b82f6'}}>
+            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+          </svg>
+          <div>
+            <p style={{color: '#60a5fa', margin: 0, fontWeight: 'bold'}}>Petunjuk Penyimpanan Data</p>
+            <p style={{color: '#93c5fd', margin: '0.25rem 0 0 0', fontSize: '0.9rem'}}>
+              Anda dapat menyimpan data final meskipun belum menyelesaikan semua pertandingan. Data akan segera terlihat di halaman publik.
+            </p>
+          </div>
         </div>
         
         {isOffline && (
