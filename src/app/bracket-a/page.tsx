@@ -326,7 +326,7 @@ const BracketA = () => {
                   fontWeight: 'bold',
                   marginBottom: '1rem',
                   textAlign: 'center'
-                }}>Tim dengan Slot Khusus (Langsung Ke Final)</h3>
+                }}>Tim dengan Slot Khusus (Langsung Ke Quarter Final)</h3>
                 
                 <div style={{
                   display: 'flex',
@@ -819,7 +819,7 @@ const BracketA = () => {
                     fontSize: '1.25rem',
                     fontWeight: 'bold',
                     color: '#fb923c'
-                  }}>Final</h3>
+                  }}>Quarter Final</h3>
                   <div style={{
                     width: '4rem',
                     height: '0.125rem',
@@ -836,7 +836,7 @@ const BracketA = () => {
                       color: '#94a3b8',
                       fontSize: '0.875rem'
                     }}>
-                      <span>Tim dengan slot langsung ke final:</span>
+                      <span>Tim dengan slot langsung ke quarter final:</span>
                       <div style={{
                         marginTop: '0.5rem',
                         display: 'flex',
@@ -1008,7 +1008,7 @@ const BracketA = () => {
                       textAlign: 'center',
                       border: '1px dashed rgba(100, 116, 139, 0.5)'
                     }}>
-                      Final belum dijadwalkan
+                      Quarter Final belum dijadwalkan
                     </div>
                   )}
                 </div>

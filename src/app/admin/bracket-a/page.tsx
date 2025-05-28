@@ -400,7 +400,7 @@ const BracketAPage = () => {
       }
     } else {
       // Tampilkan toast bahwa Final menunggu hasil Ronde 2
-      setToastMessage('Match Final akan dibuat setelah pertandingan Ronde 2 selesai!');
+      setToastMessage('Match Quarter Final akan dibuat setelah pertandingan Ronde 2 selesai!');
       setToastType('info');
       setShowToast(true);
     }
@@ -1877,7 +1877,7 @@ const BracketAPage = () => {
                                       padding: '0.25rem 0.75rem',
                                       backgroundColor: 'rgba(22, 163, 74, 0.1)',
                                       color: '#86efac',
-                                      borderRadius: '0.25rem',
+                            borderRadius: '0.25rem',
                                       border: '1px solid rgba(22, 163, 74, 0.2)',
                                       fontSize: '0.75rem',
                                       cursor: 'pointer',
@@ -2305,7 +2305,7 @@ const BracketAPage = () => {
                         fontWeight: 'bold',
                         color: '#fdba74',
                         marginBottom: '0.75rem'
-                      }}>Tim dengan Slot Khusus (Langsung ke Final):</h4>
+                      }}>Tim dengan Slot Khusus (Langsung ke Quarter Final):</h4>
                       <div style={{
                         display: 'flex',
                         flexDirection: 'column',
@@ -2608,7 +2608,7 @@ const BracketAPage = () => {
               }}
             />
           </div>
-          <p>© 2025 ML Tournament Admin Panel. All rights reserved.</p>
+          <p>© 29 ML Tournament Admin Panel. All rights reserved.</p>
         </div>
       </footer>
       

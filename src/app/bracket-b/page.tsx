@@ -295,7 +295,7 @@ const BracketB = () => {
                   marginBottom: '2rem',
                 }}>
                   <h3 style={{ fontSize: '1.25rem', color: '#fdba74', fontWeight: 'bold', marginBottom: '1rem', textAlign: 'center' }}>
-                    Tim dengan Slot Khusus (Langsung Ke Final)
+                    Tim dengan Slot Khusus (Langsung Ke Quarter Final)
                   </h3>
                   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '2rem', flexWrap: 'wrap' }}>
                     {specialSlotTeams.map((team, idx) => (
@@ -688,7 +688,7 @@ const BracketB = () => {
                 {/* Final */}
                 <div style={{ width: '33.333%', paddingTop: '120px' }}>
                   <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
-                    <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', color: '#fb923c' }}>Final</h3>
+                    <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', color: '#fb923c' }}>Quarter Final</h3>
                     <div style={{ width: '4rem', height: '0.125rem', backgroundColor: '#ea580c', margin: '0.5rem auto 0' }}></div>
                   </div>
                   <div>
@@ -700,7 +700,7 @@ const BracketB = () => {
                         color: '#94a3b8',
                         fontSize: '0.875rem'
                       }}>
-                        <span>Tim dengan slot langsung ke final:</span>
+                        <span>Tim dengan slot langsung ke quarter final:</span>
                         <div style={{
                           marginTop: '0.5rem',
                           display: 'flex',
@@ -849,7 +849,7 @@ const BracketB = () => {
                     ))}
                     {matches.filter(match => (match.round || 0) === 3).length === 0 && (
                       <div style={{ backgroundColor: 'rgba(30, 41, 59, 0.5)', padding: '1rem', borderRadius: '0.5rem', color: '#94a3b8', textAlign: 'center', border: '1px dashed rgba(100, 116, 139, 0.5)' }}>
-                        Final belum dijadwalkan
+                        Quarter Final belum dijadwalkan
                       </div>
                     )}
                   </div>

@@ -574,7 +574,7 @@ const AdminDashboard = () => {
         fontSize: '0.875rem',
         backdropFilter: 'blur(10px)'
       }}>
-        <p>© 2023 Mobile Legends Tournament. All rights reserved.</p>
+        <p>© 29 Mobile Legends Tournament. All rights reserved.</p>
       </footer>
     </div>
   );
