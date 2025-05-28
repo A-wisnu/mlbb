@@ -9,7 +9,7 @@ export const refereesA: Referee[] = [
   { name: "Ibad", phone: "(+62) 815-7321-5336" },
   { name: "Ardian Wisnu", phone: "(+62) 819-1001-2958" },
   { name: "Kanzul", phone: "(+62) 823-2935-5683" },
-  { name: "Romi", phone: "(+62) 895-3265-44080" },
+  { name: "Yoga", phone: "(+62) 822-4164-3610" },
   { name: "Genard", phone: "(+62) 895-3417-71720" }
 ];
 
