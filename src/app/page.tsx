@@ -613,6 +613,382 @@ export default function Home() {
           </div>
         </div>
       </section>
+      
+      {/* Tournament Structure Section */}
+      <section style={{
+        background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+        padding: isMobile ? '3rem 0' : '6rem 0',
+        position: 'relative',
+        overflow: 'hidden',
+        borderTop: '1px solid rgba(255, 255, 255, 0.05)',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+      }}>
+        <div style={{ 
+          maxWidth: '1200px', 
+          margin: '0 auto', 
+          padding: '0 1.5rem',
+          position: 'relative',
+          zIndex: 2
+        }}>
+          <div style={{ 
+            textAlign: 'center', 
+            marginBottom: isMobile ? '2rem' : '4rem' 
+          }}>
+            <h2 style={{
+              fontSize: isMobile ? '2rem' : '2.5rem',
+              fontWeight: '800',
+              color: '#f59e0b',
+              marginBottom: '1.25rem',
+              textShadow: '0 0 15px rgba(245, 158, 11, 0.3)',
+              position: 'relative',
+              display: 'inline-block'
+            }}>
+              Tournament Structure
+              <div style={{
+                position: 'absolute',
+                bottom: '-8px',
+                left: '50%',
+                width: isMobile ? '60px' : '80px',
+                height: '4px',
+                background: 'linear-gradient(90deg, transparent, #f59e0b, transparent)',
+                transform: 'translateX(-50%)',
+                borderRadius: '2px'
+              }}></div>
+            </h2>
+            
+            <p style={{
+              fontSize: isMobile ? '1.1rem' : '1.25rem',
+              color: '#d1d5db',
+              maxWidth: '800px',
+              margin: '0 auto 2rem',
+              lineHeight: '1.7'
+            }}>
+              From brackets to championship finals - the tournament journey
+            </p>
+          </div>
+          
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr 1fr',
+            gap: '2rem',
+            marginBottom: '3rem'
+          }}>
+            {/* Bracket A */}
+            <div style={{
+              background: 'rgba(30, 41, 59, 0.5)',
+              backdropFilter: 'blur(5px)',
+              borderRadius: '1rem',
+              padding: '1.5rem',
+              border: '1px solid rgba(59, 130, 246, 0.3)',
+              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)',
+              display: 'flex',
+              flexDirection: 'column'
+            }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                marginBottom: '1rem'
+              }}>
+                <div style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  background: 'linear-gradient(135deg, #3b82f6, #1e40af)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: '0.75rem'
+                }}>
+                  <span style={{color: 'white', fontWeight: '700'}}>A</span>
+                </div>
+                <h3 style={{
+                  fontSize: '1.25rem',
+                  fontWeight: '700',
+                  color: '#60a5fa',
+                  margin: 0
+                }}>Bracket A</h3>
+              </div>
+              
+              <ul style={{
+                listStyle: 'none',
+                padding: '0',
+                margin: '0',
+                flexGrow: 1
+              }}>
+                <li style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginBottom: '0.75rem',
+                  color: '#d1d5db'
+                }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="#60a5fa" style={{width: '1rem', height: '1rem', marginRight: '0.5rem'}}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  11 teams compete (1 team gets bye to Round 2)
+                </li>
+                <li style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginBottom: '0.75rem',
+                  color: '#d1d5db'
+                }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="#60a5fa" style={{width: '1rem', height: '1rem', marginRight: '0.5rem'}}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  2 random winners get direct final slots
+                </li>
+                <li style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  color: '#d1d5db'
+                }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="#60a5fa" style={{width: '1rem', height: '1rem', marginRight: '0.5rem'}}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span style={{fontWeight: '600', color: 'white'}}>2 more slots decided by matches</span>
+                </li>
+              </ul>
+              
+              <div style={{marginTop: '1.5rem'}}>
+                <Link href="/bracket-a" style={{
+                  display: 'inline-block',
+                  padding: '0.75rem 1.25rem',
+                  backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                  color: '#60a5fa',
+                  borderRadius: '0.5rem',
+                  textDecoration: 'none',
+                  fontWeight: '600',
+                  border: '1px solid rgba(59, 130, 246, 0.3)',
+                  transition: 'all 0.2s ease'
+                }}>
+                  View Bracket A
+                </Link>
+              </div>
+            </div>
+            
+            {/* Bracket B */}
+            <div style={{
+              background: 'rgba(30, 41, 59, 0.5)',
+              backdropFilter: 'blur(5px)',
+              borderRadius: '1rem',
+              padding: '1.5rem',
+              border: '1px solid rgba(124, 58, 237, 0.3)',
+              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)',
+              display: 'flex',
+              flexDirection: 'column'
+            }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                marginBottom: '1rem'
+              }}>
+                <div style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  background: 'linear-gradient(135deg, #7c3aed, #4c1d95)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: '0.75rem'
+                }}>
+                  <span style={{color: 'white', fontWeight: '700'}}>B</span>
+                </div>
+                <h3 style={{
+                  fontSize: '1.25rem',
+                  fontWeight: '700',
+                  color: '#a78bfa',
+                  margin: 0
+                }}>Bracket B</h3>
+              </div>
+              
+              <ul style={{
+                listStyle: 'none',
+                padding: '0',
+                margin: '0',
+                flexGrow: 1
+              }}>
+                <li style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginBottom: '0.75rem',
+                  color: '#d1d5db'
+                }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="#a78bfa" style={{width: '1rem', height: '1rem', marginRight: '0.5rem'}}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  11 teams compete (1 team gets bye to Round 2)
+                </li>
+                <li style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginBottom: '0.75rem',
+                  color: '#d1d5db'
+                }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="#a78bfa" style={{width: '1rem', height: '1rem', marginRight: '0.5rem'}}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  2 random winners get direct final slots
+                </li>
+                <li style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  color: '#d1d5db'
+                }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="#a78bfa" style={{width: '1rem', height: '1rem', marginRight: '0.5rem'}}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span style={{fontWeight: '600', color: 'white'}}>2 more slots decided by matches</span>
+                </li>
+              </ul>
+              
+              <div style={{marginTop: '1.5rem'}}>
+                <Link href="/bracket-b" style={{
+                  display: 'inline-block',
+                  padding: '0.75rem 1.25rem',
+                  backgroundColor: 'rgba(124, 58, 237, 0.2)',
+                  color: '#a78bfa',
+                  borderRadius: '0.5rem',
+                  textDecoration: 'none',
+                  fontWeight: '600',
+                  border: '1px solid rgba(124, 58, 237, 0.3)',
+                  transition: 'all 0.2s ease'
+                }}>
+                  View Bracket B
+                </Link>
+              </div>
+            </div>
+            
+            {/* Finals */}
+            <div style={{
+              background: 'rgba(30, 41, 59, 0.5)',
+              backdropFilter: 'blur(5px)',
+              borderRadius: '1rem',
+              padding: '1.5rem',
+              border: '1px solid rgba(234, 88, 12, 0.3)',
+              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)',
+              display: 'flex',
+              flexDirection: 'column'
+            }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                marginBottom: '1rem'
+              }}>
+                <div style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  background: 'linear-gradient(135deg, #ea580c, #c2410c)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: '0.75rem'
+                }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" viewBox="0 0 16 16">
+                    <path d="M2.5.5A.5.5 0 0 1 3 0h10a.5.5 0 0 1 .5.5c0 .538-.012 1.05-.034 1.536a3 3 0 1 1-1.133 5.89c-.79 1.865-1.878 2.777-2.833 3.011v2.173l1.425.356c.194.048.377.135.537.255L13.3 15.1a.5.5 0 0 1-.3.9H3a.5.5 0 0 1-.3-.9l1.838-1.379c.16-.12.343-.207.537-.255L6.5 13.11v-2.173c-.955-.234-2.043-1.146-2.833-3.012a3 3 0 1 1-1.132-5.89A33.076 33.076 0 0 1 2.5.5z"/>
+                  </svg>
+                </div>
+                <h3 style={{
+                  fontSize: '1.25rem',
+                  fontWeight: '700',
+                  color: '#fb923c',
+                  margin: 0
+                }}>Grand Finals</h3>
+              </div>
+              
+              <ul style={{
+                listStyle: 'none',
+                padding: '0',
+                margin: '0',
+                flexGrow: 1
+              }}>
+                <li style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginBottom: '0.75rem',
+                  color: '#d1d5db'
+                }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="#fb923c" style={{width: '1rem', height: '1rem', marginRight: '0.5rem'}}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span style={{fontWeight: '600', color: 'white'}}>4 teams from Bracket A</span>
+                </li>
+                <li style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginBottom: '0.75rem',
+                  color: '#d1d5db'
+                }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="#fb923c" style={{width: '1rem', height: '1rem', marginRight: '0.5rem'}}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span style={{fontWeight: '600', color: 'white'}}>4 teams from Bracket B</span>
+                </li>
+                <li style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  color: '#d1d5db'
+                }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="#fb923c" style={{width: '1rem', height: '1rem', marginRight: '0.5rem'}}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Championship title & prizes
+                </li>
+              </ul>
+              
+              <div style={{marginTop: '1.5rem'}}>
+                <Link href="/finals" style={{
+                  display: 'inline-block',
+                  padding: '0.75rem 1.25rem',
+                  backgroundColor: 'rgba(234, 88, 12, 0.2)',
+                  color: '#fb923c',
+                  borderRadius: '0.5rem',
+                  textDecoration: 'none',
+                  fontWeight: '600',
+                  border: '1px solid rgba(234, 88, 12, 0.3)',
+                  transition: 'all 0.2s ease'
+                }}>
+                  View Finals
+                </Link>
+              </div>
+            </div>
+          </div>
+          
+          {/* Tournament Flow - Added explanation */}
+          <div style={{
+            background: 'rgba(30, 41, 59, 0.5)',
+            backdropFilter: 'blur(5px)',
+            borderRadius: '1rem',
+            padding: '1.5rem',
+            border: '1px solid rgba(255, 184, 0, 0.2)',
+          }}>
+            <h3 style={{
+              fontSize: '1.25rem',
+              fontWeight: '700',
+              color: '#f59e0b',
+              marginBottom: '1rem'
+            }}>🔄 Tournament Flow</h3>
+            
+            <ol style={{
+              color: '#d1d5db',
+              paddingLeft: '1.5rem',
+              marginBottom: '0',
+              display: 'grid',
+              gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+              gap: '1rem'
+            }}>
+              <li>Each bracket has 11 teams, with 1 team getting a bye to Round 2</li>
+              <li>After Round 1, the winners advance to Round 2</li>
+              <li>From Round 2, 2 teams are randomly selected to advance directly to Finals</li>
+              <li>Teams with a bye in Round 1 must play in Round 2</li>
+              <li>Remaining teams compete in matches for the final 2 slots</li>
+              <li>Finals feature 4 teams from each bracket (8 total)</li>
+              <li>Teams play knockout matches until a champion is crowned</li>
+            </ol>
+          </div>
+        </div>
+      </section>
     </Layout>
   );
 } 

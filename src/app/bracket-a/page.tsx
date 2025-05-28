@@ -3,26 +3,17 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { bracketA as _bracketA } from '../../data/teams';
+import { onBracketAMatchesChange, onBracketAByeTeamChange, onBracketASpecialSlotsChange } from '../../firebase/firestore';
+import { UIMatch, convertToUIMatches } from '../../types/adapter';
 
-// Definisikan interface untuk Match
-interface Match {
-  id: number;
-  team1: string;
-  team2: string;
-  date: string;
-  time: string;
-  result: string | null;
-  status: 'scheduled' | 'playing' | 'completed';
-  round?: number;
-}
+// Definisikan tipe untuk Match
+type Match = UIMatch;
 
 const BracketA = () => {
   const [matches, setMatches] = useState<Match[]>([]);
   const [byeTeam, setByeTeam] = useState<string | null>(null);
   const [specialSlotTeams, setSpecialSlotTeams] = useState<string[]>([]);
   const [isMobile, setIsMobile] = useState(false);
-  const [lastUpdate, setLastUpdate] = useState<number>(Date.now());
 
   // Check if device is mobile
   useEffect(() => {
@@ -42,53 +33,24 @@ const BracketA = () => {
     };
   }, []);
 
-  // Load data from localStorage
+  // Load data from Firebase (real-time)
   useEffect(() => {
-    try {
-      // Get matches
-      const storedMatches = localStorage.getItem('bracketA_matches');
-      if (storedMatches) {
-        setMatches(JSON.parse(storedMatches));
-      }
-      
-      // Get bye team (tim yang langsung ke ronde 2)
-      const savedByeTeam = localStorage.getItem('bracketA_byeTeam');
-      if (savedByeTeam) {
-        setByeTeam(JSON.parse(savedByeTeam));
-      }
-      
-      // Get special slot teams (tim yang langsung ke final)
-      const savedSpecialSlots = localStorage.getItem('bracketA_specialSlots');
-      if (savedSpecialSlots) {
-        setSpecialSlotTeams(JSON.parse(savedSpecialSlots));
-      }
-    } catch (error) {
-      console.error('Error loading data from localStorage:', error);
-    }
-  }, [lastUpdate]);
-
-  // Add listener for storage events to detect changes from other tabs
-  useEffect(() => {
-    // Function to handle storage changes
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'bracketA_matches' || e.key === 'bracketA_byeTeam' || e.key === 'bracketA_specialSlots') {
-        console.log('Storage changed, refreshing data...');
-        setLastUpdate(Date.now());
-      }
-    };
-
-    // Add event listener for storage events
-    window.addEventListener('storage', handleStorageChange);
-
-    // Setup polling for changes every 5 seconds
-    const intervalId = setInterval(() => {
-      setLastUpdate(Date.now());
-    }, 5000);
-
-    // Cleanup
+    // Subscribe to matches changes
+    const unsubscribeMatches = onBracketAMatchesChange((matches) => {
+      setMatches(convertToUIMatches(matches));
+    });
+    
+    // Subscribe to bye team changes
+    const unsubscribeByeTeam = onBracketAByeTeamChange(setByeTeam);
+    
+    // Subscribe to special slots changes
+    const unsubscribeSpecialSlots = onBracketASpecialSlotsChange(setSpecialSlotTeams);
+    
+    // Cleanup function
     return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      clearInterval(intervalId);
+      unsubscribeMatches();
+      unsubscribeByeTeam();
+      unsubscribeSpecialSlots();
     };
   }, []);
 
@@ -368,7 +330,7 @@ const BracketA = () => {
                   flexWrap: 'wrap'
                 }}>
                   {specialSlotTeams.map((team, idx) => (
-                    <div key={idx} style={{
+                    <div key={`special-${idx}`} style={{
                       background: 'linear-gradient(135deg, rgba(180, 83, 9, 0.5), rgba(146, 64, 14, 0.3))',
                       borderRadius: '0.75rem',
                       padding: '1rem',
@@ -436,8 +398,8 @@ const BracketA = () => {
                   flexDirection: 'column',
                   gap: '2rem'
                 }}>
-                  {matches.filter(match => (match.round || 1) === 1).map((match, _i) => (
-                    <div key={match.id} style={{
+                  {matches.filter(match => (match.round || 1) === 1).map((match, index) => (
+                    <div key={`round1-${match.id}-${index}`} style={{
                       marginBottom: '2rem'
                     }}>
                       <div style={{
@@ -576,7 +538,7 @@ const BracketA = () => {
                 </div>
               </div>
               
-              {/* Round 2 - Second round of matches */}
+              {/* Round 2 - Second column */}
               <div style={{
                 width: '33.333%',
                 paddingTop: '60px'
@@ -588,12 +550,12 @@ const BracketA = () => {
                   <h3 style={{
                     fontSize: '1.25rem',
                     fontWeight: 'bold',
-                    color: '#60a5fa'
-                  }}>Babak 2</h3>
+                    color: '#a5b4fc'
+                  }}>Round 2</h3>
                   <div style={{
                     width: '4rem',
                     height: '0.125rem',
-                    backgroundColor: '#3b82f6',
+                    backgroundColor: '#6366f1',
                     margin: '0.5rem auto 0'
                   }}></div>
                 </div>
@@ -603,15 +565,15 @@ const BracketA = () => {
                   flexDirection: 'column',
                   gap: '8rem'
                 }}>
-                  {matches.filter(match => (match.round || 0) === 2).map((match, _i) => (
-                    <div key={match.id} style={{
+                  {matches.filter(match => (match.round || 0) === 2).map((match, index) => (
+                    <div key={`round2-${match.id}-${index}`} style={{
                       marginBottom: '2rem'
                     }}>
                       <div style={{
-                        background: 'linear-gradient(135deg, #1f2937, #111827)',
+                        background: 'linear-gradient(135deg, rgba(79, 70, 229, 0.2), rgba(99, 102, 241, 0.1))',
                         borderRadius: '0.75rem',
                         overflow: 'hidden',
-                        border: '1px solid rgba(30, 58, 138, 0.6)',
+                        border: '1px solid rgba(79, 70, 229, 0.6)',
                         boxShadow: '0 10px 25px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1)',
                       }}>
                         {/* Match date */}
@@ -728,7 +690,41 @@ const BracketA = () => {
                     </div>
                   ))}
                   
-                  {matches.filter(match => (match.round || 0) === 2).length === 0 && (
+                  {/* Special Slot for Round 2 - Tampilkan tim yang dapat bye di Round 2 */}
+                  {specialSlotTeams && specialSlotTeams.length > 0 && (
+                    <div style={{
+                      textAlign: 'center',
+                      marginTop: '2rem',
+                      marginBottom: '2rem',
+                      color: '#94a3b8',
+                      fontSize: '0.875rem'
+                    }}>
+                      <span>Tim dengan slot langsung ke ronde berikutnya:</span>
+                      <div style={{
+                        marginTop: '0.5rem',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        flexDirection: 'column',
+                        gap: '0.5rem'
+                      }}>
+                        {specialSlotTeams.map((team, idx) => (
+                          <div key={`round2-special-${idx}`} style={{
+                            backgroundColor: 'rgba(79, 70, 229, 0.2)',
+                            padding: '0.5rem',
+                            borderRadius: '0.375rem',
+                            color: '#a5b4fc',
+                            fontWeight: '500',
+                            fontSize: '0.875rem',
+                            border: '1px solid rgba(79, 70, 229, 0.3)'
+                          }}>
+                            {team}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {matches.filter(match => (match.round || 0) === 2).length === 0 && !specialSlotTeams.length && (
                     <div style={{
                       backgroundColor: 'rgba(30, 41, 59, 0.5)',
                       padding: '1rem',
@@ -782,7 +778,7 @@ const BracketA = () => {
                         gap: '0.5rem'
                       }}>
                         {specialSlotTeams.map((team, idx) => (
-                          <div key={idx} style={{
+                          <div key={`special-final-${idx}`} style={{
                             backgroundColor: 'rgba(234, 88, 12, 0.2)',
                             padding: '0.5rem',
                             borderRadius: '0.375rem',
@@ -798,8 +794,8 @@ const BracketA = () => {
                     </div>
                   )}
                   
-                  {matches.filter(match => (match.round || 0) === 3).map((match, _i) => (
-                    <div key={match.id} style={{
+                  {matches.filter(match => (match.round || 0) === 3).map((match, index) => (
+                    <div key={`round3-${match.id}-${index}`} style={{
                       marginBottom: '2rem'
                     }}>
                       <div style={{
@@ -937,28 +933,28 @@ const BracketA = () => {
                   )}
                 </div>
               </div>
-        </div>
-        
-            <div style={{
-              textAlign: 'center',
-              marginTop: '3rem',
-              marginBottom: '1rem'
-            }}>
-              <h3 style={{
-                fontSize: '1.5rem',
-                fontWeight: 'bold',
-                color: 'white',
-                marginBottom: '0.5rem'
-              }}>Top 2 dari Bracket A akan maju ke Quarter Final</h3>
-              <p style={{
-                color: '#94a3b8',
-                fontSize: '1rem'
-              }}>Pertandingan dimulai tanggal 28 Mei 2025</p>
             </div>
           </div>
         </div>
-        </div>
         
+        <div style={{
+          textAlign: 'center',
+          marginTop: '3rem',
+          marginBottom: '1rem'
+        }}>
+          <h3 style={{
+            fontSize: '1.5rem',
+            fontWeight: 'bold',
+            color: 'white',
+            marginBottom: '0.5rem'
+          }}>Top 2 dari Bracket A akan maju ke Quarter Final</h3>
+          <p style={{
+            color: '#94a3b8',
+            fontSize: '1rem'
+          }}>Pertandingan dimulai tanggal 28 Mei 2025</p>
+        </div>
+      </div>
+
       {/* Footer */}
       <footer style={{
         backgroundColor: 'rgba(15, 23, 42, 0.95)',

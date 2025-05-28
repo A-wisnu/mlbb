@@ -4,14 +4,30 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import { auth } from '../../firebase/config';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { onAuthStateChanged } from 'firebase/auth';
 
-const AdminLogin = () => {
-  const [username, setUsername] = useState('');
+const AdminPage = () => {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
+
+  // Check authentication state
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setIsLoading(false);
+      if (user) {
+        router.push('/admin/dashboard');
+      }
+    });
+
+    return () => unsubscribe();
+  }, [router]);
 
   // Check if device is mobile
   useEffect(() => {
@@ -31,21 +47,62 @@ const AdminLogin = () => {
     };
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
-    // Simple authentication check (in a real app, this would be a server request)
-    setTimeout(() => {
-      if (username === 'bijikelapa' && password === 'kelapatakpunyabiji') {
-        router.push('/admin/dashboard');
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      router.push('/admin/dashboard');
+    } catch (error: any) {
+      console.error('Login error:', error);
+      
+      // Handle Firebase auth errors
+      if (error.code === 'auth/invalid-credential' || 
+          error.code === 'auth/user-not-found' || 
+          error.code === 'auth/wrong-password') {
+        setError('Email atau password salah');
+      } else if (error.code === 'auth/too-many-requests') {
+        setError('Terlalu banyak percobaan. Coba lagi nanti');
       } else {
-        setError('Username atau password salah');
-        setLoading(false);
+        setError('Gagal masuk: ' + error.message);
       }
-    }, 1000);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  if (isLoading) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#111827'
+      }}>
+        <div style={{ textAlign: 'center', color: 'white' }}>
+          <div className="spinner" style={{
+            border: '4px solid rgba(255, 255, 255, 0.1)',
+            borderTop: '4px solid white',
+            borderRadius: '50%',
+            width: '40px',
+            height: '40px',
+            animation: 'spin 1s linear infinite',
+            margin: '0 auto 1rem'
+          }}></div>
+          <p>Memuat...</p>
+          <style jsx>{`
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+          `}</style>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{
@@ -189,7 +246,7 @@ const AdminLogin = () => {
               marginBottom: '1.5rem'
             }}>
               <label 
-                htmlFor="username" 
+                htmlFor="email" 
                 style={{
                   display: 'block',
                   marginBottom: '0.5rem',
@@ -198,13 +255,13 @@ const AdminLogin = () => {
                   fontWeight: '500'
                 }}
               >
-                Username
+                Email
               </label>
               <input 
-                type="text"
-                id="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 style={{
                   width: '100%',
                   padding: '0.75rem 1rem',
@@ -219,7 +276,7 @@ const AdminLogin = () => {
                   overflowWrap: 'break-word',
                   wordWrap: 'break-word'
                 }}
-                placeholder="Masukkan username"
+                placeholder="Masukkan email"
                 required
               />
             </div>
@@ -254,11 +311,9 @@ const AdminLogin = () => {
                   fontSize: '1rem',
                   outline: 'none',
                   transition: 'all 0.3s ease',
-                  boxSizing: 'border-box',
-                  overflowWrap: 'break-word',
-                  wordWrap: 'break-word'
+                  boxSizing: 'border-box'
                 }}
-                placeholder="••••••••••••"
+                placeholder="Masukkan password"
                 required
               />
             </div>
@@ -268,11 +323,11 @@ const AdminLogin = () => {
               disabled={loading}
               style={{
                 width: '100%',
-                padding: '0.875rem 1.5rem',
+                padding: '0.75rem 1rem',
                 backgroundColor: loading ? 'rgba(79, 70, 229, 0.5)' : 'rgba(79, 70, 229, 0.8)',
                 color: 'white',
                 borderRadius: '0.5rem',
-                border: '1px solid rgba(79, 70, 229, 0.6)',
+                border: 'none',
                 fontSize: '1rem',
                 fontWeight: '600',
                 cursor: loading ? 'not-allowed' : 'pointer',
@@ -286,47 +341,62 @@ const AdminLogin = () => {
             >
               {loading ? (
                 <>
-                  <svg className="animate-spin" style={{
-                    height: '1.25rem',
-                    width: '1.25rem',
-                    animation: 'spin 1s linear infinite'
-                  }} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle style={{opacity: '0.25'}} cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path style={{opacity: '0.75'}} fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  <svg 
+                    style={{
+                      animation: 'spin 1s linear infinite',
+                      width: '1.25rem',
+                      height: '1.25rem'
+                    }}
+                    viewBox="0 0 24 24"
+                  >
+                    <circle 
+                      style={{
+                        opacity: 0.25
+                      }}
+                      cx="12" 
+                      cy="12" 
+                      r="10" 
+                      stroke="currentColor" 
+                      strokeWidth="4" 
+                      fill="none" 
+                    />
+                    <path 
+                      style={{
+                        opacity: 0.75
+                      }}
+                      fill="currentColor" 
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    />
                   </svg>
-                  Memproses...
+                  <span>Memproses...</span>
                 </>
               ) : 'Masuk'}
+              <style jsx>{`
+                @keyframes spin {
+                  0% { transform: rotate(0deg); }
+                  100% { transform: rotate(360deg); }
+                }
+              `}</style>
             </button>
           </form>
+
+          <div style={{
+            marginTop: '2rem',
+            textAlign: 'center'
+          }}>
+            <Link href="/" style={{
+              color: '#8b5cf6',
+              fontSize: '0.875rem',
+              textDecoration: 'none',
+              transition: 'color 0.2s'
+            }}>
+              Kembali ke halaman utama
+            </Link>
+          </div>
         </div>
       </main>
-
-      {/* Footer */}
-      <footer style={{
-        position: 'relative',
-        zIndex: 10,
-        padding: '1rem',
-        textAlign: 'center',
-        color: '#9ca3af',
-        fontSize: '0.875rem'
-      }}>
-        <p>© 2025 ML Tournament Admin Panel. All rights reserved.</p>
-      </footer>
-
-      {/* Add animation keyframes with useEffect */}
-      <style jsx global>{`
-        @keyframes spin {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg);
-          }
-        }
-      `}</style>
     </div>
   );
 };
 
-export default AdminLogin; 
+export default AdminPage; 

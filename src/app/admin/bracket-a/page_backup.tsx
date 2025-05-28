@@ -4,21 +4,21 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { bracketA } from '../../../data/teams';
-import {
-  saveBracketAMatches,
-  getBracketAMatches,
-  onBracketAMatchesChange,
-  saveBracketAByeTeam,
-  getBracketAByeTeam,
-  onBracketAByeTeamChange,
-  saveBracketASpecialSlots,
+import { 
+  getBracketAMatches, 
+  getBracketAByeTeam, 
   getBracketASpecialSlots,
+  saveBracketAMatches,
+  saveBracketAByeTeam,
+  saveBracketASpecialSlots,
+  onBracketAMatchesChange,
+  onBracketAByeTeamChange,
   onBracketASpecialSlotsChange
 } from '../../../firebase/firestore';
 import { UIMatch, convertToUIMatches, convertToGlobalMatches } from '../../../types/adapter';
 
 // Define Match interface
-interface Match extends UIMatch {} // Use UIMatch
+interface Match extends UIMatch {}
 
 // Define RandomizeResults interface
 interface RandomizeResults {
@@ -51,51 +51,51 @@ const BracketAPage = () => {
   const [toastMessage, setToastMessage] = useState('');
   const [toastType, setToastType] = useState<'success' | 'error' | 'info'>('success');
   
-  // State variables for Firebase data
+  // State variables for data
   const [byeTeam, setByeTeam] = useState<string | null>(null);
   const [specialSlots, setSpecialSlots] = useState<string[]>([]);
 
-  // Load data from Firebase on mount and set up listeners
+  // Load data from Firebase on mount
   useEffect(() => {
     const fetchInitialData = async () => {
-    try {
-      // Load matches
+      try {
+        // Load matches
         const savedMatches = await getBracketAMatches();
         if (savedMatches && savedMatches.length > 0) {
           setMatches(convertToUIMatches(savedMatches));
-      } else {
-        // Initialize with some sample data if none exists
-        const initialMatches: Match[] = [
-            { id: 1, team1: bracketA[0], team2: bracketA[1], date: '2025-05-28', time: '14:00', result: null, status: 'scheduled', round: 1 },
-            { id: 2, team1: bracketA[2], team2: bracketA[3], date: '2025-05-28', time: '16:00', result: null, status: 'scheduled', round: 1 },
-            { id: 3, team1: bracketA[4], team2: bracketA[5], date: '2025-05-29', time: '14:00', result: null, status: 'scheduled', round: 1 },
-            { id: 4, team1: bracketA[6], team2: bracketA[7], date: '2025-05-29', time: '16:00', result: null, status: 'scheduled', round: 1 },
-            { id: 5, team1: bracketA[8], team2: bracketA[9], date: '2025-05-30', time: '14:00', result: null, status: 'scheduled', round: 1 },
-        ];
-        setMatches(initialMatches);
+        } else {
+          // Initialize with some sample data if none exists
+          const initialMatches: Match[] = [
+            { id: 1, team1: bracketA[0], team2: bracketA[1], date: '2025-05-28', time: '14:00', result: null, status: 'scheduled' },
+            { id: 2, team1: bracketA[2], team2: bracketA[3], date: '2025-05-28', time: '16:00', result: null, status: 'scheduled' },
+            { id: 3, team1: bracketA[4], team2: bracketA[5], date: '2025-05-29', time: '14:00', result: null, status: 'scheduled' },
+            { id: 4, team1: bracketA[6], team2: bracketA[7], date: '2025-05-29', time: '16:00', result: null, status: 'scheduled' },
+            { id: 5, team1: bracketA[8], team2: bracketA[9], date: '2025-05-30', time: '14:00', result: null, status: 'scheduled' },
+          ];
+          setMatches(initialMatches);
           await saveBracketAMatches(convertToGlobalMatches(initialMatches));
-      }
-      
-      // Load bye team
+        }
+        
+        // Load bye team
         const savedByeTeam = await getBracketAByeTeam();
         if (savedByeTeam !== null) {
           setByeTeam(savedByeTeam);
-      }
-      
-      // Load special slots
+        }
+        
+        // Load special slots
         const savedSpecialSlots = await getBracketASpecialSlots();
         if (savedSpecialSlots && savedSpecialSlots.length > 0) {
           setSpecialSlots(savedSpecialSlots);
-      }
-    } catch (error) {
+        }
+      } catch (error) {
         console.error('Error loading data from Firebase:', error);
-      // Set default matches if there's an error
-      const initialMatches: Match[] = [
-          { id: 1, team1: bracketA[0], team2: bracketA[1], date: '2025-05-28', time: '14:00', result: null, status: 'scheduled', round: 1 },
-          { id: 2, team1: bracketA[2], team2: bracketA[3], date: '2025-05-28', time: '16:00', result: null, status: 'scheduled', round: 1 },
-      ];
-      setMatches(initialMatches);
-    }
+        // Set default matches if there's an error
+        const initialMatches: Match[] = [
+          { id: 1, team1: bracketA[0], team2: bracketA[1], date: '2025-05-28', time: '14:00', result: null, status: 'scheduled' },
+          { id: 2, team1: bracketA[2], team2: bracketA[3], date: '2025-05-28', time: '16:00', result: null, status: 'scheduled' },
+        ];
+        setMatches(initialMatches);
+      }
     };
     
     fetchInitialData();
@@ -113,6 +113,13 @@ const BracketAPage = () => {
       unsubscribeSpecialSlots();
     };
   }, []);
+
+  // Save matches to Firebase whenever they change
+  useEffect(() => {
+    if (matches && matches.length > 0) {
+      saveBracketAMatches(convertToGlobalMatches(matches));
+    }
+  }, [matches]);
 
   // Check if device is mobile
   useEffect(() => {
@@ -137,25 +144,17 @@ const BracketAPage = () => {
   };
 
   const handleResultChange = async (matchId: number, result: string) => {
-    const updatedMatches = matches.map(match => {
-      if (match.id === matchId) {
-        console.log(`Setting result for match ID ${matchId} (round ${match.round}) to ${result}`);
-        return { ...match, result, status: 'completed' as const };
-      }
-      return match;
-    });
+    const updatedMatches = matches.map(match => 
+      match.id === matchId ? { ...match, result, status: 'completed' as const } : match
+    );
     setMatches(updatedMatches);
     await saveBracketAMatches(convertToGlobalMatches(updatedMatches));
   };
 
   const handleStatusChange = async (matchId: number, status: 'scheduled' | 'playing' | 'completed') => {
-    const updatedMatches = matches.map(match => {
-      if (match.id === matchId) {
-        console.log(`Setting status for match ID ${matchId} (round ${match.round}) to ${status}`);
-        return { ...match, status };
-      }
-      return match;
-    });
+    const updatedMatches = matches.map(match => 
+      match.id === matchId ? { ...match, status } : match
+    );
     setMatches(updatedMatches);
     await saveBracketAMatches(convertToGlobalMatches(updatedMatches));
   };
@@ -193,11 +192,15 @@ const BracketAPage = () => {
       const updatedMatches = matches.filter(match => match.id !== matchId);
       setMatches(updatedMatches);
       await saveBracketAMatches(convertToGlobalMatches(updatedMatches));
+      
       // Show success toast
       setToastMessage('Pertandingan berhasil dihapus!');
       setToastType('success');
       setShowToast(true);
-      setTimeout(() => setShowToast(false), 3000);
+      
+      setTimeout(() => {
+        setShowToast(false);
+      }, 3000);
     }
   };
 
@@ -212,9 +215,7 @@ const BracketAPage = () => {
   };
 
   const handleSubmitForm = async (e: React.FormEvent) => {
-    if (e && e.preventDefault) {
-      e.preventDefault();
-    }
+    e.preventDefault();
     
     if (formData.team1.trim() === '' || formData.team2.trim() === '') {
       alert('Mohon isi nama kedua tim!');
@@ -225,42 +226,40 @@ const BracketAPage = () => {
       alert('Mohon isi tanggal dan waktu pertandingan!');
       return;
     }
-
-    let finalFormData = { ...formData };
-    if (!finalFormData.round) { // Default round to 1 if not set
-        finalFormData.round = 1;
+    
+    // Generate an ID if this is a new match
+    if (formData.id === 0) {
+      const maxId = matches.length > 0 ? Math.max(...matches.map(m => m.id)) : 0;
+      formData.id = maxId + 1;
     }
-
-
-    let updatedMatchesArray: Match[];
+    
+    let updatedMatches: Match[];
     
     if (editingMatch) {
       // Update existing match
-      updatedMatchesArray = matches.map(match =>
-        match.id === editingMatch.id ? { ...finalFormData, id: editingMatch.id } : match
+      updatedMatches = matches.map(match => 
+        match.id === formData.id ? formData : match
       );
     } else {
       // Add new match
-      const newId = matches.length > 0 ? Math.max(...matches.map(m => m.id)) + 1 : 1;
-      const newMatch: Match = { 
-        ...finalFormData,
-        id: newId, 
-        result: null, // ensure result is null for new matches
-        status: finalFormData.status || 'scheduled' // ensure status is set
-      };
-      updatedMatchesArray = [...matches, newMatch];
+      updatedMatches = [...matches, formData];
     }
-    setMatches(updatedMatchesArray);
-    await saveBracketAMatches(convertToGlobalMatches(updatedMatchesArray));
     
+    setMatches(updatedMatches);
+    await saveBracketAMatches(convertToGlobalMatches(updatedMatches));
+    
+    // Reset and close modal
     setShowAddMatchModal(false);
-    setEditingMatch(null); // Reset editing match
-
+    setEditingMatch(null);
+    
     // Show success toast
     setToastMessage(`Pertandingan berhasil ${editingMatch ? 'diperbarui' : 'ditambahkan'}!`);
     setToastType('success');
     setShowToast(true);
-    setTimeout(() => setShowToast(false), 3000);
+    
+    setTimeout(() => {
+      setShowToast(false);
+    }, 3000);
   };
 
   // Function to shuffle an array (Fisher-Yates algorithm)
@@ -310,9 +309,9 @@ const BracketAPage = () => {
     const newMatches = [...round1Matches];
     
     // Tetapkan GOGLAK ESPORT sebagai bye team
-    const currentByeTeam = "GOGLAK ESPORT"; // Example, can be dynamic
-    setByeTeam(currentByeTeam);
-    await saveBracketAByeTeam(currentByeTeam);
+    const byeTeam = "GOGLAK ESPORT";
+    setByeTeam(byeTeam);
+    await saveBracketAByeTeam(byeTeam);
     
     // Tanggal untuk Ronde 2 dan Final
     const round2Date = new Date();
@@ -324,20 +323,20 @@ const BracketAPage = () => {
     const finalsDateStr = finalsDate.toISOString().split('T')[0];
     
     // Filter pemenang Ronde 1 yang tersedia untuk Ronde 2 (kecuali bye team)
-    const availableWinners = round1Winners.filter(team => team !== currentByeTeam);
+    const availableWinners = round1Winners.filter(team => team !== byeTeam);
     
     // Pilih 2 tim terbaik untuk special slots (langsung ke Final)
-    let newSpecialSlotTeams: string[] = [...specialSlots];
+    let specialSlotTeams: string[] = [...specialSlots];
     
     // Jika belum ada special slots dan kita punya cukup pemenang Ronde 1
-    if (newSpecialSlotTeams.length === 0 && availableWinners.length >= 2) {
-      newSpecialSlotTeams = [availableWinners[0], availableWinners[1]];
-      setSpecialSlots(newSpecialSlotTeams);
-      await saveBracketASpecialSlots(newSpecialSlotTeams);
+    if (specialSlotTeams.length === 0 && availableWinners.length >= 2) {
+      specialSlotTeams = [availableWinners[0], availableWinners[1]];
+      setSpecialSlots(specialSlotTeams);
+      await saveBracketASpecialSlots(specialSlotTeams);
     }
     
     // Tim yang tersedia untuk Ronde 2 (kecuali special slots)
-    const teamsForRound2 = availableWinners.filter(team => !newSpecialSlotTeams.includes(team));
+    const teamsForRound2 = availableWinners.filter(team => !specialSlotTeams.includes(team));
     
     // Jika sudah ada match di Ronde 2, gunakan itu
     // Jika belum ada atau jumlahnya kurang, buat match baru
@@ -366,7 +365,7 @@ const BracketAPage = () => {
       // Match 2 untuk Ronde 2 (dengan bye team)
       newMatches.push({
         id: nextId++,
-        team1: currentByeTeam,
+        team1: byeTeam,
         team2: teamsForRound2.length > 2 ? teamsForRound2[2] : "",
         date: round2DateStr,
         time: "16:00",
@@ -391,11 +390,11 @@ const BracketAPage = () => {
     }
     
     // Match untuk Special Slots di Final (selalu dibuat karena sudah punya special slot)
-    if (newSpecialSlotTeams.length > 0) {
+    if (specialSlotTeams.length > 0) {
       newMatches.push({
         id: nextId++,
-        team1: newSpecialSlotTeams[0],
-        team2: newSpecialSlotTeams.length > 1 ? newSpecialSlotTeams[1] : "",
+        team1: specialSlotTeams[0],
+        team2: specialSlotTeams.length > 1 ? specialSlotTeams[1] : "",
         date: finalsDateStr,
         time: "15:00",
         result: null,
@@ -436,9 +435,9 @@ const BracketAPage = () => {
   };
 
   // Function to generate automatic placeholder matches for Round 2 and Finals
-  const _generatePlaceholderMatches = () => {
+  const _generatePlaceholderMatches = async () => {
     // Gunakan fungsi baru untuk membuat bracket
-    createOrUpdateBracket();
+    await createOrUpdateBracket();
   };
 
   // Function to randomize teams and create matches
@@ -447,24 +446,21 @@ const BracketAPage = () => {
     
     // Simulate some processing time to show animation
     setTimeout(async () => {
-      try {
       // Shuffle all teams from Bracket A
       const shuffledTeams = shuffleArray([...bracketA]);
       
       // The last team gets a bye in Round 1 (langsung ke ronde 2)
       const newByeTeam = shuffledTeams.pop();
       
-        // Save bye team to state and Firebase for future rounds
+      // Save bye team to state and Firebase for future rounds
       if (newByeTeam) {
         setByeTeam(newByeTeam);
-          await saveBracketAByeTeam(newByeTeam);
-        } else {
-          await saveBracketAByeTeam(null); // Clear bye team if none
+        await saveBracketAByeTeam(newByeTeam);
       }
       
       // Reset special slots
       setSpecialSlots([]);
-        await saveBracketASpecialSlots([]);
+      await saveBracketASpecialSlots([]);
       
       // Remaining teams to be paired for matches (10 tim)
       const teamsForMatches = shuffledTeams;
@@ -487,9 +483,9 @@ const BracketAPage = () => {
       // Reset all matches in round 2 and finals
       // Only keep Round 1 matches
       
-        // Save matches to state and Firebase
+      // Save matches to state and Firebase
       setMatches(round1Matches);
-        await saveBracketAMatches(convertToGlobalMatches(round1Matches));
+      await saveBracketAMatches(convertToGlobalMatches(round1Matches));
       
       // Display results
       setRandomizeResults({
@@ -497,304 +493,74 @@ const BracketAPage = () => {
         round1Matches,
       });
       
-      // Show toast message
-      setToastMessage('Tim berhasil diacak dan bracket direset!');
-      setToastType('success');
+      setIsRandomizing(false);
+      setShowRandomizeModal(true);
+    }, 1500);
+  };
+
+  // Function to handle the simulation of next round
+  const _handleSimulateRound = async () => {
+    // Simulasikan beberapa hasil pertandingan sekaligus untuk Round 1
+    
+    // Dapatkan semua pertandingan Round 1 yang belum memiliki hasil
+    const round1Matches = matches.filter(m => (m.round || 1) === 1 && m.result === null);
+    
+    if (round1Matches.length === 0) {
+      // Semua pertandingan Round 1 sudah selesai
+      // Update bracket untuk Round 2 dan Final
+      await createOrUpdateBracket();
+      
+      // Set status semua pertandingan Round 2 ke 'playing'
+      const updatedMatches = matches.map(match => {
+        if ((match.round || 0) === 2) {
+          return { ...match, status: 'playing' as const };
+        }
+        return match;
+      });
+      
+      setMatches(updatedMatches);
+      await saveBracketAMatches(convertToGlobalMatches(updatedMatches));
+      
+      // Tampilkan toast
+      setToastMessage('Semua pertandingan Round 1 sudah selesai. Round 2 dimulai!');
+      setToastType('info');
       setShowToast(true);
       
       setTimeout(() => {
         setShowToast(false);
       }, 3000);
-      } catch (error) {
-        console.error("Error randomizing teams:", error);
-        setToastMessage('Gagal mengacak tim. Coba lagi.');
-        setToastType('error');
-        setShowToast(true);
-        setTimeout(() => setShowToast(false), 3000);
-      } finally {
-      setIsRandomizing(false);
-      }
-    }, 1500); // 1.5 seconds of animation
-  };
-
-  // Function to simulate matches and advance winners to the next round
-  const _handleSimulateRound = async () => {
-    setIsRandomizing(true);
-    
-    try {
-    // Get all matches from the current round
-      const currentRound = Math.max(0, ...matches.map(m => m.round || 1)); // ensure currentRound is at least 0 or 1
-    const currentRoundMatches = matches.filter(m => (m.round || 1) === currentRound);
-    const otherMatches = matches.filter(m => (m.round || 1) !== currentRound);
       
-      if (currentRoundMatches.length === 0) {
-          setToastMessage(`Tidak ada pertandingan di Ronde ${currentRound} untuk disimulasikan.`);
-          setToastType('info');
-          setShowToast(true);
-          setTimeout(() => setShowToast(false), 3000);
-          setIsRandomizing(false);
-          return;
-      }
+      return;
+    }
     
-    // Simulate results for matches without results
-    const simulatedMatches = currentRoundMatches.map(match => {
-      if (match.result) return match; // Skip matches with existing results
-      
-      // Randomly determine winner
-      const winner = Math.random() > 0.5 ? 'team1' : 'team2';
-      return { ...match, result: winner, status: 'completed' as const };
+    // Simulasikan hasil untuk semua pertandingan Round 1 yang belum selesai
+    const updatedMatches = matches.map(match => {
+      if ((match.round || 1) === 1 && match.result === null) {
+        // Acak hasil (50/50)
+        const randomResult = Math.random() < 0.5 ? 'team1' : 'team2';
+        return {
+          ...match,
+          result: randomResult,
+          status: 'completed' as const
+        };
+      }
+      return match;
     });
     
-    // Get winning teams from simulated matches
-      const winners = simulatedMatches
-        .filter(match => match.result) // only consider matches with a result
-        .map(match => (match.result === 'team1' ? match.team1 : match.team2));
+    setMatches(updatedMatches);
+    await saveBracketAMatches(convertToGlobalMatches(updatedMatches));
     
-    // Get saved bye team if exists (tim yang langsung ke ronde 2 dari ronde 1)
-      const savedByeTeam = await getBracketAByeTeam(); // get from Firebase
-    let byeTeamFromRound1: string | undefined = undefined;
-    if (currentRound === 1 && savedByeTeam) {
-        byeTeamFromRound1 = savedByeTeam;
-    }
+    // Tampilkan toast
+    setToastMessage('Pertandingan Round 1 berhasil disimulasikan!');
+    setToastType('success');
+    setShowToast(true);
     
-    // All teams advancing to next round
-    const allAdvancingTeams = [...winners];
+    setTimeout(() => {
+      setShowToast(false);
+    }, 3000);
     
-    // Prepare special slots for round 2 and regular matches
-      let nextRoundMatches: Match[] = []; // Use let instead of const
-      let currentSpecialSlotTeams: string[] = await getBracketASpecialSlots() || []; // Use let and get from Firebase
-    
-    if (currentRound === 1) {
-      // Check if all matches in Round 1 have results
-      const allRound1Completed = simulatedMatches.every(match => match.result !== null);
-      
-      if (!allRound1Completed) {
-        // If some matches don't have results, just update the simulated ones
-        const updatedMatches = [...otherMatches, ...simulatedMatches];
-        setMatches(updatedMatches);
-          await saveBracketAMatches(convertToGlobalMatches(updatedMatches));
-        setIsRandomizing(false);
-        return;
-      }
-      
-      // For round 1 -> round 2 transition: we need 2 special slots
-      // The team that had a bye in round 1 cannot get a special slot in round 2
-      
-      // Shuffle winners to randomize who gets special slots
-      const shuffledWinners = shuffleArray([...winners]);
-      
-      // Get 2 lucky teams for special slots (cannot include byeTeamFromRound1)
-      let specialSlotsCount = 0;
-      const remainingTeams: string[] = [];
-        currentSpecialSlotTeams = []; // Reset before populating
-      
-      shuffledWinners.forEach(team => {
-        if (specialSlotsCount < 2 && team !== byeTeamFromRound1) {
-            currentSpecialSlotTeams.push(team);
-          specialSlotsCount++;
-        } else {
-          remainingTeams.push(team);
-        }
-      });
-      
-      // Create or update Round 2 matches
-      const round2Date = new Date();
-      round2Date.setDate(round2Date.getDate() + 3); // 3 days after today
-      const round2DateStr = round2Date.toISOString().split('T')[0];
-      
-      // Create match 1 for Round 2
-      const existingRound2 = otherMatches.filter(m => (m.round || 0) === 2);
-        let round2Id = simulatedMatches.length > 0 ? Math.max(0, ...simulatedMatches.map(m => m.id)) + 1 : (matches.length > 0 ? Math.max(0, ...matches.map(m => m.id)) + 1 : 1);
-        
-        nextRoundMatches = []; // Reset nextRoundMatches
-      
-      // If we have remaining teams from round 1 winners (excluding special slots)
-      if (remainingTeams.length > 0) {
-            if (remainingTeams.length >= 2) {
-          nextRoundMatches.push({
-            id: round2Id++,
-            team1: remainingTeams[0] || "TBD",
-                    team2: remainingTeams[1] || "TBD",
-                    date: round2DateStr,
-                    time: '14:00',
-                    result: null,
-                    status: 'scheduled' as const,
-                    round: 2
-                });
-            } else if (remainingTeams.length === 1 && byeTeamFromRound1) { // If one remaining and bye team exists
-                 nextRoundMatches.push({
-                    id: round2Id++,
-                    team1: remainingTeams[0],
-                    team2: byeTeamFromRound1, // Pair with bye team
-            date: round2DateStr,
-            time: '14:00',
-            result: null,
-            status: 'scheduled' as const,
-            round: 2
-          });
-        }
-        } else if (byeTeamFromRound1) { // If no remaining winners but bye team exists
-             // This case might need special handling if bye team should auto-advance or wait
-        }
-
-
-        // Create or update match for bye team if not already paired
-        if (byeTeamFromRound1 && !nextRoundMatches.some(m => m.team1 === byeTeamFromRound1 || m.team2 === byeTeamFromRound1)) {
-          const opponentForByeTeam = remainingTeams.length > (nextRoundMatches.length * 2) ? remainingTeams[nextRoundMatches.length * 2] : "TBD";
-           if (opponentForByeTeam !== "TBD" || (remainingTeams.length > 1 && opponentForByeTeam === "TBD" )) { // Ensure there's an opponent or it's a valid TBD scenario
-          nextRoundMatches.push({
-            id: round2Id++,
-            team1: byeTeamFromRound1,
-            team2: opponentForByeTeam,
-            date: round2DateStr,
-            time: '16:00',
-            result: null,
-            status: 'scheduled' as const,
-            round: 2
-          });
-        }
-      }
-      
-      // Create additional Round 2 match if needed
-        const teamsInRound2SoFar = nextRoundMatches.flatMap(m => [m.team1, m.team2]);
-        const remainingForAdditionalMatch = remainingTeams.filter(t => !teamsInRound2SoFar.includes(t) && t !== byeTeamFromRound1);
-
-        if (remainingForAdditionalMatch.length >= 2) {
-        nextRoundMatches.push({
-          id: round2Id++,
-            team1: remainingForAdditionalMatch[0] || "TBD",
-            team2: remainingForAdditionalMatch[1] || "TBD",
-          date: round2DateStr,
-          time: '18:00',
-          result: null,
-          status: 'scheduled' as const,
-          round: 2
-        });
-      }
-      
-      // Save special slots for future reference
-        await saveBracketASpecialSlots(currentSpecialSlotTeams);
-        setSpecialSlots(currentSpecialSlotTeams); // Update state
-      
-      // Combine all Round 2 matches
-        const allRound2Matches = [...nextRoundMatches]; // We are creating new, not updating existingRound2 here
-      
-      // Create Finals matches
-      const finalsDate = new Date();
-      finalsDate.setDate(finalsDate.getDate() + 7); // 7 days after today
-      const finalsDateStr = finalsDate.toISOString().split('T')[0];
-      
-      // Create match for special slot teams
-      const finalsMatches: Match[] = [];
-        if (currentSpecialSlotTeams.length === 2) {
-        finalsMatches.push({
-            id: round2Id + nextRoundMatches.length, // ensure unique ID
-            team1: currentSpecialSlotTeams[0],
-            team2: currentSpecialSlotTeams[1],
-          date: finalsDateStr,
-          time: '15:00',
-          result: null,
-          status: 'scheduled' as const,
-          round: 3
-        });
-      }
-      
-      // Combine previous matches with simulated ones and new round
-      const updatedMatches = [
-          ...otherMatches.filter(m => (m.round || 0) < 2), // Keep only rounds before 2
-          ...simulatedMatches, // Round 1 results
-          ...allRound2Matches, // New Round 2 matches
-          ...finalsMatches      // New Finals matches from special slots
-      ];
-      
-      // Show results
-      setRandomizeResults({
-        simulatedMatches,
-        nextRoundMatches: allRound2Matches,
-        byeTeam: byeTeamFromRound1,
-          specialSlotTeams: currentSpecialSlotTeams
-      });
-      
-        // Save to state and Firebase
-      setMatches(updatedMatches);
-        await saveBracketAMatches(convertToGlobalMatches(updatedMatches));
-
-    } else if (currentRound === 2) {
-      // For round 2 -> finals transition
-      const shuffledWinners = shuffleArray(allAdvancingTeams);
-      
-        // Get special slot teams that are already in Finals (if any)
-        const existingSpecialSlotTeams = await getBracketASpecialSlots() || [];
-      
-      // Create Finals match with winners from Round 2
-      const finalsDate = new Date();
-      finalsDate.setDate(finalsDate.getDate() + 3); // 3 days after today
-      const finalsDateStr = finalsDate.toISOString().split('T')[0];
-        
-        nextRoundMatches = []; // Reset for finals
-      
-      if (shuffledWinners.length > 0) {
-          const finalMatchId = (matches.length > 0 ? Math.max(0, ...matches.map(m => m.id)) : 0) + 1;
-          nextRoundMatches.push({ // This is a new finals match
-            id: finalMatchId,
-          team1: shuffledWinners[0],
-            team2: shuffledWinners.length > 1 ? shuffledWinners[1] : "TBD", // Pair first two winners
-          date: finalsDateStr,
-          time: '17:00',
-          result: null,
-          status: 'scheduled' as const,
-          round: 3
-        });
-      }
-      
-      // Combine previous matches with simulated ones and new round
-        // Keep existing special slot final matches, add new final match from R2 winners
-        const updatedMatches = [
-            ...otherMatches.filter(m => (m.round || 0) < 3 || (m.round === 3 && existingSpecialSlotTeams.includes(m.team1) && existingSpecialSlotTeams.includes(m.team2))), // Keep rounds before 3 and existing special slot final
-            ...simulatedMatches, // Round 2 results
-            ...nextRoundMatches  // New final match from R2 winners
-        ];
-      
-      // Show results
-      setRandomizeResults({
-        simulatedMatches,
-          nextRoundMatches, // Contains the new final match
-          specialSlotTeams: existingSpecialSlotTeams // Show the teams that were already in final via special slot
-      });
-      
-        // Save to state and Firebase
-      setMatches(updatedMatches);
-        await saveBracketAMatches(convertToGlobalMatches(updatedMatches));
-
-      } else { // currentRound === 3 (Finals) or higher (should not happen)
-      // For finals (no more rounds after this)
-      // Just update the match results
-      const updatedMatches = [...otherMatches, ...simulatedMatches];
-      
-      // Show results
-      setRandomizeResults({
-        simulatedMatches
-      });
-      
-        // Save to state and Firebase
-      setMatches(updatedMatches);
-        await saveBracketAMatches(convertToGlobalMatches(updatedMatches));
-      }
-      
-      setToastMessage('Simulasi Ronde Berhasil!');
-      setToastType('success');
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 3000);
-
-    } catch (error) {
-        console.error("Error simulating round:", error);
-        setToastMessage('Gagal mensimulasikan ronde. Coba lagi.');
-        setToastType('error');
-        setShowToast(true);
-        setTimeout(() => setShowToast(false), 3000);
-    } finally {
-    setIsRandomizing(false);
-    }
+    // Update bracket untuk Round 2 dan Final
+    await createOrUpdateBracket();
   };
 
   // Status label component
@@ -1087,7 +853,8 @@ const BracketAPage = () => {
             }}
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+              <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
             </svg>
             Tambah Pertandingan
           </button>
@@ -1210,392 +977,514 @@ const BracketAPage = () => {
                 }}>
                   {matches.filter(m => (m.round || 1) === 1).length > 0 ? (
                     matches.filter(m => (m.round || 1) === 1).map((match, idx) => (
-                      <div key={`admin-match-${match.id}-${idx}`} style={{
-                background: 'linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(67, 56, 202, 0.05))',
-                borderRadius: '1rem',
-                overflow: 'hidden',
-                border: '1px solid rgba(79, 70, 229, 0.2)',
-                boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-                transition: 'all 0.3s ease',
+                      <div key={idx} style={{
+                        background: 'rgba(30, 41, 59, 0.6)',
+                        borderRadius: '0.5rem',
+                        border: '1px solid rgba(59, 130, 246, 0.2)',
+                        padding: '0.75rem',
                         position: 'relative'
                       }}>
                         <div style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  height: '4px',
-                  background: match.status === 'playing' ? 'linear-gradient(90deg, #ea580c, #fdba74)' :
-                              match.status === 'completed' ? 'linear-gradient(90deg, #16a34a, #86efac)' :
-                              'linear-gradient(90deg, #4f46e5, #8b5cf6)',
-                  zIndex: 1
-                }}></div>
-                        
-                        {/* Header bagian dengan ID dan Round */}
-                  <div style={{
-                          padding: '0.75rem 1.5rem',
-                          borderBottom: '1px solid rgba(79, 70, 229, 0.1)',
                           display: 'flex',
                           justifyContent: 'space-between',
                           alignItems: 'center',
-                          backgroundColor: 'rgba(79, 70, 229, 0.05)'
-                    }}>
+                          marginBottom: '0.5rem'
+                        }}>
+                          <span style={{
+                            fontSize: '0.75rem',
+                            color: '#93c5fd',
+                            fontWeight: '500'
+                          }}>Match {match.id}</span>
+                          <span style={{
+                            fontSize: '0.75rem',
+                            color: '#93c5fd'
+                          }}>{match.date}</span>
+                        </div>
+                        
                         <div style={{
                           display: 'flex',
-                        alignItems: 'center',
+                          flexDirection: 'column',
                           gap: '0.5rem'
-                          }}>
-                            <span style={{
-                              backgroundColor: 'rgba(79, 70, 229, 0.2)',
-                          color: 'white',
-                              fontWeight: '600',
-                              fontSize: '0.8rem',
-                              padding: '0.2rem 0.5rem',
-                              borderRadius: '0.25rem'
-                            }}>
-                              Match #{match.id}
-                            </span>
-                          </div>
+                        }}>
                           <div style={{
                             display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.5rem'
+                            justifyContent: 'space-between',
+                            padding: '0.5rem',
+                            backgroundColor: match.result === 'team1' ? 'rgba(34, 197, 94, 0.1)' : 'rgba(30, 41, 59, 0.8)',
+                            borderRadius: '0.25rem',
+                            border: match.result === 'team1' ? '1px solid rgba(34, 197, 94, 0.3)' : '1px solid rgba(59, 130, 246, 0.15)'
                           }}>
                             <span style={{
-                              backgroundColor: 'rgba(79, 70, 229, 0.2)',
-                              color: '#c4b5fd',
-                            fontSize: '0.75rem',
-                              padding: '0.2rem 0.5rem',
-                              borderRadius: '0.25rem'
-                            }}>
-                              Round {match.round || 1}
-                            </span>
-                            <StatusLabel status={match.status} />
-                    </div>
-                </div>
-                
-                  <div style={{
-              padding: '1.5rem',
-                display: 'flex',
-                          flexDirection: 'column',
-                gap: '1rem'
-                  }}>
-                    <div style={{
-                      display: 'flex',
-              justifyContent: 'space-between',
-                      alignItems: 'center',
-                      marginBottom: '0.5rem'
-                    }}>
-                    <div style={{
-                      display: 'flex',
-                              alignItems: 'center',
-                        gap: '0.5rem'
-                      }}>
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style={{color: '#a5b4fc'}}>
-                                <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
-                                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
-                              </svg>
-                      <span style={{
-                                color: '#a5b4fc',
-                                fontSize: '0.875rem'
-                              }}>
-                                {match.date} - {match.time}
-                              </span>
-                    </div>
-              <div style={{
-                display: 'flex',
-                              alignItems: 'center',
-                              gap: '0.5rem'
-                            }}>
-                              <span style={{
-                                backgroundColor: 'rgba(79, 70, 229, 0.15)',
-                                color: '#c4b5fd',
-                                fontSize: '0.7rem',
-                                padding: '0.1rem 0.4rem',
-                                borderRadius: '0.25rem',
-                                display: 'inline-block'
-                              }}>
-                                ID: {match.id}
-                              </span>
-                              <span style={{
-                                backgroundColor: 'rgba(79, 70, 229, 0.2)',
-                    color: '#c4b5fd',
-                                fontSize: '0.7rem',
-                                padding: '0.1rem 0.4rem',
-                                borderRadius: '0.25rem',
-                                display: 'inline-block'
-                              }}>
-                                Round {match.round || 1}
-                              </span>
-                              <StatusLabel status={match.status} />
-                            </div>
-                </div>
-                
-                          {/* Tim pertandingan */}
-                <div style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                            gap: '0.5rem'
-                          }}>
-                            {/* Tim 1 */}
-                        <div style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                              padding: '0.75rem',
-                              backgroundColor: match.result === 'team1' ? 'rgba(34, 197, 94, 0.1)' : 'rgba(79, 70, 229, 0.05)',
-                              borderRadius: '0.5rem',
-                              border: '1px solid',
-                              borderColor: match.result === 'team1' ? 'rgba(34, 197, 94, 0.2)' : 'rgba(79, 70, 229, 0.1)'
-                            }}>
-                        <div style={{
-                          display: 'flex',
-                                alignItems: 'center',
-                          gap: '0.5rem'
-                          }}>
-                            <span style={{
-                                  color: 'white',
-                                  fontWeight: '500'
+                              fontSize: '0.875rem',
+                              fontWeight: '500',
+                              color: match.result === 'team1' ? '#4ade80' : 'white'
                             }}>{match.team1}</span>
                             {match.result === 'team1' && (
-                                  <span style={{
-                                    fontSize: '0.75rem',
-                                    padding: '0.15rem 0.5rem',
-                                    borderRadius: '9999px',
-                                    backgroundColor: 'rgba(34, 197, 94, 0.2)',
-                                    color: '#4ade80'
-                                  }}>Menang</span>
-                                )}
-                                {match.result === 'team2' && (
-                                  <span style={{
-                                    fontSize: '0.75rem',
-                                    padding: '0.15rem 0.5rem',
-                                    borderRadius: '9999px',
-                                    backgroundColor: 'rgba(220, 38, 38, 0.2)',
-                                    color: '#f87171'
-                                  }}>Kalah</span>
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#4ade80" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                              </svg>
                             )}
                           </div>
                           <div style={{
                             display: 'flex',
-                                gap: '0.5rem'
-                              }}>
-                                {match.status === 'playing' && (
-                                  <button 
-                                    onClick={() => handleResultChange(match.id, 'team1')}
-                                    data-match-id={match.id}
-                                    style={{
-                                      padding: '0.25rem 0.5rem',
-                                      backgroundColor: match.result === 'team1' ? 'rgba(34, 197, 94, 0.2)' : 'rgba(79, 70, 229, 0.1)',
-                                      color: match.result === 'team1' ? '#4ade80' : '#a5b4fc',
-                                      borderRadius: '0.25rem',
-                                      border: '1px solid',
-                                      borderColor: match.result === 'team1' ? 'rgba(34, 197, 94, 0.3)' : 'rgba(79, 70, 229, 0.2)',
-                                      fontSize: '0.75rem',
-                                      cursor: 'pointer',
-                                      transition: 'all 0.2s ease'
-                                    }}
-                                  >
-                                    Menang
-                                  </button>
+                            justifyContent: 'space-between',
+                            padding: '0.5rem',
+                            backgroundColor: match.result === 'team2' ? 'rgba(34, 197, 94, 0.1)' : 'rgba(30, 41, 59, 0.8)',
+                            borderRadius: '0.25rem',
+                            border: match.result === 'team2' ? '1px solid rgba(34, 197, 94, 0.3)' : '1px solid rgba(59, 130, 246, 0.15)'
+                          }}>
+                            <span style={{
+                              fontSize: '0.875rem',
+                              fontWeight: '500',
+                              color: match.result === 'team2' ? '#4ade80' : 'white'
+                            }}>{match.team2}</span>
+                            {match.result === 'team2' && (
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#4ade80" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                              </svg>
                             )}
                           </div>
                         </div>
                         
-                            {/* Tim 2 */}
                         <div style={{
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                              alignItems: 'center',
-                              padding: '0.75rem',
-                              backgroundColor: match.result === 'team2' ? 'rgba(34, 197, 94, 0.1)' : 'rgba(79, 70, 229, 0.05)',
-                      borderRadius: '0.5rem',
-                              border: '1px solid',
-                              borderColor: match.result === 'team2' ? 'rgba(34, 197, 94, 0.2)' : 'rgba(79, 70, 229, 0.1)'
-                  }}>
-                    <div style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                                gap: '0.5rem'
-                    }}>
-                      <span style={{
-                                  color: 'white',
-                        fontWeight: '500'
-                                }}>{match.team2}</span>
-                                {match.result === 'team2' && (
-                                  <span style={{
-                                    fontSize: '0.75rem',
-                                    padding: '0.15rem 0.5rem',
-                                    borderRadius: '9999px',
-                                    backgroundColor: 'rgba(34, 197, 94, 0.2)',
-                                    color: '#4ade80'
-                                  }}>Menang</span>
-                                )}
-                                {match.result === 'team1' && (
-                                  <span style={{
-                                    fontSize: '0.75rem',
-                                    padding: '0.15rem 0.5rem',
-                                    borderRadius: '9999px',
-                                    backgroundColor: 'rgba(220, 38, 38, 0.2)',
-                                    color: '#f87171'
-                                  }}>Kalah</span>
-                                )}
-                    </div>
-                    <div style={{
-                      display: 'flex',
-                      gap: '0.5rem'
-                    }}>
-                                {match.status === 'playing' && (
-                                  <button 
-                                    onClick={() => handleResultChange(match.id, 'team2')}
-                                    data-match-id={match.id}
-                                    style={{
-                                      padding: '0.25rem 0.5rem',
-                                      backgroundColor: match.result === 'team2' ? 'rgba(34, 197, 94, 0.2)' : 'rgba(79, 70, 229, 0.1)',
-                                      color: match.result === 'team2' ? '#4ade80' : '#a5b4fc',
-                          borderRadius: '0.25rem',
-                                      border: '1px solid',
-                                      borderColor: match.result === 'team2' ? 'rgba(34, 197, 94, 0.3)' : 'rgba(79, 70, 229, 0.2)',
-                                      fontSize: '0.75rem',
-                                      cursor: 'pointer',
-                                      transition: 'all 0.2s ease'
-                                    }}
-                                  >
-                                    Menang
-                                  </button>
-                                )}
-                        </div>
-                    </div>
-                  </div>
-              </div>
-              
-                        {/* Tombol Aksi Pertandingan */}
-              <div style={{
-                          padding: '1rem 1.5rem',
-                          borderTop: '1px solid rgba(79, 70, 229, 0.1)',
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                          backgroundColor: 'rgba(79, 70, 229, 0.03)'
-                        }}>
-                          <div>
-                            {match.status !== 'completed' && (
-                              <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                {match.status === 'scheduled' ? (
-                                  <button
-                                    onClick={() => handleStatusChange(match.id, 'playing')}
-                                    data-match-id={match.id}
-                                    style={{
-                                      padding: '0.25rem 0.75rem',
-                                      backgroundColor: 'rgba(234, 88, 12, 0.1)',
-                            color: '#fdba74',
-                                      borderRadius: '0.25rem',
-                                      border: '1px solid rgba(234, 88, 12, 0.2)',
-                            fontSize: '0.75rem',
-                                      cursor: 'pointer',
-                                      transition: 'all 0.2s ease'
-                                    }}
-                                  >
-                                    Mulai Pertandingan
-                                  </button>
-                                ) : (
-                                  <button
-                                    onClick={() => handleStatusChange(match.id, 'completed')}
-                                    data-match-id={match.id}
-                                    style={{
-                                      padding: '0.25rem 0.75rem',
-                                      backgroundColor: 'rgba(22, 163, 74, 0.1)',
-                                      color: '#86efac',
-                            borderRadius: '0.25rem',
-                                      border: '1px solid rgba(22, 163, 74, 0.2)',
-                                      fontSize: '0.75rem',
-                                      cursor: 'pointer',
-                                      transition: 'all 0.2s ease'
-                                    }}
-                                  >
-                                    Selesaikan Pertandingan
-                                  </button>
-                            )}
-                          </div>
-                            )}
-                          </div>
-                          <div style={{ display: 'flex', gap: '0.5rem' }}>
-                            <button
-                              onClick={() => handleEditMatch(match)}
-                              style={{
-                                padding: '0.25rem 0.5rem',
-                                backgroundColor: 'rgba(99, 102, 241, 0.1)',
-                                color: '#a5b4fc',
-                                borderRadius: '0.25rem',
-                                border: '1px solid rgba(99, 102, 241, 0.2)',
-                                fontSize: '0.75rem',
-                                cursor: 'pointer'
-                              }}
-                            >
-                              Edit
-                            </button>
-                            <button
-                              onClick={() => handleDeleteMatch(match.id)}
-                              style={{
-                                padding: '0.25rem 0.5rem',
-                                backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                                color: '#fca5a5',
-                                borderRadius: '0.25rem',
-                                border: '1px solid rgba(239, 68, 68, 0.2)',
-                                fontSize: '0.75rem',
-                                cursor: 'pointer'
-                              }}
-                            >
-                              Hapus
-                            </button>
-                          </div>
-                        </div>
+                          position: 'absolute',
+                          right: '-2rem',
+                          top: '50%',
+                          transform: 'translateY(-50%)',
+                          width: '2rem',
+                          height: '2px',
+                          backgroundColor: match.result ? '#4ade80' : '#475569',
+                          display: isMobile ? 'none' : 'block'
+                        }}></div>
                       </div>
                     ))
                   ) : (
                     <div style={{
-                      textAlign: 'center',
-                      padding: '2rem',
-                      color: '#9ca3af',
                       backgroundColor: 'rgba(30, 41, 59, 0.5)',
-                      borderRadius: '0.5rem'
+                      padding: '1rem',
+                      borderRadius: '0.5rem',
+                      color: '#94a3b8',
+                      textAlign: 'center',
+                      border: '1px dashed rgba(59, 130, 246, 0.2)'
                     }}>
-                      Belum ada pertandingan. Acak tim terlebih dahulu.
+                      Belum ada match
                     </div>
                   )}
-            </div>
-          </div>
-          
+                </div>
+                
+                {/* Bye Team */}
+                {byeTeam && (
+                  <div style={{
+                    marginTop: '1rem',
+                    backgroundColor: 'rgba(30, 58, 138, 0.2)',
+                    borderRadius: '0.5rem',
+                    padding: '0.75rem',
+                    border: '1px solid rgba(59, 130, 246, 0.2)'
+                  }}>
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      marginBottom: '0.5rem'
+                    }}>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#93c5fd" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                      </svg>
+                      <span style={{
+                        fontSize: '0.75rem',
+                        color: '#93c5fd',
+                        fontWeight: '500'
+                      }}>Bye Team (Langsung ke Ronde 2):</span>
+                    </div>
+                    <div style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      padding: '0.5rem',
+                      backgroundColor: 'rgba(30, 41, 59, 0.8)',
+                      borderRadius: '0.25rem',
+                      border: '1px solid rgba(59, 130, 246, 0.15)'
+                    }}>
+                      <span style={{
+                        fontSize: '0.875rem',
+                        fontWeight: '500',
+                        color: 'white'
+                      }}>{byeTeam}</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+              
               {/* Round 2 */}
-          <div style={{
+              <div style={{
                 flex: '1',
-              display: 'flex',
+                display: 'flex',
                 flexDirection: 'column'
               }}>
                 <div style={{
                   textAlign: 'center',
                   marginBottom: '1rem',
                   padding: '0.5rem',
-                  backgroundColor: 'rgba(30, 58, 138, 0.3)',
+                  backgroundColor: 'rgba(124, 58, 237, 0.3)',
                   borderRadius: '0.5rem',
-                  border: '1px solid rgba(59, 130, 246, 0.3)'
+                  border: '1px solid rgba(139, 92, 246, 0.3)'
                 }}>
                   <h4 style={{
                     fontSize: '1rem',
                     fontWeight: 'bold',
-                    color: '#93c5fd',
+                    color: '#c4b5fd',
                     margin: 0
                   }}>Ronde 2</h4>
-        </div>
-
-        <div style={{
+                </div>
+                
+                <div style={{
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '1rem'
+                  gap: '4rem',
+                  marginTop: '2rem'
                 }}>
                   {matches.filter(m => (m.round || 0) === 2).length > 0 ? (
                     matches.filter(m => (m.round || 0) === 2).map((match, idx) => (
-                      <div key={`admin-match-${match.id}-${idx}`} style={{
+                      <div key={idx} style={{
+                        background: 'rgba(30, 41, 59, 0.6)',
+                        borderRadius: '0.5rem',
+                        border: '1px solid rgba(139, 92, 246, 0.2)',
+                        padding: '0.75rem',
+                        position: 'relative'
+                      }}>
+                        <div style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          marginBottom: '0.5rem'
+                        }}>
+                          <span style={{
+                            fontSize: '0.75rem',
+                            color: '#c4b5fd',
+                            fontWeight: '500'
+                          }}>Match {match.id}</span>
+                          <span style={{
+                            fontSize: '0.75rem',
+                            color: '#c4b5fd'
+                          }}>{match.date}</span>
+                        </div>
+                        
+                        <div style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '0.5rem'
+                        }}>
+                          <div style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            padding: '0.5rem',
+                            backgroundColor: match.result === 'team1' ? 'rgba(34, 197, 94, 0.1)' : 'rgba(30, 41, 59, 0.8)',
+                            borderRadius: '0.25rem',
+                            border: match.result === 'team1' ? '1px solid rgba(34, 197, 94, 0.3)' : '1px solid rgba(139, 92, 246, 0.15)'
+                          }}>
+                            <span style={{
+                              fontSize: '0.875rem',
+                              fontWeight: '500',
+                              color: match.result === 'team1' ? '#4ade80' : 'white'
+                            }}>{match.team1}</span>
+                            {match.result === 'team1' && (
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#4ade80" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                              </svg>
+                            )}
+                          </div>
+                          <div style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            padding: '0.5rem',
+                            backgroundColor: match.result === 'team2' ? 'rgba(34, 197, 94, 0.1)' : 'rgba(30, 41, 59, 0.8)',
+                            borderRadius: '0.25rem',
+                            border: match.result === 'team2' ? '1px solid rgba(34, 197, 94, 0.3)' : '1px solid rgba(139, 92, 246, 0.15)'
+                          }}>
+                            <span style={{
+                              fontSize: '0.875rem',
+                              fontWeight: '500',
+                              color: match.result === 'team2' ? '#4ade80' : 'white'
+                            }}>{match.team2}</span>
+                            {match.result === 'team2' && (
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#4ade80" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                              </svg>
+                            )}
+                          </div>
+                        </div>
+                        
+                        <div style={{
+                          position: 'absolute',
+                          right: '-2rem',
+                          top: '50%',
+                          transform: 'translateY(-50%)',
+                          width: '2rem',
+                          height: '2px',
+                          backgroundColor: match.result ? '#4ade80' : '#475569',
+                          display: isMobile ? 'none' : 'block'
+                        }}></div>
+                      </div>
+                    ))
+                  ) : (
+                    <div style={{
+                      backgroundColor: 'rgba(30, 41, 59, 0.5)',
+                      padding: '1rem',
+                      borderRadius: '0.5rem',
+                      color: '#94a3b8',
+                      textAlign: 'center',
+                      border: '1px dashed rgba(139, 92, 246, 0.2)'
+                    }}>
+                      Belum ada match
+                    </div>
+                  )}
+                </div>
+                
+                {/* Special Slot Teams */}
+                {specialSlots.length > 0 && (
+                  <div style={{
+                    marginTop: '2rem',
+                    backgroundColor: 'rgba(234, 88, 12, 0.2)',
+                    borderRadius: '0.5rem',
+                    padding: '0.75rem',
+                    border: '1px solid rgba(234, 88, 12, 0.2)'
+                  }}>
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      marginBottom: '0.5rem'
+                    }}>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fdba74" viewBox="0 0 16 16">
+                        <path d="M2.5.5A.5.5 0 0 1 3 0h10a.5.5 0 0 1 .5.5c0 .538-.012 1.05-.034 1.536a3 3 0 1 1-1.133 5.89c-.79 1.865-1.878 2.777-2.833 3.011v2.173l1.425.356c.194.048.377.135.537.255L13.3 15.1a.5.5 0 0 1-.3.9H3a.5.5 0 0 1-.3-.9l1.838-1.379c.16-.12.343-.207.537-.255L6.5 13.11v-2.173c-.955-.234-2.043-1.146-2.833-3.012a3 3 0 1 1-1.132-5.89A33.076 33.076 0 0 1 2.5.5zm.099 2.54a2 2 0 0 0 .72 3.935c-.333-1.05-.588-2.346-.72-3.935zm10.083 3.935a2 2 0 0 0 .72-3.935c-.133 1.59-.388 2.885-.72 3.935z"/>
+                      </svg>
+                      <span style={{
+                        fontSize: '0.75rem',
+                        color: '#fdba74',
+                        fontWeight: '500'
+                      }}>Special Slots (Langsung ke Final):</span>
+                    </div>
+                    
+                    <div style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '0.5rem'
+                    }}>
+                      {specialSlots.map((team, idx) => (
+                        <div key={idx} style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          padding: '0.5rem',
+                          backgroundColor: 'rgba(30, 41, 59, 0.8)',
+                          borderRadius: '0.25rem',
+                          border: '1px solid rgba(234, 88, 12, 0.3)'
+                        }}>
+                          <span style={{
+                            fontSize: '0.875rem',
+                            fontWeight: '500',
+                            color: 'white'
+                          }}>{team}</span>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fdba74" viewBox="0 0 16 16">
+                            <path d="M8 0l1.669.864 1.858.282.842 1.68 1.337 1.32L13.4 6l.306 1.854-1.337 1.32-.842 1.68-1.858.282L8 12l-1.669-.864-1.858-.282-.842-1.68-1.337-1.32L2.6 6l-.306-1.854 1.337-1.32.842-1.68L6.331.864 8 0z"/>
+                            <path d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1 4 11.794z"/>
+                          </svg>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+              
+              {/* Finals */}
+              <div style={{
+                flex: '1',
+                display: 'flex',
+                flexDirection: 'column'
+              }}>
+                <div style={{
+                  textAlign: 'center',
+                  marginBottom: '1rem',
+                  padding: '0.5rem',
+                  backgroundColor: 'rgba(234, 88, 12, 0.3)',
+                  borderRadius: '0.5rem',
+                  border: '1px solid rgba(234, 88, 12, 0.3)'
+                }}>
+                  <h4 style={{
+                    fontSize: '1rem',
+                    fontWeight: 'bold',
+                    color: '#fdba74',
+                    margin: 0
+                  }}>Final</h4>
+                </div>
+                
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '1rem',
+                  marginTop: '5rem',
+                  alignItems: 'center'
+                }}>
+                  {matches.filter(m => (m.round || 0) === 3).length > 0 ? (
+                    matches.filter(m => (m.round || 0) === 3).map((match, idx) => (
+                      <div key={idx} style={{
+                        background: 'rgba(30, 41, 59, 0.6)',
+                        borderRadius: '0.5rem',
+                        border: '1px solid rgba(234, 88, 12, 0.3)',
+                        padding: '0.75rem',
+                        position: 'relative',
+                        width: '100%'
+                      }}>
+                        <div style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          marginBottom: '0.5rem'
+                        }}>
+                          <span style={{
+                            fontSize: '0.75rem',
+                            color: '#fdba74',
+                            fontWeight: '500'
+                          }}>Final Match</span>
+                          <span style={{
+                            fontSize: '0.75rem',
+                            color: '#fdba74'
+                          }}>{match.date}</span>
+                        </div>
+                        
+                        <div style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '0.5rem'
+                        }}>
+                          <div style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            padding: '0.5rem',
+                            backgroundColor: match.result === 'team1' ? 'rgba(34, 197, 94, 0.1)' : 'rgba(30, 41, 59, 0.8)',
+                            borderRadius: '0.25rem',
+                            border: match.result === 'team1' ? '1px solid rgba(34, 197, 94, 0.3)' : '1px solid rgba(234, 88, 12, 0.2)'
+                          }}>
+                            <span style={{
+                              fontSize: '0.875rem',
+                              fontWeight: '500',
+                              color: match.result === 'team1' ? '#4ade80' : 'white'
+                            }}>{match.team1}</span>
+                            {match.result === 'team1' && (
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#4ade80" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                              </svg>
+                            )}
+                          </div>
+                          <div style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            padding: '0.5rem',
+                            backgroundColor: match.result === 'team2' ? 'rgba(34, 197, 94, 0.1)' : 'rgba(30, 41, 59, 0.8)',
+                            borderRadius: '0.25rem',
+                            border: match.result === 'team2' ? '1px solid rgba(34, 197, 94, 0.3)' : '1px solid rgba(234, 88, 12, 0.2)'
+                          }}>
+                            <span style={{
+                              fontSize: '0.875rem',
+                              fontWeight: '500',
+                              color: match.result === 'team2' ? '#4ade80' : 'white'
+                            }}>{match.team2}</span>
+                            {match.result === 'team2' && (
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#4ade80" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                              </svg>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div style={{
+                      backgroundColor: 'rgba(30, 41, 59, 0.5)',
+                      padding: '1rem',
+                      borderRadius: '0.5rem',
+                      color: '#94a3b8',
+                      textAlign: 'center',
+                      border: '1px dashed rgba(234, 88, 12, 0.3)',
+                      width: '100%'
+                    }}>
+                      Final belum dijadwalkan
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div style={{
+            marginTop: '2rem',
+            padding: '1rem',
+            backgroundColor: 'rgba(30, 41, 59, 0.5)',
+            borderRadius: '0.5rem',
+            border: '1px dashed rgba(148, 163, 184, 0.3)'
+          }}>
+            <h4 style={{
+              fontSize: '0.875rem',
+              fontWeight: '600',
+              color: '#94a3b8',
+              marginBottom: '0.5rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem'
+            }}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#94a3b8" viewBox="0 0 16 16">
+                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+              </svg>
+              Format Tournament
+            </h4>
+            <ul style={{
+              listStyleType: 'none',
+              padding: 0,
+              margin: 0,
+              color: '#94a3b8',
+              fontSize: '0.875rem'
+            }}>
+              <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#94a3b8" viewBox="0 0 16 16">
+                  <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+                </svg>
+                Dari 11 tim, 1 tim mendapat bye ke Ronde 2
+              </li>
+              <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#94a3b8" viewBox="0 0 16 16">
+                  <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+                </svg>
+                Setelah Ronde 1, 2 tim pemenang mendapat slot langsung ke Final
+              </li>
+              <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#94a3b8" viewBox="0 0 16 16">
+                  <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+                </svg>
+                Tim dengan slot bye tidak bisa mendapat slot langsung ke Final
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Matches Grid */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fill, minmax(350px, 1fr))',
+          gap: '1.5rem'
+        }}>
+          {matches.length === 0 ? (
+            <div style={{
+              textAlign: 'center',
+              padding: '3rem',
+              backgroundColor: 'rgba(30, 41, 59, 0.3)',
+              borderRadius: '1rem',
+              color: '#a5b4fc',
+              gridColumn: '1 / -1'
+            }}>
+              <p>Belum ada pertandingan yang dijadwalkan. Silakan tambah pertandingan baru.</p>
+            </div>
+          ) : (
+            matches.map(match => (
+              <div key={match.id} style={{
                 background: 'linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(67, 56, 202, 0.05))',
                 borderRadius: '1rem',
                 overflow: 'hidden',
@@ -1615,50 +1504,6 @@ const BracketAPage = () => {
                               'linear-gradient(90deg, #4f46e5, #8b5cf6)',
                   zIndex: 1
                 }}></div>
-                        
-                        {/* Header bagian dengan ID dan Round */}
-                  <div style={{
-                          padding: '0.75rem 1.5rem',
-                          borderBottom: '1px solid rgba(79, 70, 229, 0.1)',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                          backgroundColor: 'rgba(79, 70, 229, 0.05)'
-                    }}>
-                      <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.5rem'
-                      }}>
-                        <span style={{
-                              backgroundColor: 'rgba(79, 70, 229, 0.2)',
-                          color: 'white',
-                              fontWeight: '600',
-                              fontSize: '0.8rem',
-                              padding: '0.2rem 0.5rem',
-                              borderRadius: '0.25rem'
-                            }}>
-                              Match #{match.id}
-                            </span>
-                      </div>
-                      <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.5rem'
-                      }}>
-                        <span style={{
-                              backgroundColor: 'rgba(79, 70, 229, 0.2)',
-                              color: '#c4b5fd',
-                            fontSize: '0.75rem',
-                              padding: '0.2rem 0.5rem',
-                              borderRadius: '0.25rem'
-                            }}>
-                              Round {match.round || 2}
-                            </span>
-                            <StatusLabel status={match.status} />
-                      </div>
-                    </div>
-                        
                 <div style={{
                   padding: '1.5rem',
                   display: 'flex',
@@ -1683,46 +1528,117 @@ const BracketAPage = () => {
                       <span style={{
                         color: '#a5b4fc',
                         fontSize: '0.875rem'
-                              }}>
-                                {match.date} - {match.time}
-                              </span>
+                      }}>{match.date} - {match.time}</span>
                     </div>
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                      gap: '0.5rem'
-                    }}>
-                              <span style={{
-                                backgroundColor: 'rgba(79, 70, 229, 0.15)',
-                                color: '#c4b5fd',
-                                fontSize: '0.7rem',
-                                padding: '0.1rem 0.4rem',
-                          borderRadius: '0.25rem',
-                                display: 'inline-block'
-                              }}>
-                                ID: {match.id}
-                              </span>
-                              <span style={{
-                                backgroundColor: 'rgba(79, 70, 229, 0.2)',
-                                color: '#c4b5fd',
-                                fontSize: '0.7rem',
-                                padding: '0.1rem 0.4rem',
-                          borderRadius: '0.25rem',
-                                display: 'inline-block'
-                              }}>
-                                Round {match.round || 2}
-                              </span>
-                              <StatusLabel status={match.status} />
-                    </div>
+                    <StatusLabel status={match.status} />
                   </div>
                   
-                          {/* Tim pertandingan */}
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '1rem'
+                  }}>
+                    <div style={{
+                      display: 'flex',
+                      gap: '0.5rem'
+                    }}>
+                      <button 
+                        onClick={() => handleEditMatch(match)}
+                        style={{
+                          padding: '0.25rem 0.5rem',
+                          backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                          color: '#a5b4fc',
+                          borderRadius: '0.25rem',
+                          border: '1px solid rgba(79, 70, 229, 0.2)',
+                          fontSize: '0.75rem',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease'
+                        }}
+                        onMouseOver={(e) => {
+                          if (e && e.currentTarget) {
+                            e.currentTarget.style.backgroundColor = 'rgba(79, 70, 229, 0.2)';
+                          }
+                        }}
+                        onMouseOut={(e) => {
+                          if (e && e.currentTarget) {
+                            e.currentTarget.style.backgroundColor = 'rgba(79, 70, 229, 0.1)';
+                          }
+                        }}
+                      >
+                        Edit
+                      </button>
+                      <button 
+                        onClick={() => handleDeleteMatch(match.id)}
+                        style={{
+                          padding: '0.25rem 0.5rem',
+                          backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                          color: '#f87171',
+                          borderRadius: '0.25rem',
+                          border: '1px solid rgba(220, 38, 38, 0.2)',
+                          fontSize: '0.75rem',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease'
+                        }}
+                        onMouseOver={(e) => {
+                          if (e && e.currentTarget) {
+                            e.currentTarget.style.backgroundColor = 'rgba(220, 38, 38, 0.2)';
+                          }
+                        }}
+                        onMouseOut={(e) => {
+                          if (e && e.currentTarget) {
+                            e.currentTarget.style.backgroundColor = 'rgba(220, 38, 38, 0.1)';
+                          }
+                        }}
+                      >
+                        Hapus
+                      </button>
+                    </div>
+                    
+                    {match.status !== 'completed' && (
+                      <div style={{ display: 'flex', gap: '0.5rem' }}>
+                        {match.status === 'scheduled' ? (
+                          <button
+                            onClick={() => handleStatusChange(match.id, 'playing')}
+                            style={{
+                              padding: '0.25rem 0.75rem',
+                              backgroundColor: 'rgba(234, 88, 12, 0.1)',
+                              color: '#fdba74',
+                              borderRadius: '0.25rem',
+                              border: '1px solid rgba(234, 88, 12, 0.2)',
+                              fontSize: '0.75rem',
+                              cursor: 'pointer',
+                              transition: 'all 0.2s ease'
+                            }}
+                          >
+                            Mulai Pertandingan
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => handleStatusChange(match.id, 'scheduled')}
+                            style={{
+                              padding: '0.25rem 0.75rem',
+                              backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                              color: '#a5b4fc',
+                              borderRadius: '0.25rem',
+                              border: '1px solid rgba(79, 70, 229, 0.2)',
+                              fontSize: '0.75rem',
+                              cursor: 'pointer',
+                              transition: 'all 0.2s ease'
+                            }}
+                          >
+                            Reset Status
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  
                   <div style={{
                     display: 'flex',
                     flexDirection: 'column',
-                            gap: '0.5rem'
+                    gap: '1rem'
                   }}>
-                            {/* Tim 1 */}
                     <div style={{
                       display: 'flex',
                       justifyContent: 'space-between',
@@ -1768,7 +1684,6 @@ const BracketAPage = () => {
                         {match.status === 'playing' && (
                           <button 
                             onClick={() => handleResultChange(match.id, 'team1')}
-                                    data-match-id={match.id}
                             style={{
                               padding: '0.25rem 0.5rem',
                               backgroundColor: match.result === 'team1' ? 'rgba(34, 197, 94, 0.2)' : 'rgba(79, 70, 229, 0.1)',
@@ -1780,6 +1695,16 @@ const BracketAPage = () => {
                               cursor: 'pointer',
                               transition: 'all 0.2s ease'
                             }}
+                            onMouseOver={(e) => {
+                              if (e && e.currentTarget && match.result !== 'team1') {
+                                e.currentTarget.style.backgroundColor = 'rgba(79, 70, 229, 0.2)';
+                              }
+                            }}
+                            onMouseOut={(e) => {
+                              if (e && e.currentTarget && match.result !== 'team1') {
+                                e.currentTarget.style.backgroundColor = 'rgba(79, 70, 229, 0.1)';
+                              }
+                            }}
                           >
                             Menang
                           </button>
@@ -1787,7 +1712,6 @@ const BracketAPage = () => {
                       </div>
                     </div>
                     
-                            {/* Tim 2 */}
                     <div style={{
                       display: 'flex',
                       justifyContent: 'space-between',
@@ -1833,7 +1757,6 @@ const BracketAPage = () => {
                         {match.status === 'playing' && (
                           <button 
                             onClick={() => handleResultChange(match.id, 'team2')}
-                                    data-match-id={match.id}
                             style={{
                               padding: '0.25rem 0.5rem',
                               backgroundColor: match.result === 'team2' ? 'rgba(34, 197, 94, 0.2)' : 'rgba(79, 70, 229, 0.1)',
@@ -1845,115 +1768,29 @@ const BracketAPage = () => {
                               cursor: 'pointer',
                               transition: 'all 0.2s ease'
                             }}
-                                  >
-                                    Menang
-                                  </button>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        {/* Tombol Aksi Pertandingan */}
-                        <div style={{
-                          padding: '1rem 1.5rem',
-                          borderTop: '1px solid rgba(79, 70, 229, 0.1)',
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                          backgroundColor: 'rgba(79, 70, 229, 0.03)'
-                        }}>
-                          <div>
-                            {match.status !== 'completed' && (
-                              <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                {match.status === 'scheduled' ? (
-                                  <button
-                                    onClick={() => handleStatusChange(match.id, 'playing')}
-                                    data-match-id={match.id}
-                                    style={{
-                                      padding: '0.25rem 0.75rem',
-                                      backgroundColor: 'rgba(234, 88, 12, 0.1)',
-                                      color: '#fdba74',
-                                      borderRadius: '0.25rem',
-                                      border: '1px solid rgba(234, 88, 12, 0.2)',
-                                      fontSize: '0.75rem',
-                                      cursor: 'pointer',
-                                      transition: 'all 0.2s ease'
-                                    }}
-                                  >
-                                    Mulai Pertandingan
-                                  </button>
-                                ) : (
-                                  <button
-                                    onClick={() => handleStatusChange(match.id, 'completed')}
-                                    data-match-id={match.id}
-                                    style={{
-                                      padding: '0.25rem 0.75rem',
-                                      backgroundColor: 'rgba(22, 163, 74, 0.1)',
-                                      color: '#86efac',
-                                      borderRadius: '0.25rem',
-                                      border: '1px solid rgba(22, 163, 74, 0.2)',
-                                      fontSize: '0.75rem',
-                                      cursor: 'pointer',
-                                      transition: 'all 0.2s ease'
-                                    }}
-                                  >
-                                    Selesaikan Pertandingan
+                            onMouseOver={(e) => {
+                              if (e && e.currentTarget && match.result !== 'team2') {
+                                e.currentTarget.style.backgroundColor = 'rgba(79, 70, 229, 0.2)';
+                              }
+                            }}
+                            onMouseOut={(e) => {
+                              if (e && e.currentTarget && match.result !== 'team2') {
+                                e.currentTarget.style.backgroundColor = 'rgba(79, 70, 229, 0.1)';
+                              }
+                            }}
+                          >
+                            Menang
                           </button>
                         )}
                       </div>
-                            )}
                     </div>
-                          <div style={{ display: 'flex', gap: '0.5rem' }}>
-                            <button
-                              onClick={() => handleEditMatch(match)}
-                              style={{
-                                padding: '0.25rem 0.5rem',
-                                backgroundColor: 'rgba(99, 102, 241, 0.1)',
-                                color: '#a5b4fc',
-                                borderRadius: '0.25rem',
-                                border: '1px solid rgba(99, 102, 241, 0.2)',
-                                fontSize: '0.75rem',
-                                cursor: 'pointer'
-                              }}
-                            >
-                              Edit
-                            </button>
-                            <button
-                              onClick={() => handleDeleteMatch(match.id)}
-                              style={{
-                                padding: '0.25rem 0.5rem',
-                                backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                                color: '#fca5a5',
-                                borderRadius: '0.25rem',
-                                border: '1px solid rgba(239, 68, 68, 0.2)',
-                                fontSize: '0.75rem',
-                                cursor: 'pointer'
-                              }}
-                            >
-                              Hapus
-                            </button>
                   </div>
                 </div>
               </div>
             ))
-                  ) : (
-                    <div style={{
-                      textAlign: 'center',
-                      padding: '2rem',
-                      color: '#9ca3af',
-                      backgroundColor: 'rgba(30, 41, 59, 0.5)',
-                      borderRadius: '0.5rem'
-                    }}>
-                      Belum ada pertandingan. Acak tim terlebih dahulu.
-                    </div>
           )}
         </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )
+      </main>
       
       {/* Add/Edit Match Modal */}
       {showAddMatchModal && (
@@ -1995,7 +1832,6 @@ const BracketAPage = () => {
             <form onSubmit={handleSubmitForm} style={{
               padding: '1.5rem'
             }}>
-              {/* Form fields for team1, team2, date, time, status */}
               <div style={{
                 marginBottom: '1.5rem'
               }}>
@@ -2025,7 +1861,7 @@ const BracketAPage = () => {
                 >
                   <option value="">-- Pilih Tim --</option>
                   {bracketA.map((team, idx) => (
-                    <option key={`team1-option-${idx}`} value={team}>{team}</option>
+                    <option key={idx} value={team}>{team}</option>
                   ))}
                 </select>
               </div>
@@ -2059,7 +1895,7 @@ const BracketAPage = () => {
                 >
                   <option value="">-- Pilih Tim --</option>
                   {bracketA.map((team, idx) => (
-                    <option key={`team2-option-${idx}`} value={team}>{team}</option>
+                    <option key={idx} value={team}>{team}</option>
                   ))}
                 </select>
               </div>
@@ -2273,6 +2109,11 @@ const BracketAPage = () => {
                     animation: 'spin 1s linear infinite',
                     marginBottom: '1.5rem'
                   }}></div>
+                  <style jsx>{`
+                    @keyframes spin {
+                      to { transform: rotate(360deg); }
+                    }
+                  `}</style>
                   <p style={{
                     color: 'white',
                     fontSize: '1.125rem',
@@ -2281,7 +2122,6 @@ const BracketAPage = () => {
                 </div>
               ) : randomizeResults ? (
                 <div>
-                  {/* Display Randomize Results */}
                   <div style={{
                     marginBottom: '1.5rem',
                     padding: '1rem',
@@ -2326,7 +2166,7 @@ const BracketAPage = () => {
                         gap: '0.5rem'
                       }}>
                         {randomizeResults.specialSlotTeams.map((team, idx) => (
-                          <div key={`random-special-${idx}`} style={{
+                          <div key={idx} style={{
                             backgroundColor: 'rgba(30, 41, 59, 0.6)',
                             padding: '0.75rem',
                             borderRadius: '0.375rem',
@@ -2357,7 +2197,7 @@ const BracketAPage = () => {
                         gap: '0.5rem'
                       }}>
                         {randomizeResults.round1Matches.map((match, idx) => (
-                          <div key={`random-match-${idx}`} style={{
+                          <div key={idx} style={{
                             backgroundColor: 'rgba(30, 41, 59, 0.6)',
                             padding: '0.75rem',
                             borderRadius: '0.375rem',
@@ -2391,7 +2231,7 @@ const BracketAPage = () => {
                         gap: '0.5rem'
                       }}>
                         {randomizeResults.simulatedMatches.map((match, idx) => (
-                          <div key={`random-simulated-${idx}`} style={{
+                          <div key={idx} style={{
                             backgroundColor: 'rgba(30, 41, 59, 0.6)',
                             padding: '0.75rem',
                             borderRadius: '0.375rem',
@@ -2439,7 +2279,7 @@ const BracketAPage = () => {
                         gap: '0.5rem'
                       }}>
                         {randomizeResults.nextRoundMatches.map((match, idx) => (
-                          <div key={`random-next-${idx}`} style={{
+                          <div key={idx} style={{
                             backgroundColor: 'rgba(30, 41, 59, 0.6)',
                             padding: '0.75rem',
                             borderRadius: '0.375rem',
@@ -2569,11 +2409,11 @@ const BracketAPage = () => {
                     </button>
                   </div>
                 </div>
-              )} {/* End of the ternary operator for isRandomizing/randomizeResults/else */}
-            </div> {/* This is the new closing div for the modal body (M3) */}
-          </div> {/* This was linter line 1874, closes modal content (M2) */}
+              )}
             </div>
-      ) }
+          </div>
+        </div>
+      )}
       
       {/* Footer */}
       <footer style={{
@@ -2662,7 +2502,6 @@ const BracketAPage = () => {
           <span style={{ fontWeight: '500' }}>{toastMessage}</span>
         </div>
       )}
-      </main>
     </div>
   );
 };

@@ -1,6 +1,9 @@
-import type { Metadata } from "next";
+'use client';
+
 import { Montserrat } from 'next/font/google';
 import "./globals.css";
+import { MigrationProvider } from '../context/MigrationContext';
+import MigrationNotification from '../components/MigrationNotification';
 
 const montserrat = Montserrat({ 
   subsets: ['latin'],
@@ -8,13 +11,8 @@ const montserrat = Montserrat({
   display: 'swap'
 });
 
-export const metadata: Metadata = {
-  title: "Mobile Legends Tournament Bracket - IKMATIF 11",
-  description: "Tournament bracket for Mobile Legends competition at IKMATIF 11 event.",
-  icons: {
-    icon: '/favicon.ico'
-  }
-};
+// Metadata harus dipindahkan ke file terpisah karena 'use client'
+// metadata.ts atau metadata.js di folder yang sama
 
 export default function RootLayout({
   children,
@@ -23,7 +21,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={montserrat.className}>
-      <body>{children}</body>
+      <head>
+        <title>Mobile Legends Tournament Bracket - IKMATIF 11</title>
+        <meta name="description" content="Tournament bracket for Mobile Legends competition at IKMATIF 11 event." />
+        <link rel="icon" href="/favicon.ico" />
+      </head>
+      <body>
+        <MigrationProvider>
+          {children}
+          <MigrationNotification />
+        </MigrationProvider>
+      </body>
     </html>
   );
 } 

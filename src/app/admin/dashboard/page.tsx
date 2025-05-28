@@ -259,7 +259,7 @@ const AdminDashboard = () => {
                     width: '40px',
                     height: '40px',
                     borderRadius: '12px',
-                    background: 'linear-gradient(135deg, #4f46e5, #8b5cf6)',
+                    background: 'linear-gradient(135deg, #4f46e5, #4338ca)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -277,15 +277,15 @@ const AdminDashboard = () => {
                   }}>Bracket A</h3>
                 </div>
                 <span style={{
-                  backgroundColor: 'rgba(139, 92, 246, 0.2)',
-                  color: '#c4b5fd',
+                  backgroundColor: 'rgba(79, 70, 229, 0.2)',
+                  color: '#a5b4fc',
                   fontSize: '0.75rem',
                   fontWeight: 'medium',
                   padding: '0.35rem 0.75rem',
                   borderRadius: '9999px',
-                  border: '1px solid rgba(139, 92, 246, 0.3)',
+                  border: '1px solid rgba(79, 70, 229, 0.3)',
                   backdropFilter: 'blur(4px)'
-                }}>11 Tim</span>
+                }}>Tournament</span>
               </div>
               
               <p style={{
@@ -293,7 +293,7 @@ const AdminDashboard = () => {
                 fontSize: '0.95rem',
                 lineHeight: '1.6',
                 margin: '0.5rem 0 1.5rem'
-              }}>Kelola pertandingan, hasil, dan tim di Bracket A. Bracket ini berisi 11 tim yang akan bertanding dalam format eliminasi tunggal.</p>
+              }}>Kelola turnamen di Bracket A. Tambah, edit, dan monitoring hasil pertandingan.</p>
               
               <div style={{
                 marginTop: 'auto',
@@ -306,12 +306,12 @@ const AdminDashboard = () => {
                   alignItems: 'center',
                   gap: '0.5rem',
                   padding: '0.6rem 1.2rem',
-                  background: 'linear-gradient(to right, rgba(139, 92, 246, 0.2), rgba(79, 70, 229, 0.2))',
-                  color: '#a78bfa',
+                  background: 'linear-gradient(to right, rgba(79, 70, 229, 0.2), rgba(67, 56, 202, 0.2))',
+                  color: '#a5b4fc',
                   borderRadius: '0.5rem',
                   fontSize: '0.875rem',
                   fontWeight: '500',
-                  border: '1px solid rgba(139, 92, 246, 0.3)',
+                  border: '1px solid rgba(79, 70, 229, 0.3)',
                   transition: 'all 0.2s ease'
                 }}>
                   Kelola Bracket
@@ -325,28 +325,28 @@ const AdminDashboard = () => {
 
           {/* Bracket B Card */}
           <div style={{
-            background: 'linear-gradient(135deg, rgba(79, 70, 229, 0.2), rgba(67, 56, 202, 0.05))',
+            background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.05))',
             borderRadius: '1rem',
             overflow: 'hidden',
-            border: '1px solid rgba(79, 70, 229, 0.3)',
+            border: '1px solid rgba(16, 185, 129, 0.3)',
             boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
             transition: 'all 0.3s ease',
             cursor: 'pointer',
             position: 'relative',
-            animation: 'fadeIn 0.8s ease'
+            animation: 'fadeIn 0.9s ease'
           }} 
           onClick={() => router.push('/admin/bracket-b')}
           onMouseOver={(e) => {
             e.currentTarget.style.transform = 'translateY(-5px)';
-            e.currentTarget.style.boxShadow = '0 20px 25px -5px rgba(79, 70, 229, 0.4), 0 10px 10px -5px rgba(79, 70, 229, 0.2)';
-            e.currentTarget.style.background = 'linear-gradient(135deg, rgba(79, 70, 229, 0.3), rgba(67, 56, 202, 0.1))';
-            e.currentTarget.style.borderColor = 'rgba(79, 70, 229, 0.5)';
+            e.currentTarget.style.boxShadow = '0 20px 25px -5px rgba(16, 185, 129, 0.4), 0 10px 10px -5px rgba(16, 185, 129, 0.2)';
+            e.currentTarget.style.background = 'linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(5, 150, 105, 0.1))';
+            e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.5)';
           }}
           onMouseOut={(e) => {
             e.currentTarget.style.transform = 'translateY(0)';
             e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)';
-            e.currentTarget.style.background = 'linear-gradient(135deg, rgba(79, 70, 229, 0.2), rgba(67, 56, 202, 0.05))';
-            e.currentTarget.style.borderColor = 'rgba(79, 70, 229, 0.3)';
+            e.currentTarget.style.background = 'linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.05))';
+            e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.3)';
           }}>
             <div style={{
               position: 'absolute',
@@ -354,7 +354,7 @@ const AdminDashboard = () => {
               left: 0,
               right: 0,
               height: '4px',
-              background: 'linear-gradient(90deg, #4f46e5, #8b5cf6)',
+              background: 'linear-gradient(90deg, #10b981, #059669)',
               zIndex: 1
             }}></div>
             <div style={{
@@ -378,11 +378,11 @@ const AdminDashboard = () => {
                     width: '40px',
                     height: '40px',
                     borderRadius: '12px',
-                    background: 'linear-gradient(135deg, #4f46e5, #8b5cf6)',
+                    background: 'linear-gradient(135deg, #10b981, #059669)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    boxShadow: '0 0 10px rgba(79, 70, 229, 0.5)'
+                    boxShadow: '0 0 10px rgba(16, 185, 129, 0.5)'
                   }}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" style={{color: 'white'}}>
                       <path d="M2.5.5A.5.5 0 0 1 3 0h10a.5.5 0 0 1 .5.5c0 .538-.012 1.05-.034 1.536a3 3 0 1 1-1.133 5.89c-.79 1.865-1.878 2.777-2.833 3.011v2.173l1.425.356c.194.048.377.135.537.255L13.3 15.1a.5.5 0 0 1-.3.9H3a.5.5 0 0 1-.3-.9l1.838-1.379c.16-.12.343-.207.537-.255L6.5 13.11v-2.173c-.955-.234-2.043-1.146-2.833-3.012a3 3 0 1 1-1.132-5.89A33.076 33.076 0 0 1 2.5.5zm.099 2.54a2 2 0 0 0 .72 3.935c-.333-1.05-.588-2.346-.72-3.935zm10.083 3.935a2 2 0 0 0 .72-3.935c-.133 1.59-.388 2.885-.72 3.935z"/>
@@ -396,15 +396,15 @@ const AdminDashboard = () => {
                   }}>Bracket B</h3>
                 </div>
                 <span style={{
-                  backgroundColor: 'rgba(139, 92, 246, 0.2)',
-                  color: '#c4b5fd',
+                  backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                  color: '#6ee7b7',
                   fontSize: '0.75rem',
                   fontWeight: 'medium',
                   padding: '0.35rem 0.75rem',
                   borderRadius: '9999px',
-                  border: '1px solid rgba(139, 92, 246, 0.3)',
+                  border: '1px solid rgba(16, 185, 129, 0.3)',
                   backdropFilter: 'blur(4px)'
-                }}>11 Tim</span>
+                }}>Tournament</span>
               </div>
               
               <p style={{
@@ -412,7 +412,7 @@ const AdminDashboard = () => {
                 fontSize: '0.95rem',
                 lineHeight: '1.6',
                 margin: '0.5rem 0 1.5rem'
-              }}>Kelola pertandingan, hasil, dan tim di Bracket B. Bracket ini berisi 11 tim yang akan bertanding dalam format eliminasi tunggal.</p>
+              }}>Kelola turnamen di Bracket B. Tambah, edit, dan monitoring hasil pertandingan.</p>
               
               <div style={{
                 marginTop: 'auto',
@@ -425,12 +425,12 @@ const AdminDashboard = () => {
                   alignItems: 'center',
                   gap: '0.5rem',
                   padding: '0.6rem 1.2rem',
-                  background: 'linear-gradient(to right, rgba(139, 92, 246, 0.2), rgba(79, 70, 229, 0.2))',
-                  color: '#a78bfa',
+                  background: 'linear-gradient(to right, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.2))',
+                  color: '#6ee7b7',
                   borderRadius: '0.5rem',
                   fontSize: '0.875rem',
                   fontWeight: '500',
-                  border: '1px solid rgba(139, 92, 246, 0.3)',
+                  border: '1px solid rgba(16, 185, 129, 0.3)',
                   transition: 'all 0.2s ease'
                 }}>
                   Kelola Bracket
@@ -442,9 +442,9 @@ const AdminDashboard = () => {
             </div>
           </div>
 
-          {/* Finals Card */}
+          {/* Grand Final Card */}
           <div style={{
-            background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.05))',
+            background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(234, 88, 12, 0.05))',
             borderRadius: '1rem',
             overflow: 'hidden',
             border: '1px solid rgba(245, 158, 11, 0.3)',
@@ -452,19 +452,19 @@ const AdminDashboard = () => {
             transition: 'all 0.3s ease',
             cursor: 'pointer',
             position: 'relative',
-            animation: 'fadeIn 1s ease'
+            animation: 'fadeIn 1.2s ease'
           }} 
           onClick={() => router.push('/admin/finals')}
           onMouseOver={(e) => {
             e.currentTarget.style.transform = 'translateY(-5px)';
             e.currentTarget.style.boxShadow = '0 20px 25px -5px rgba(245, 158, 11, 0.4), 0 10px 10px -5px rgba(245, 158, 11, 0.2)';
-            e.currentTarget.style.background = 'linear-gradient(135deg, rgba(245, 158, 11, 0.3), rgba(217, 119, 6, 0.1))';
+            e.currentTarget.style.background = 'linear-gradient(135deg, rgba(245, 158, 11, 0.3), rgba(234, 88, 12, 0.1))';
             e.currentTarget.style.borderColor = 'rgba(245, 158, 11, 0.5)';
           }}
           onMouseOut={(e) => {
             e.currentTarget.style.transform = 'translateY(0)';
             e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)';
-            e.currentTarget.style.background = 'linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.05))';
+            e.currentTarget.style.background = 'linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(234, 88, 12, 0.05))';
             e.currentTarget.style.borderColor = 'rgba(245, 158, 11, 0.3)';
           }}>
             <div style={{
@@ -473,7 +473,7 @@ const AdminDashboard = () => {
               left: 0,
               right: 0,
               height: '4px',
-              background: 'linear-gradient(90deg, #f59e0b, #d97706)',
+              background: 'linear-gradient(90deg, #f59e0b, #ea580c)',
               zIndex: 1
             }}></div>
             <div style={{
@@ -497,14 +497,15 @@ const AdminDashboard = () => {
                     width: '40px',
                     height: '40px',
                     borderRadius: '12px',
-                    background: 'linear-gradient(135deg, #f59e0b, #d97706)',
+                    background: 'linear-gradient(135deg, #f59e0b, #ea580c)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     boxShadow: '0 0 10px rgba(245, 158, 11, 0.5)'
                   }}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" style={{color: 'white'}}>
-                      <path d="M2.5.5A.5.5 0 0 1 3 0h10a.5.5 0 0 1 .5.5c0 .538-.012 1.05-.034 1.536a3 3 0 1 1-1.133 5.89c-.79 1.865-1.878 2.777-2.833 3.011v2.173l1.425.356c.194.048.377.135.537.255L13.3 15.1a.5.5 0 0 1-.3.9H3a.5.5 0 0 1-.3-.9l1.838-1.379c.16-.12.343-.207.537-.255L6.5 13.11v-2.173c-.955-.234-2.043-1.146-2.833-3.012a3 3 0 1 1-1.132-5.89A33.076 33.076 0 0 1 2.5.5zm.099 2.54a2 2 0 0 0 .72 3.935c-.333-1.05-.588-2.346-.72-3.935zm10.083 3.935a2 2 0 0 0 .72-3.935c-.133 1.59-.388 2.885-.72 3.935z"/>
+                      <path d="M9.669.864L8 0 6.331.864l-1.858.282-.842 1.68-1.337 1.32L2.6 6l-.306 1.854 1.337 1.32.842 1.68 1.858.282L8 12l1.669-.864 1.858-.282.842-1.68 1.337-1.32L13.4 6l.306-1.854-1.337-1.32-.842-1.68L9.669.864zm1.196 1.193l.684 1.365 1.086 1.072L12.387 6l.248 1.506-1.086 1.072-.684 1.365-1.51.229L8 10.874l-1.355-.702-1.51-.229-.684-1.365-1.086-1.072L3.614 6l-.25-1.506 1.087-1.072.684-1.365 1.51-.229L8 1.126l1.356.702 1.509.229z"/>
+                      <path d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1 4 11.794z"/>
                     </svg>
                   </div>
                   <h3 style={{
@@ -512,18 +513,18 @@ const AdminDashboard = () => {
                     fontWeight: 'bold',
                     color: 'white',
                     margin: 0
-                  }}>Final</h3>
+                  }}>Grand Final</h3>
                 </div>
                 <span style={{
                   backgroundColor: 'rgba(245, 158, 11, 0.2)',
-                  color: '#fcd34d',
+                  color: '#fbbf24',
                   fontSize: '0.75rem',
                   fontWeight: 'medium',
                   padding: '0.35rem 0.75rem',
                   borderRadius: '9999px',
                   border: '1px solid rgba(245, 158, 11, 0.3)',
                   backdropFilter: 'blur(4px)'
-                }}>4 Tim</span>
+                }}>Grand Final</span>
               </div>
               
               <p style={{
@@ -531,7 +532,7 @@ const AdminDashboard = () => {
                 fontSize: '0.95rem',
                 lineHeight: '1.6',
                 margin: '0.5rem 0 1.5rem'
-              }}>Kelola pertandingan final dan penentuan juara. Bracket ini berisi 4 tim pemenang dari Bracket A dan B yang akan bertanding dalam format final.</p>
+              }}>Kelola Final Tournament. Atur tim dari pemenang Bracket A dan B untuk final dan juara 3.</p>
               
               <div style={{
                 marginTop: 'auto',
@@ -544,7 +545,7 @@ const AdminDashboard = () => {
                   alignItems: 'center',
                   gap: '0.5rem',
                   padding: '0.6rem 1.2rem',
-                  background: 'linear-gradient(to right, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.2))',
+                  background: 'linear-gradient(to right, rgba(245, 158, 11, 0.2), rgba(234, 88, 12, 0.2))',
                   color: '#fbbf24',
                   borderRadius: '0.5rem',
                   fontSize: '0.875rem',
@@ -567,51 +568,13 @@ const AdminDashboard = () => {
       <footer style={{
         backgroundColor: 'rgba(15, 23, 42, 0.95)',
         borderTop: '1px solid rgba(79, 70, 229, 0.3)',
-        padding: isMobile ? '1rem' : '1.5rem',
+        padding: '1.5rem',
         textAlign: 'center',
         color: '#9ca3af',
         fontSize: '0.875rem',
         backdropFilter: 'blur(10px)'
       }}>
-        <div style={{
-          maxWidth: '1280px',
-          margin: '0 auto',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '0.5rem'
-        }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            marginBottom: '0.5rem'
-          }}>
-            <Image 
-              src="/images/logo-mobile-legend-31251.png" 
-              alt="Mobile Legends Logo" 
-              width={20}
-              height={20}
-              style={{
-                height: 'auto',
-                width: 'auto',
-                filter: 'grayscale(50%) brightness(80%)'
-              }}
-            />
-            <Image 
-              src="/images/infoikamtif 11.png" 
-              alt="IKMATIF Logo" 
-              width={20}
-              height={20}
-              style={{
-                height: 'auto',
-                width: 'auto',
-                filter: 'grayscale(50%) brightness(80%)'
-              }}
-            />
-          </div>
-          <p>© 2025 ML Tournament Admin Panel. All rights reserved.</p>
-        </div>
+        <p>© 2023 Mobile Legends Tournament. All rights reserved.</p>
       </footer>
     </div>
   );

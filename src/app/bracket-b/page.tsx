@@ -3,17 +3,15 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { 
+  onBracketBMatchesChange, 
+  onBracketBByeTeamChange, 
+  onBracketBSpecialSlotsChange 
+} from '../../firebase/firestore';
+import { UIMatch, convertToUIMatches } from '../../types/adapter';
 
-interface Match {
-  id: number;
-  team1: string;
-  team2: string;
-  date: string;
-  time: string;
-  result: string | null;
-  status: 'scheduled' | 'playing' | 'completed';
-  round?: number;
-}
+// Define Match type
+type Match = UIMatch;
 
 const BracketB = () => {
   const [matches, setMatches] = useState<Match[]>([]);
@@ -33,17 +31,32 @@ const BracketB = () => {
     return () => window.removeEventListener('resize', checkIfMobile);
   }, []);
 
+  // Load data from Firebase (real-time)
+  useEffect(() => {
+    // Subscribe to matches changes
+    const unsubscribeMatches = onBracketBMatchesChange((matches) => {
+      setMatches(convertToUIMatches(matches));
+    });
+    
+    // Subscribe to bye team changes
+    const unsubscribeByeTeam = onBracketBByeTeamChange(setByeTeam);
+    
+    // Subscribe to special slots changes
+    const unsubscribeSpecialSlots = onBracketBSpecialSlotsChange(setSpecialSlotTeams);
+    
+    // Cleanup function
+    return () => {
+      unsubscribeMatches();
+      unsubscribeByeTeam();
+      unsubscribeSpecialSlots();
+    };
+  }, []);
+
   // Load data from localStorage
   useEffect(() => {
     try {
-      const storedMatches = localStorage.getItem('bracketB_matches');
-      if (storedMatches) setMatches(JSON.parse(storedMatches));
-      const savedByeTeam = localStorage.getItem('bracketB_byeTeam');
-      if (savedByeTeam) setByeTeam(JSON.parse(savedByeTeam));
-      const savedSpecialSlots = localStorage.getItem('bracketB_specialSlots');
-      if (savedSpecialSlots) setSpecialSlotTeams(JSON.parse(savedSpecialSlots));
-      const savedTeams = localStorage.getItem('bracketB_teams');
-      if (savedTeams) setTeams(JSON.parse(savedTeams));
+      const storedTeams = localStorage.getItem('bracketB_teams');
+      if (storedTeams) setTeams(JSON.parse(storedTeams));
     } catch (error) {
       console.error('Error loading data from localStorage:', error);
     }
@@ -53,9 +66,6 @@ const BracketB = () => {
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent) => {
       if (
-        e.key === 'bracketB_matches' ||
-        e.key === 'bracketB_byeTeam' ||
-        e.key === 'bracketB_specialSlots' ||
         e.key === 'bracketB_teams'
       ) {
         setLastUpdate(Date.now());
@@ -283,7 +293,7 @@ const BracketB = () => {
                   </h3>
                   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '2rem', flexWrap: 'wrap' }}>
                     {specialSlotTeams.map((team, idx) => (
-                      <div key={idx} style={{
+                      <div key={`specialSlot-${idx}`} style={{
                         background: 'linear-gradient(135deg, rgba(180, 83, 9, 0.5), rgba(146, 64, 14, 0.3))',
                         borderRadius: '0.75rem',
                         padding: '1rem',
@@ -329,7 +339,7 @@ const BracketB = () => {
                   </h3>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center' }}>
                     {teams.map((team, idx) => (
-                      <div key={idx} style={{
+                      <div key={`team-${idx}`} style={{
                         background: 'rgba(59, 130, 246, 0.15)',
                         color: '#60a5fa',
                         padding: '0.75rem 1.25rem',
@@ -351,9 +361,13 @@ const BracketB = () => {
                     <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', color: '#60a5fa' }}>Babak 1</h3>
                     <div style={{ width: '4rem', height: '0.125rem', backgroundColor: '#3b82f6', margin: '0.5rem auto 0' }}></div>
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-                    {matches.filter(match => (match.round || 1) === 1).map((match, _i) => (
-                      <div key={match.id} style={{ marginBottom: '2rem' }}>
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '2rem'
+                  }}>
+                    {matches.filter(match => (match.round || 1) === 1).map((match, index) => (
+                      <div key={`round1-${match.id}-${index}`} style={{ marginBottom: '2rem' }}>
                         <div style={{
                           background: 'linear-gradient(135deg, #1f2937, #111827)',
                           borderRadius: '0.75rem',
@@ -435,9 +449,13 @@ const BracketB = () => {
                     <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', color: '#60a5fa' }}>Babak 2</h3>
                     <div style={{ width: '4rem', height: '0.125rem', backgroundColor: '#3b82f6', margin: '0.5rem auto 0' }}></div>
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8rem' }}>
-                    {matches.filter(match => (match.round || 0) === 2).map((match, _i) => (
-                      <div key={match.id} style={{ marginBottom: '2rem' }}>
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '8rem'
+                  }}>
+                    {matches.filter(match => (match.round || 0) === 2).map((match, index) => (
+                      <div key={`round2-${match.id}-${index}`} style={{ marginBottom: '2rem' }}>
                         <div style={{
                           background: 'linear-gradient(135deg, #1f2937, #111827)',
                           borderRadius: '0.75rem',
@@ -484,7 +502,42 @@ const BracketB = () => {
                         </div>
                       </div>
                     ))}
-                    {matches.filter(match => (match.round || 0) === 2).length === 0 && (
+                    
+                    {/* Special Slot for Round 2 - Tampilkan tim yang dapat bye di Round 2 */}
+                    {specialSlotTeams && specialSlotTeams.length > 0 && (
+                      <div style={{
+                        textAlign: 'center',
+                        marginTop: '2rem',
+                        marginBottom: '2rem',
+                        color: '#94a3b8',
+                        fontSize: '0.875rem'
+                      }}>
+                        <span>Tim dengan slot langsung ke ronde berikutnya:</span>
+                        <div style={{
+                          marginTop: '0.5rem',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          flexDirection: 'column',
+                          gap: '0.5rem'
+                        }}>
+                          {specialSlotTeams.map((team, idx) => (
+                            <div key={`round2-special-${idx}`} style={{
+                              backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                              padding: '0.5rem',
+                              borderRadius: '0.375rem',
+                              color: '#60a5fa',
+                              fontWeight: '500',
+                              fontSize: '0.875rem',
+                              border: '1px solid rgba(59, 130, 246, 0.3)'
+                            }}>
+                              {team}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    
+                    {matches.filter(match => (match.round || 0) === 2).length === 0 && !specialSlotTeams.length && (
                       <div style={{ backgroundColor: 'rgba(30, 41, 59, 0.5)', padding: '1rem', borderRadius: '0.5rem', color: '#94a3b8', textAlign: 'center', border: '1px dashed rgba(100, 116, 139, 0.5)' }}>
                         Belum ada pertandingan yang dijadwalkan
                       </div>
@@ -498,8 +551,8 @@ const BracketB = () => {
                     <div style={{ width: '4rem', height: '0.125rem', backgroundColor: '#ea580c', margin: '0.5rem auto 0' }}></div>
                   </div>
                   <div>
-                    {matches.filter(match => (match.round || 0) === 3).map((match, _i) => (
-                      <div key={match.id} style={{ marginBottom: '2rem' }}>
+                    {matches.filter(match => (match.round || 0) === 3).map((match, index) => (
+                      <div key={`round3-${match.id}-${index}`} style={{ marginBottom: '2rem' }}>
                         <div style={{
                           background: 'linear-gradient(135deg, rgba(146, 64, 14, 0.3), rgba(234, 88, 12, 0.1))',
                           borderRadius: '0.75rem',

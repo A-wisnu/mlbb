@@ -1,0 +1,34 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Aturan default - jangan izinkan akses apapun jika tidak ada aturan yang cocok
+    match /{document=**} {
+      allow read: if true; // Izinkan pembacaan untuk semua (karena bracket harus dapat dilihat oleh semua)
+      allow write: if false; // Tolak penulisan secara default
+    }
+
+    // Aturan untuk koleksi bracketA
+    match /bracketA/{document} {
+      allow read: if true; // Semua bisa membaca
+      allow write: if request.auth != null; // Hanya user yang terautentikasi yang bisa menulis
+    }
+
+    // Aturan untuk koleksi bracketB
+    match /bracketB/{document} {
+      allow read: if true; // Semua bisa membaca
+      allow write: if request.auth != null; // Hanya user yang terautentikasi yang bisa menulis
+    }
+
+    // Aturan untuk koleksi finals
+    match /finals/{document} {
+      allow read: if true; // Semua bisa membaca
+      allow write: if request.auth != null; // Hanya user yang terautentikasi yang bisa menulis
+    }
+
+    // Aturan untuk koleksi users - jika ada
+    match /users/{userId} {
+      // Pengguna hanya bisa mengakses data mereka sendiri
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}

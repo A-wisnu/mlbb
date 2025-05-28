@@ -4,10 +4,14 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Layout from '../../components/Layout';
+import { auth } from '../../firebase/config';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
 
 const Login = () => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
-    username: '',
+    email: '',
     password: '',
   });
   const [loading, setLoading] = useState(false);
@@ -21,20 +25,30 @@ const Login = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
     
-    // Simulate login authentication
-    setTimeout(() => {
-      if (formData.username === 'admin' && formData.password === 'password') {
-        window.location.href = '/admin';
+    try {
+      await signInWithEmailAndPassword(auth, formData.email, formData.password);
+      // Login successful, redirect to admin
+      router.push('/admin');
+    } catch (error: any) {
+      console.error('Error signing in:', error);
+      // Handle specific Firebase auth errors with user-friendly messages
+      if (error.code === 'auth/invalid-credential' || 
+          error.code === 'auth/user-not-found' || 
+          error.code === 'auth/wrong-password') {
+        setError('Email atau password tidak valid');
+      } else if (error.code === 'auth/too-many-requests') {
+        setError('Terlalu banyak percobaan gagal. Silakan coba lagi nanti');
       } else {
-        setError('Invalid username or password');
+        setError('Gagal masuk: ' + error.message);
       }
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
   };
 
   return (
@@ -83,24 +97,24 @@ const Login = () => {
                 )}
 
                 <div>
-                  <label htmlFor="username" className="block text-sm font-medium text-gray-300">
-                    Username
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-300">
+                    Email
                   </label>
                   <div className="mt-1 relative">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-500">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                       </svg>
                     </div>
                     <input
-                      id="username"
-                      name="username"
-                      type="text"
+                      id="email"
+                      name="email"
+                      type="email"
                       required
-                      value={formData.username}
+                      value={formData.email}
                       onChange={handleChange}
                       className="appearance-none block w-full pl-10 px-3 py-3 border border-gray-700 rounded-lg shadow-sm placeholder-gray-500 bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200"
-                      placeholder="Enter your username"
+                      placeholder="Masukkan email anda"
                     />
                   </div>
                 </div>
@@ -123,7 +137,7 @@ const Login = () => {
                       value={formData.password}
                       onChange={handleChange}
                       className="appearance-none block w-full pl-10 px-3 py-3 border border-gray-700 rounded-lg shadow-sm placeholder-gray-500 bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200"
-                      placeholder="Enter your password"
+                      placeholder="Masukkan password anda"
                     />
                   </div>
                 </div>
@@ -142,14 +156,14 @@ const Login = () => {
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
-                        Signing in...
+                        Masuk...
                       </>
                     ) : (
                       <>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
                         </svg>
-                        Sign in
+                        Masuk
                       </>
                     )}
                   </button>
@@ -164,7 +178,7 @@ const Login = () => {
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
                   </svg>
-                  Back to Tournament
+                  Kembali ke Tournament
                 </Link>
               </div>
             </div>
