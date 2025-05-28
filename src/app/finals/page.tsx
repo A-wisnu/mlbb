@@ -153,31 +153,6 @@ const FinalsPage = () => {
           <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Belum Ada Data Final</h2>
           <p>Data pertandingan final belum tersedia. Silakan kembali nanti.</p>
           
-          {/* Debug Button */}
-          <button 
-            onClick={async () => {
-              try {
-                const data = await getFinalsData();
-                console.log('DEBUG - Finals Data Public:', data);
-                alert(data ? 'Data ditemukan! Lihat console.' : 'Data tidak ditemukan.');
-              } catch (error) {
-                console.error('Error checking finals data:', error);
-              }
-            }} 
-            style={{
-              backgroundColor: '#3b82f6',
-              color: 'white',
-              padding: '0.5rem 1rem',
-              borderRadius: '8px',
-              border: 'none',
-              cursor: 'pointer',
-              marginTop: '1rem',
-              marginRight: '1rem'
-            }}
-          >
-            Debug Data Final
-          </button>
-          
           <Link href="/" style={{
             display: 'inline-block',
             marginTop: '1rem',
