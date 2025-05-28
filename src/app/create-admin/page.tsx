@@ -13,11 +13,11 @@ export default function CreateAdminPage() {
     setMessage('Membuat akun admin...');
     
     try {
-      const email = 'astrit@gmail.com';
-      const password = 'cofelatte';
+      const email = 'apaya@gmail.com';
+      const password = 'mboh';
       
       await createUserWithEmailAndPassword(auth, email, password);
-      setMessage('Akun admin berhasil dibuat! Email: astrit@gmail.com, Password: cofelatte');
+      setMessage('Akun admin berhasil dibuat! Email: apaya@gmail.com, Password: mboh');
     } catch (error: any) {
       console.error('Error creating admin:', error);
       
@@ -43,8 +43,8 @@ export default function CreateAdminPage() {
       <div style={{ marginBottom: '1.5rem' }}>
         <p>Klik tombol di bawah untuk membuat akun admin dengan:</p>
         <ul style={{ marginLeft: '1.5rem', marginTop: '0.5rem' }}>
-          <li>Email: astrit@gmail.com</li>
-          <li>Password: cofelatte</li>
+          <li>Email: apaya@gmail.com</li>
+          <li>Password: mboh</li>
         </ul>
       </div>
       
