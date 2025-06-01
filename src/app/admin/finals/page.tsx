@@ -83,9 +83,63 @@ const AdminFinals = () => {
   };
 
   const fetchDataFromFirestore = async () => {
-      try {
-        setIsLoading(true);
+    try {
+      setIsLoading(true);
       setIsOffline(false);
+      
+      // Cek dulu apakah ada data final yang sudah disimpan
+      const savedFinalsData = await getFinalsData();
+      
+      if (savedFinalsData && savedFinalsData.quarterFinals && savedFinalsData.quarterFinals.length > 0) {
+        console.log("Data final ditemukan, menggunakan data yang tersimpan:", savedFinalsData);
+        
+        // Set data dari yang tersimpan
+        setQuarterFinalMatches(savedFinalsData.quarterFinals);
+        
+        if (savedFinalsData.semiFinals && savedFinalsData.semiFinals.length > 0) {
+          setSemiFinalMatches(savedFinalsData.semiFinals);
+        }
+        
+        if (savedFinalsData.finalMatch) {
+          setFinalMatch(savedFinalsData.finalMatch);
+        }
+        
+        if (savedFinalsData.thirdPlaceMatch) {
+          setThirdPlaceMatch(savedFinalsData.thirdPlaceMatch);
+        }
+        
+        if (savedFinalsData.champion) {
+          setChampion(savedFinalsData.champion);
+        }
+        
+        if (savedFinalsData.runnerUp) {
+          setRunnerUp(savedFinalsData.runnerUp);
+        }
+        
+        if (savedFinalsData.thirdPlace) {
+          setThirdPlace(savedFinalsData.thirdPlace);
+        }
+        
+        // Jika data ditemukan, kita masih perlu mengambil allTeams untuk referensi
+        // Kita bisa mendapatkannya dari quarterFinalMatches
+        if (savedFinalsData.quarterFinals.length > 0) {
+          const teams: Team[] = [];
+          savedFinalsData.quarterFinals.forEach(match => {
+            if (match.team1 && match.team1.name !== "BYE") teams.push(match.team1);
+            if (match.team2 && match.team2.name !== "BYE") teams.push(match.team2);
+          });
+          
+          // Hapus duplikat tim jika ada
+          const uniqueTeams = Array.from(new Map(teams.map(team => [team.id, team])).values());
+          setAllTeams(uniqueTeams);
+        }
+        
+        setIsLoading(false);
+        return; // Keluar dari fungsi karena kita sudah mendapatkan data yang tersimpan
+      }
+      
+      // Jika tidak ada data tersimpan, lanjutkan dengan logika yang sudah ada
+      console.log("Tidak ada data final tersimpan, mengambil data tim dari bracket...");
       
       // Debug: Tampilkan data mentah
       console.log("Mencoba mengambil data pemenang...");
@@ -130,14 +184,14 @@ const AdminFinals = () => {
       } else {
         setErrorMessage(`Jumlah tim tidak sesuai (${combinedTeams.length}/8). Pastikan jumlah pemenang tepat 4 tim dari Bracket A dan 4 tim dari Bracket B.`);
       }
-      } catch (error) {
-        console.error('Error fetching data:', error);
+    } catch (error) {
+      console.error('Error fetching data:', error);
       setErrorMessage('Terjadi kesalahan saat mengambil data tim final');
       setIsOffline(true);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    } finally {
+      setIsLoading(false);
+    }
+  };
     
   useEffect(() => {
     fetchDataFromFirestore();
@@ -217,6 +271,12 @@ const AdminFinals = () => {
         setThirdPlace(winnerName);
       }
     }
+    
+    // Simpan data setiap kali ada pemilihan pemenang
+    // Gunakan setTimeout untuk memberikan waktu state terupdate
+    setTimeout(() => {
+      handleSaveFinals();
+    }, 300);
   };
 
   const handleSaveFinals = async () => {
