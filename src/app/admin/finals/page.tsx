@@ -69,6 +69,11 @@ const AdminFinals = () => {
         ];
         setQuarterFinalMatches(qfMatches);
         showSuccessMessage('Bracket perempat final berhasil dibuat');
+        
+        // Simpan bracket ke Firebase secara otomatis
+        setTimeout(() => {
+          handleSaveFinals();
+        }, 500); // Tunggu 500ms untuk memastikan state quarterFinalMatches sudah terupdate
       } else {
         showErrorMessage('Data tim tidak lengkap untuk membuat perempat final');
       }
@@ -623,6 +628,12 @@ const AdminFinals = () => {
             <p style={{color: '#93c5fd', margin: '0.25rem 0 0 0', fontSize: '0.9rem'}}>
               Anda dapat menyimpan data final meskipun belum menyelesaikan semua pertandingan. Data akan segera terlihat di halaman publik.
             </p>
+            <p style={{color: '#93c5fd', margin: '0.25rem 0 0 0', fontSize: '0.9rem'}}>
+              <strong>Fitur Baru:</strong> Setelah membuat bracket, data akan otomatis tersimpan ke Firebase dan tetap tersedia setelah refresh halaman.
+            </p>
+            <p style={{color: '#93c5fd', margin: '0.25rem 0 0 0', fontSize: '0.9rem'}}>
+              Untuk memastikan data tersimpan, gunakan tombol <strong>Simpan Bracket</strong> yang tersedia setelah membuat bracket.
+            </p>
           </div>
         </div>
 
@@ -703,6 +714,30 @@ const AdminFinals = () => {
                 </svg>
                 Buat Bracket Perempat Final
               </button>
+              
+              {quarterFinalMatches.length > 0 && (
+                <button 
+                  onClick={handleSaveFinals}
+                  style={{
+                    backgroundColor: 'rgba(5, 150, 105, 0.8)',
+                    color: 'white',
+                    padding: '0.75rem 1.5rem',
+                    borderRadius: '8px',
+                    border: 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.75rem',
+                    fontWeight: 'bold',
+                    transition: 'background-color 0.2s ease',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"/>
+                  </svg>
+                  Simpan Bracket
+                </button>
+              )}
             </div>
           </div>
         )}
@@ -812,9 +847,31 @@ const AdminFinals = () => {
         <div style={{
           display: 'flex',
           justifyContent: 'center',
+          gap: '1rem',
           marginTop: '2rem',
-            marginBottom: '2rem'
+          marginBottom: '2rem'
           }}>
+            <button
+              onClick={handleSaveFinals}
+              style={{
+                backgroundColor: 'rgba(5, 150, 105, 0.8)',
+                color: 'white',
+                padding: '0.75rem 1.5rem',
+                borderRadius: '8px',
+                border: 'none',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                fontWeight: 'bold',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"/>
+              </svg>
+              Simpan Bracket
+            </button>
             <button
               onClick={fetchDataFromFirestore}
               style={{
@@ -824,16 +881,16 @@ const AdminFinals = () => {
                 borderRadius: '8px',
                 border: '1px solid rgba(79, 70, 229, 0.5)',
                 cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            transition: 'all 0.2s ease'
-          }}
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                transition: 'all 0.2s ease'
+              }}
             >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                 <path fillRule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
                 <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
-            </svg>
+              </svg>
               Muat Ulang Data
             </button>
           </div>
